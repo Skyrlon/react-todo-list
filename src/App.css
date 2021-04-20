@@ -15,18 +15,3 @@
   text-align: left;
   padding: 0.25em;
 }
-
-.todos {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-top: 5em;
-}
-
-.todos > div {
-  border: 1px solid black;
-  width: 15%;
-  margin-left: 2.5%;
-  margin-right: 2.5%;
-}
