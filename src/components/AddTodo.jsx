@@ -1,12 +1,7 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { useState } from "react";
 
 const StyledAddTodo = styled.div`
-  & > add-button {
-    width: 2em;
-  }
   & textarea {
     resize: none;
   }
@@ -14,6 +9,7 @@ const StyledAddTodo = styled.div`
     position: absolute;
     left: 40%;
     top: 40%;
+    background: white;
     border: 2px solid black;
     display: flex;
     flex-direction: column;
@@ -30,20 +26,43 @@ const StyledAddTodo = styled.div`
   }
 `;
 
-const AddTodo = () => {
-  const [showForm, setShowForm] = useState(false);
+const AddTodo = ({ onAdd }) => {
+  const [title, setTitle] = useState("");
+  const [details, setDetails] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    if (!title) {
+      alert("put atleast a title");
+      return;
+    }
+
+    onAdd({ title, details });
+    setTitle("");
+    setDetails("");
+  };
+
   return (
     <StyledAddTodo>
-      <div className="add-button" onClick={() => setShowForm(true)}>
-        <FontAwesomeIcon icon={faPlusCircle} />
-      </div>
-      {showForm && (
-        <div className="add-form">
-          <input type="text" placeholder="Your title go here" />
-          <textarea placeholder="Add some details if you need" />
-          <div className="add-todo-button">Add to the list</div>
-        </div>
-      )}
+      <form className="add-form" onSubmit={onSubmit}>
+        <label htmlFor="title">Title</label>
+        <input
+          type="text"
+          name="title"
+          placeholder="Your title go here"
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
+        />
+        <label htmlFor="details">Details</label>
+        <textarea
+          name="details"
+          placeholder="Add some details if you need"
+          onChange={(e) => setDetails(e.target.value)}
+          value={details}
+        />
+        <input type="submit" value="Add to the list" />
+      </form>
     </StyledAddTodo>
   );
 };
