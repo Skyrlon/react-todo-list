@@ -18,11 +18,22 @@ const App = () => {
   const addTodo = (todo) => {
     setShowForm(false);
     const newTodo = {
-      id: todos[todos.length - 1].id + 1,
+      id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 0,
       title: todo.title,
       text: todo.details,
     };
     setTodos([...todos, newTodo]);
+  };
+
+  const handleDeleteTodo = (idToDelete) => {
+    const indexOfTodoToDelete = todos
+      .map(function (x) {
+        return x.id;
+      })
+      .indexOf(idToDelete);
+    let newTodoList = todos;
+    newTodoList.splice(indexOfTodoToDelete, 1);
+    setTodos([...newTodoList]);
   };
 
   return (
@@ -32,7 +43,7 @@ const App = () => {
         <FontAwesomeIcon icon={faPlusCircle} />
       </div>
       {showForm && <AddTodo onAdd={addTodo} />}
-      <Todos TodoListItems={todos} />
+      <Todos TodoListItems={todos} deleteTodo={handleDeleteTodo} />
     </div>
   );
 };

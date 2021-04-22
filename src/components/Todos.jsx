@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+
 const StyledTodos = styled.div`
   display: flex;
   flex-direction: row;
@@ -15,13 +18,21 @@ const StyledTodos = styled.div`
   }
 `;
 
-const Todos = ({ TodoListItems }) => {
+const Todos = ({ TodoListItems, deleteTodo }) => {
+  const onDeleteClick = (e) => {
+    deleteTodo(e);
+  };
+
   return (
     <StyledTodos>
       {TodoListItems.map((element) => (
         <div key={element.id}>
           <h3>{element.title}</h3>
           <div>{element.text}</div>
+          <FontAwesomeIcon
+            icon={faTrash}
+            onClick={() => onDeleteClick(element.id)}
+          />
         </div>
       ))}
     </StyledTodos>
