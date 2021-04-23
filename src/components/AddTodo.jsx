@@ -26,9 +26,11 @@ const StyledAddTodo = styled.div`
   }
 `;
 
-const AddTodo = ({ onAdd }) => {
-  const [title, setTitle] = useState("");
-  const [details, setDetails] = useState("");
+const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit }) => {
+  const [title, setTitle] = useState(isEditingTodo ? todoToEdit.title : "");
+  const [details, setDetails] = useState(
+    isEditingTodo ? todoToEdit.details : ""
+  );
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -37,8 +39,8 @@ const AddTodo = ({ onAdd }) => {
       alert("put atleast a title");
       return;
     }
-
-    onAdd({ title, details });
+    const id = todoToEdit.id ? todoToEdit.id : 0;
+    isEditingTodo ? onEdit({ id, title, details }) : onAdd({ title, details });
     setTitle("");
     setDetails("");
   };
@@ -61,7 +63,10 @@ const AddTodo = ({ onAdd }) => {
           onChange={(e) => setDetails(e.target.value)}
           value={details}
         />
-        <input type="submit" value="Add to the list" />
+        <input
+          type="submit"
+          value={isEditingTodo ? "Edit Todo" : "Add to the list"}
+        />
       </form>
     </StyledAddTodo>
   );

@@ -8,21 +8,39 @@ import AddTodo from "./components/AddTodo.jsx";
 
 const App = () => {
   const [todos, setTodos] = useState([
-    { id: 1, title: "Shopping", text: "Buy tomatoes, apple, and a book" },
-    { id: 2, title: "Jogging", text: "Do the daily jogging " },
-    { id: 3, title: "Interview", text: "Go to 123, Sky Valley for interview" },
+    { id: 1, title: "Shopping", details: "Buy tomatoes, apple, and a book" },
+    { id: 2, title: "Jogging", details: "Do the daily jogging " },
+    {
+      id: 3,
+      title: "Interview",
+      details: "Go to 123, Sky Valley for interview",
+    },
   ]);
 
+  const [todoToEdit, setTodoToEdit] = useState({});
+
   const [showForm, setShowForm] = useState(false);
+  const [editingTodo, setEditingTodo] = useState(false);
 
   const addTodo = (todo) => {
-    setShowForm(false);
     const newTodo = {
       id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 0,
       title: todo.title,
       text: todo.details,
     };
     setTodos([...todos, newTodo]);
+  };
+
+  const handleEditTodo = (todoToEdit) => {
+    setShowForm(false);
+    const indexOfTodoToEdit = todos
+      .map(function (x) {
+        return x.id;
+      })
+      .indexOf(todoToEdit.id);
+    let newTodoList = todos;
+    newTodoList.splice(indexOfTodoToEdit, 1, todoToEdit);
+    setTodos([...newTodoList]);
   };
 
   const handleDeleteTodo = (idToDelete) => {
@@ -42,8 +60,23 @@ const App = () => {
       <div className="add-button" onClick={() => setShowForm(true)}>
         <FontAwesomeIcon icon={faPlusCircle} />
       </div>
-      {showForm && <AddTodo onAdd={addTodo} />}
-      <Todos TodoListItems={todos} deleteTodo={handleDeleteTodo} />
+      {showForm && (
+        <AddTodo
+          onAdd={addTodo}
+          onEdit={handleEditTodo}
+          isEditingTodo={editingTodo}
+          todoToEdit={todoToEdit}
+        />
+      )}
+      <Todos
+        TodoListItems={todos}
+        editTodo={(e) => {
+          setEditingTodo(true);
+          setShowForm(true);
+          setTodoToEdit(e);
+        }}
+        deleteTodo={handleDeleteTodo}
+      />
     </div>
   );
 };
