@@ -22,7 +22,15 @@ const Todos = ({ TodoListItems, editTodo, deleteTodo }) => {
   return (
     <StyledTodos>
       {TodoListItems.map((element) => (
-        <div key={element.id}>
+        <div
+          key={element.id}
+          style={{
+            backgroundColor:
+              (element.priority === "hight" && "red") ||
+              (element.priority === "medium" && "yellow") ||
+              (element.priority === "low" && "green"),
+          }}
+        >
           <h3>{element.title}</h3>
           <div>{element.details}</div>
           <FontAwesomeIcon icon={faEdit} onClick={() => editTodo(element)} />

@@ -31,6 +31,9 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit }) => {
   const [details, setDetails] = useState(
     isEditingTodo ? todoToEdit.details : ""
   );
+  const [priority, setPriority] = useState(
+    isEditingTodo ? todoToEdit.priority : ""
+  );
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -39,10 +42,22 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit }) => {
       alert("put atleast a title");
       return;
     }
-    const id = todoToEdit.id ? todoToEdit.id : 0;
-    isEditingTodo ? onEdit({ id, title, details }) : onAdd({ title, details });
+    if (!priority) {
+      alert("set a priority");
+      return;
+    }
+
+    if (isEditingTodo) {
+      const id = todoToEdit.id;
+      const priority = todoToEdit.priority;
+      onEdit({ id, title, details, priority });
+    } else {
+      onAdd({ title, details, priority });
+    }
+
     setTitle("");
     setDetails("");
+    setPriority("");
   };
 
   return (
@@ -67,6 +82,17 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit }) => {
           type="submit"
           value={isEditingTodo ? "Edit Todo" : "Add to the list"}
         />
+        <label htmlFor="priority"></label>
+        <select
+          name="priority"
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+        >
+          <option value="">--How important is this task ?--</option>
+          <option value="hight">Hight</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
       </form>
     </StyledAddTodo>
   );

@@ -8,31 +8,44 @@ import AddTodo from "./components/AddTodo.jsx";
 
 const App = () => {
   const [todos, setTodos] = useState([
-    { id: 1, title: "Shopping", details: "Buy tomatoes, apple, and a book" },
-    { id: 2, title: "Jogging", details: "Do the daily jogging " },
+    {
+      id: 1,
+      title: "Shopping",
+      details: "Buy tomatoes, apple, and a book",
+      priority: "medium",
+    },
+    {
+      id: 2,
+      title: "Jogging",
+      details: "Do the daily jogging ",
+      priority: "low",
+    },
     {
       id: 3,
       title: "Interview",
       details: "Go to 123, Sky Valley for interview",
+      priority: "hight",
     },
   ]);
 
   const [todoToEdit, setTodoToEdit] = useState({});
-
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState(false);
 
   const addTodo = (todo) => {
+    setShowForm(false);
     const newTodo = {
       id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 0,
       title: todo.title,
-      text: todo.details,
+      details: todo.details,
+      priority: todo.priority,
     };
     setTodos([...todos, newTodo]);
   };
 
   const handleEditTodo = (todoToEdit) => {
     setShowForm(false);
+    setEditingTodo(false);
     const indexOfTodoToEdit = todos
       .map(function (x) {
         return x.id;
