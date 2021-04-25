@@ -31,6 +31,45 @@ const App = () => {
   const [todoToEdit, setTodoToEdit] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState(false);
+  const [sortBy, setSortBy] = useState("first-added");
+
+  const handleSortingChange = (e) => {
+    let sortedTodos = todos;
+    switch (e) {
+      case "last-added":
+        sortedTodos.sort(function (a, b) {
+          return b.id - a.id;
+        });
+        break;
+
+      case "first-added":
+        sortedTodos.sort(function (a, b) {
+          return a.id - b.id;
+        });
+        break;
+
+      case "lowest-priority":
+        const orderLowToHight = ["low", "medium", "hight"];
+        sortedTodos.sort(
+          (a, b) =>
+            orderLowToHight.indexOf(a.priority) -
+            orderLowToHight.indexOf(b.priority)
+        );
+        break;
+
+      case "hightest-priority":
+        const orderHightToLow = ["hight", "medium", "low"];
+        sortedTodos.sort(
+          (a, b) =>
+            orderHightToLow.indexOf(a.priority) -
+            orderHightToLow.indexOf(b.priority)
+        );
+        break;
+      default:
+        alert("an error as occured");
+    }
+    setTodos([...sortedTodos]);
+  };
 
   const addTodo = (todo) => {
     setShowForm(false);
@@ -73,6 +112,20 @@ const App = () => {
       <div className="add-button" onClick={() => setShowForm(true)}>
         <FontAwesomeIcon icon={faPlusCircle} />
       </div>
+      <label htmlFor="sorting">Sort by : </label>
+      <select
+        name="sorting"
+        value={sortBy}
+        onChange={(e) => {
+          setSortBy(e.target.value);
+          handleSortingChange(e.target.value);
+        }}
+      >
+        <option value="last-added">Last added</option>
+        <option value="first-added">First added</option>
+        <option value="hightest-priority">Highest priority</option>
+        <option value="lowest-priority">Lowest riority</option>
+      </select>
       {showForm && (
         <AddTodo
           onAdd={addTodo}

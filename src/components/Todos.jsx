@@ -15,6 +15,17 @@ const StyledTodos = styled.div`
     width: 15%;
     margin-left: 2.5%;
     margin-right: 2.5%;
+    &.priority {
+      &-hight {
+        background-color: red;
+      }
+      &-medium {
+        background-color: yellow;
+      }
+      &-low {
+        background-color: green;
+      }
+    }
   }
 `;
 
@@ -22,15 +33,7 @@ const Todos = ({ TodoListItems, editTodo, deleteTodo }) => {
   return (
     <StyledTodos>
       {TodoListItems.map((element) => (
-        <div
-          key={element.id}
-          style={{
-            backgroundColor:
-              (element.priority === "hight" && "red") ||
-              (element.priority === "medium" && "yellow") ||
-              (element.priority === "low" && "green"),
-          }}
-        >
+        <div key={element.id} className={`priority-${element.priority}`}>
           <h3>{element.title}</h3>
           <div>{element.details}</div>
           <FontAwesomeIcon icon={faEdit} onClick={() => editTodo(element)} />

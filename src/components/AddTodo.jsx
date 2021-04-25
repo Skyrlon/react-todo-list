@@ -47,13 +47,14 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit }) => {
       return;
     }
 
-    if (isEditingTodo) {
-      const id = todoToEdit.id;
-      const priority = todoToEdit.priority;
-      onEdit({ id, title, details, priority });
-    } else {
-      onAdd({ title, details, priority });
-    }
+    isEditingTodo
+      ? onEdit({
+          id: todoToEdit.id,
+          title,
+          details,
+          priority,
+        })
+      : onAdd({ title, details, priority });
 
     setTitle("");
     setDetails("");
@@ -78,11 +79,6 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit }) => {
           onChange={(e) => setDetails(e.target.value)}
           value={details}
         />
-        <input
-          type="submit"
-          value={isEditingTodo ? "Edit Todo" : "Add to the list"}
-        />
-        <label htmlFor="priority"></label>
         <select
           name="priority"
           value={priority}
@@ -93,6 +89,10 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit }) => {
           <option value="medium">Medium</option>
           <option value="low">Low</option>
         </select>
+        <input
+          type="submit"
+          value={isEditingTodo ? "Edit Todo" : "Add to the list"}
+        />
       </form>
     </StyledAddTodo>
   );
