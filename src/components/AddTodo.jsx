@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import ClickAwayListener from "react-click-away-listener";
 
 const StyledAddTodo = styled.div`
   & textarea {
@@ -26,7 +27,7 @@ const StyledAddTodo = styled.div`
   }
 `;
 
-const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit }) => {
+const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
   const [title, setTitle] = useState(isEditingTodo ? todoToEdit.title : "");
   const [details, setDetails] = useState(
     isEditingTodo ? todoToEdit.details : ""
@@ -62,39 +63,41 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit }) => {
   };
 
   return (
-    <StyledAddTodo>
-      <form className="add-form" onSubmit={onSubmit}>
-        <label htmlFor="title">Title</label>
-        <input
-          type="text"
-          name="title"
-          placeholder="Your title go here"
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-        />
-        <label htmlFor="details">Details</label>
-        <textarea
-          name="details"
-          placeholder="Add some details if you need"
-          onChange={(e) => setDetails(e.target.value)}
-          value={details}
-        />
-        <select
-          name="priority"
-          value={priority}
-          onChange={(e) => setPriority(e.target.value)}
-        >
-          <option value="">--How important is this task ?--</option>
-          <option value="hight">Hight</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
-        </select>
-        <input
-          type="submit"
-          value={isEditingTodo ? "Edit Todo" : "Add to the list"}
-        />
-      </form>
-    </StyledAddTodo>
+    <ClickAwayListener onClickAway={clickedAway}>
+      <StyledAddTodo>
+        <form className="add-form" onSubmit={onSubmit}>
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            name="title"
+            placeholder="Your title go here"
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
+          />
+          <label htmlFor="details">Details</label>
+          <textarea
+            name="details"
+            placeholder="Add some details if you need"
+            onChange={(e) => setDetails(e.target.value)}
+            value={details}
+          />
+          <select
+            name="priority"
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value="">--How important is this task ?--</option>
+            <option value="hight">Hight</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+          <input
+            type="submit"
+            value={isEditingTodo ? "Edit Todo" : "Add to the list"}
+          />
+        </form>
+      </StyledAddTodo>
+    </ClickAwayListener>
   );
 };
 

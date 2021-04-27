@@ -110,6 +110,11 @@ const App = () => {
     setTodos([...newTodoList]);
   };
 
+  const closeForm = () => {
+    setShowForm(false);
+    setEditingTodo(false);
+  };
+
   useEffect(() => {
     sortingTodos(sortBy, sortedTodos);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,6 +126,7 @@ const App = () => {
       <div className="add-button" onClick={() => setShowForm(true)}>
         <FontAwesomeIcon icon={faPlusCircle} />
       </div>
+
       <label htmlFor="sorting">Sort by : </label>
       <select
         name="sorting"
@@ -135,14 +141,17 @@ const App = () => {
         <option value="hightest-priority">Highest priority</option>
         <option value="lowest-priority">Lowest priority</option>
       </select>
+
       {showForm && (
         <AddTodo
           onAdd={addTodo}
           onEdit={handleEditTodo}
           isEditingTodo={editingTodo}
           todoToEdit={todoToEdit}
+          clickedAway={closeForm}
         />
       )}
+
       <Todos
         TodoListItems={sortedTodos}
         editTodo={(e) => {
