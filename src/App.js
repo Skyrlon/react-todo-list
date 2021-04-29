@@ -13,18 +13,28 @@ const App = () => {
       title: "Shopping",
       details: "Buy tomatoes, apple, and a book",
       priority: "medium",
+      completed: false,
     },
     {
       id: 1,
       title: "Jogging",
       details: "Do the daily jogging ",
       priority: "low",
+      completed: false,
     },
     {
       id: 2,
       title: "Interview",
       details: "Go to 123, Sky Valley for interview",
       priority: "hight",
+      completed: false,
+    },
+    {
+      id: 3,
+      title: "Another task ",
+      details: "",
+      priority: "medium",
+      completed: true,
     },
   ]);
 
@@ -79,6 +89,7 @@ const App = () => {
       title: todo.title,
       details: todo.details,
       priority: todo.priority,
+      completed: false,
     };
     let newTodoList = [...todos, newTodo];
     setTodos([...todos, newTodo]);
@@ -100,13 +111,25 @@ const App = () => {
   };
 
   const handleDeleteTodo = (idToDelete) => {
-    const indexOfTodoToDelete = todos
+    const newTodoList = todos.filter((todo) => todo.id !== idToDelete);
+    setTodos(newTodoList);
+  };
+
+  const handleToggleCompleteTodo = (todo, completedValue) => {
+    const indexOfTodoToToggleComplete = todos
       .map(function (x) {
         return x.id;
       })
-      .indexOf(idToDelete);
+      .indexOf(todo.id);
     let newTodoList = todos;
-    newTodoList.splice(indexOfTodoToDelete, 1);
+    newTodoList.splice(indexOfTodoToToggleComplete, 1, {
+      id: todo.id,
+      title: todo.title,
+      details: todo.details,
+      priority: todo.priority,
+      completed: completedValue,
+    });
+    console.log(newTodoList[indexOfTodoToToggleComplete]);
     setTodos([...newTodoList]);
   };
 
@@ -116,9 +139,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    sortingTodos(sortBy, sortedTodos);
+    sortingTodos(sortBy, todos);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [todos]);
 
   return (
     <div className="App">
@@ -160,6 +183,7 @@ const App = () => {
           setTodoToEdit(e);
         }}
         deleteTodo={handleDeleteTodo}
+        toggleCompleteTodo={handleToggleCompleteTodo}
       />
     </div>
   );

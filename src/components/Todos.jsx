@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const StyledTodos = styled.div`
   display: flex;
@@ -26,20 +26,34 @@ const StyledTodos = styled.div`
         background-color: green;
       }
     }
+    &.done {
+      background-color: grey;
+    }
   }
 `;
 
-const Todos = ({ TodoListItems, editTodo, deleteTodo }) => {
+const Todos = ({ TodoListItems, editTodo, deleteTodo, toggleCompleteTodo }) => {
   return (
     <StyledTodos>
       {TodoListItems.map((element) => (
-        <div key={element.id} className={`priority-${element.priority}`}>
+        <div
+          key={element.id}
+          className={`priority-${element.priority} ${
+            element.completed ? "done" : "truc"
+          }`}
+        >
           <h3>{element.title}</h3>
           <div>{element.details}</div>
           <FontAwesomeIcon icon={faEdit} onClick={() => editTodo(element)} />
           <FontAwesomeIcon
             icon={faTrash}
             onClick={() => deleteTodo(element.id)}
+          />
+          <FontAwesomeIcon
+            icon={faCheck}
+            onClick={() =>
+              toggleCompleteTodo(element, element.completed ? false : true)
+            }
           />
         </div>
       ))}
