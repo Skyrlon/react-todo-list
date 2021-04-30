@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -59,6 +60,13 @@ const Todos = ({ TodoListItems, editTodo, deleteTodo, toggleCompleteTodo }) => {
       ))}
     </StyledTodos>
   );
+};
+
+Todos.propTypes = {
+  TodoListItems: PropTypes.array,
+  editTodo: PropTypes.func,
+  deleteTodo: PropTypes.func,
+  toggleCompleteTodo: PropTypes.func,
 };
 
 export default Todos;

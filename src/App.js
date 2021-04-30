@@ -129,7 +129,6 @@ const App = () => {
       priority: todo.priority,
       completed: completedValue,
     });
-    console.log(newTodoList[indexOfTodoToToggleComplete]);
     setTodos([...newTodoList]);
   };
 

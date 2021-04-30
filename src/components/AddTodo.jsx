@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 
@@ -99,6 +100,14 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
       </StyledAddTodo>
     </ClickAwayListener>
   );
+};
+
+AddTodo.propTypes = {
+  onAdd: PropTypes.func,
+  onEdit: PropTypes.func,
+  isEditingTodo: PropTypes.bool,
+  todoToEdit: PropTypes.object,
+  clickedAway: PropTypes.func,
 };
 
 export default AddTodo;
