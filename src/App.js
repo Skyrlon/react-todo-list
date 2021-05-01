@@ -44,6 +44,8 @@ const App = () => {
   const [sortBy, setSortBy] = useState("first-added");
   const [sortedTodos, setSortedTodos] = useState(todos);
 
+  const [todosListDisplay, setTodosListDisplay] = useState("all");
+
   const sortingTodos = (sortingValue, todoToSort) => {
     let newSortedTodos = todoToSort;
     switch (sortingValue) {
@@ -149,6 +151,11 @@ const App = () => {
         <FontAwesomeIcon icon={faPlusCircle} />
       </div>
 
+      <div className="todos-list-display">
+        <div onClick={() => setTodosListDisplay("all")}>All</div>|
+        <div onClick={() => setTodosListDisplay("separated")}>Separated</div>
+      </div>
+
       <label htmlFor="sorting">Sort by : </label>
       <select
         name="sorting"
@@ -175,6 +182,7 @@ const App = () => {
       )}
 
       <Todos
+        display={todosListDisplay}
         TodoListItems={sortedTodos}
         editTodo={(e) => {
           setEditingTodo(true);
