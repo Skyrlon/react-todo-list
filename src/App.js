@@ -129,7 +129,7 @@ const App = () => {
       title: todo.title,
       details: todo.details,
       priority: todo.priority,
-      completed: completedValue,
+      completed: !completedValue,
     });
     setTodos([...newTodoList]);
   };

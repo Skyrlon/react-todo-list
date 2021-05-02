@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
+import Todo from "./Todo.jsx";
 
 const StyledTodos = styled.div`
   & .todos {
@@ -46,39 +45,26 @@ const Todos = ({
     <StyledTodos>
       {display === "all" && (
         <div>
-          <h2>Not completed ({TodoListItems.length})</h2>
+          <h2>All ({TodoListItems.length})</h2>
           <div className="todos">
             {TodoListItems.map((element) => (
-              <div
+              <Todo
                 key={element.id}
-                className={`todo priority-${element.priority} ${
-                  element.completed ? "done" : ""
-                }`}
-              >
-                <h3>{element.title}</h3>
-                <div>{element.details}</div>
-                <FontAwesomeIcon
-                  icon={faEdit}
-                  onClick={() => editTodo(element)}
-                />
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  onClick={() => deleteTodo(element.id)}
-                />
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  onClick={() =>
-                    toggleCompleteTodo(
-                      element,
-                      element.completed ? false : true
-                    )
-                  }
-                />
-              </div>
+                title={element.title}
+                details={element.details}
+                priority={element.priority}
+                completed={element.completed}
+                onEdit={() => editTodo(element)}
+                onDelete={() => deleteTodo(element.id)}
+                onComplete={() =>
+                  toggleCompleteTodo(element, element.completed)
+                }
+              />
             ))}
           </div>
         </div>
       )}
+
       {display === "separated" && (
         <div>
           <div className="todos-not-completed">
@@ -94,35 +80,22 @@ const Todos = ({
               {TodoListItems.filter(
                 (element) => element.completed === false
               ).map((element) => (
-                <div
+                <Todo
                   key={element.id}
-                  className={`todo priority-${element.priority} ${
-                    element.completed ? "done" : ""
-                  }`}
-                >
-                  <h3>{element.title}</h3>
-                  <div>{element.details}</div>
-                  <FontAwesomeIcon
-                    icon={faEdit}
-                    onClick={() => editTodo(element)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    onClick={() => deleteTodo(element.id)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faCheck}
-                    onClick={() =>
-                      toggleCompleteTodo(
-                        element,
-                        element.completed ? false : true
-                      )
-                    }
-                  />
-                </div>
+                  title={element.title}
+                  details={element.details}
+                  priority={element.priority}
+                  completed={element.completed}
+                  onEdit={() => editTodo(element)}
+                  onDelete={() => deleteTodo(element.id)}
+                  onComplete={() =>
+                    toggleCompleteTodo(element, element.completed)
+                  }
+                />
               ))}
             </div>
           </div>
+
           <div className="todos-completed">
             <h2>
               Completed (
@@ -136,32 +109,18 @@ const Todos = ({
               {TodoListItems.filter(
                 (element) => element.completed === true
               ).map((element) => (
-                <div
+                <Todo
                   key={element.id}
-                  className={`todo priority-${element.priority} ${
-                    element.completed ? "done" : ""
-                  }`}
-                >
-                  <h3>{element.title}</h3>
-                  <div>{element.details}</div>
-                  <FontAwesomeIcon
-                    icon={faEdit}
-                    onClick={() => editTodo(element)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    onClick={() => deleteTodo(element.id)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faCheck}
-                    onClick={() =>
-                      toggleCompleteTodo(
-                        element,
-                        element.completed ? false : true
-                      )
-                    }
-                  />
-                </div>
+                  title={element.title}
+                  details={element.details}
+                  priority={element.priority}
+                  completed={element.completed}
+                  onEdit={() => editTodo(element)}
+                  onDelete={() => deleteTodo(element.id)}
+                  onComplete={() =>
+                    toggleCompleteTodo(element, element.completed)
+                  }
+                />
               ))}
             </div>
           </div>
