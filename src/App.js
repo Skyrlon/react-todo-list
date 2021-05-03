@@ -134,6 +134,15 @@ const App = () => {
     setTodos([...newTodoList]);
   };
 
+  const handleFilterChange = (e) => {
+    let filteredTodos = todos.filter(
+      (element) =>
+        element.title.toLowerCase().startsWith(e.target.value.toLowerCase()) ||
+        element.details.toLowerCase().startsWith(e.target.value.toLowerCase())
+    );
+    setSortedTodos([...filteredTodos]);
+  };
+
   const closeForm = () => {
     setShowForm(false);
     setEditingTodo(false);
@@ -170,6 +179,9 @@ const App = () => {
         <option value="hightest-priority">Highest priority</option>
         <option value="lowest-priority">Lowest priority</option>
       </select>
+
+      <label htmlFor="filter">Filter : </label>
+      <input type="text" name="filter" onChange={handleFilterChange} />
 
       {showForm && (
         <AddTodo
