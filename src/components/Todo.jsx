@@ -1,6 +1,29 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
+const StyledTodo = styled.div`
+  border: 1px solid black;
+  width: 14.5%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  overflow-wrap: break-word;
+  &.priority {
+    &-hight {
+      background-color: red;
+    }
+    &-medium {
+      background-color: yellow;
+    }
+    &-low {
+      background-color: green;
+    }
+  }
+  &.done {
+    background-color: grey;
+  }
+`;
 
 const Todo = ({
   title,
@@ -12,13 +35,15 @@ const Todo = ({
   onComplete,
 }) => {
   return (
-    <div className={`todo priority-${priority} ${completed ? "done" : ""}`}>
+    <StyledTodo
+      className={`todo priority-${priority} ${completed ? "done" : ""}`}
+    >
       <h3>{title}</h3>
       <div>{details}</div>
       <FontAwesomeIcon icon={faEdit} onClick={() => onEdit()} />
       <FontAwesomeIcon icon={faTrash} onClick={() => onDelete()} />
       <FontAwesomeIcon icon={faCheck} onClick={() => onComplete()} />
-    </div>
+    </StyledTodo>
   );
 };
 

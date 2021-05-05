@@ -10,27 +10,6 @@ const StyledTodos = styled.div`
     flex-wrap: wrap;
     justify-content: flex-start;
     margin-top: 5em;
-
-    & .todo {
-      border: 1px solid black;
-      width: 14.5%;
-      margin-left: 2.5%;
-      margin-right: 2.5%;
-      &.priority {
-        &-hight {
-          background-color: red;
-        }
-        &-medium {
-          background-color: yellow;
-        }
-        &-low {
-          background-color: green;
-        }
-      }
-      &.done {
-        background-color: grey;
-      }
-    }
   }
 `;
 
