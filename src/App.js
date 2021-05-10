@@ -5,6 +5,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 import Todos from "./components/Todos.jsx";
 import AddTodo from "./components/AddTodo.jsx";
+import Calendar from "./components/Calendar.jsx";
 
 const App = () => {
   const [todos, setTodos] = useState([
@@ -204,6 +205,8 @@ const App = () => {
         deleteTodo={handleDeleteTodo}
         toggleCompleteTodo={handleToggleCompleteTodo}
       />
+
+      <Calendar />
     </div>
   );
 };
