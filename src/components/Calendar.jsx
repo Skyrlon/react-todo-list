@@ -8,6 +8,16 @@ const StyledCalendar = styled.div`
   justify-content: center;
   align-items: center;
 
+  & h2 {
+    user-select: none;
+  }
+
+  & .arrow {
+    display: inline;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
   & .calendar {
     display: flex;
     flex-direction: row;
@@ -25,20 +35,21 @@ const StyledCalendar = styled.div`
 
 const Calendar = () => {
   const [year, setYear] = useState(new Date(Date.now()).getFullYear());
-  const [calendar, setCalendar] = useState(function () {
+
+  const setUpCalendar = (year) => {
     const months = [
-      "january",
-      "february",
-      "march",
-      "april",
-      "may",
-      "june",
-      "july",
-      "august",
-      "september",
-      "october",
-      "november",
-      "december",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
     let array = [];
     months.forEach((month, index) => {
@@ -55,11 +66,34 @@ const Calendar = () => {
       array.push({ name: month, days: days });
     });
     return array;
-  });
+  };
+
+  const [calendar, setCalendar] = useState(setUpCalendar(year));
 
   return (
     <StyledCalendar>
-      <h2>{year}</h2>
+      <h2>
+        <div
+          className="arrow"
+          onClick={() => {
+            setYear(year - 1);
+            setCalendar(setUpCalendar(year - 1));
+          }}
+        >
+          &#10092;
+        </div>
+        {year}
+        <div
+          className="arrow"
+          onClick={() => {
+            setYear(year + 1);
+            setCalendar(setUpCalendar(year + 1));
+          }}
+        >
+          &#10093;
+        </div>
+      </h2>
+
       <div className="calendar">
         {calendar.map((month) => (
           <table key={month.name}>
