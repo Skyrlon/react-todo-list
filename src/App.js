@@ -15,6 +15,7 @@ const App = () => {
       details: "Buy tomatoes, apple, and a book",
       priority: "medium",
       completed: false,
+      deadline: "20 January 2021",
     },
     {
       id: 1,
@@ -22,6 +23,7 @@ const App = () => {
       details: "Do the daily jogging ",
       priority: "low",
       completed: false,
+      deadline: "30 October 2021",
     },
     {
       id: 2,
@@ -29,6 +31,7 @@ const App = () => {
       details: "Go to 123, Sky Valley for interview",
       priority: "hight",
       completed: false,
+      deadline: "2 June 2022",
     },
     {
       id: 3,
@@ -206,7 +209,7 @@ const App = () => {
         toggleCompleteTodo={handleToggleCompleteTodo}
       />
 
-      <Calendar />
+      <Calendar todos={todos} />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const StyledCalendar = styled.div`
   display: flex;
-  width: 100vw;
+  width: 99vw;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -23,17 +23,31 @@ const StyledCalendar = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+    width: 90%;
     & table {
-      width: 16vw;
+      width: 16%;
     }
     & table,
     td {
       border: 1px solid #333;
     }
+    & td {
+      &.priority {
+        &-hight {
+          background-color: red;
+        }
+        &-medium {
+          background-color: yellow;
+        }
+        &-low {
+          background-color: green;
+        }
+      }
+    }
   }
 `;
 
-const Calendar = () => {
+const Calendar = ({ todos }) => {
   const [year, setYear] = useState(new Date(Date.now()).getFullYear());
 
   const setUpCalendar = (year) => {
@@ -107,6 +121,22 @@ const Calendar = () => {
                 <tr key={day.number}>
                   <td>{day.name}</td>
                   <td>{day.number}</td>
+                  {todos.filter(
+                    (todo) =>
+                      todo.deadline === `${day.number} ${month.name} ${year}`
+                  ).length > 0 ? (
+                    todos.map(
+                      (todo) =>
+                        todo.deadline ===
+                          `${day.number} ${month.name} ${year}` && (
+                          <td className={`priority-${todo.priority}`}>
+                            {todo.title}
+                          </td>
+                        )
+                    )
+                  ) : (
+                    <td></td>
+                  )}
                 </tr>
               ))}
             </tbody>
