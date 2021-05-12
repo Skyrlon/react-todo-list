@@ -49,24 +49,24 @@ const StyledCalendar = styled.div`
 
 const Calendar = ({ todos }) => {
   const [year, setYear] = useState(new Date(Date.now()).getFullYear());
+  const monthsNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   const setUpCalendar = (year) => {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
     let array = [];
-    months.forEach((month, index) => {
+    monthsNames.forEach((month, index) => {
       let daysInMonth = new Date(year, index + 1, 0).getDate();
       let days = [];
       for (let i = 0; i < daysInMonth; i++) {
@@ -123,13 +123,27 @@ const Calendar = ({ todos }) => {
                   <td>{day.number}</td>
                   {todos.filter(
                     (todo) =>
-                      todo.deadline === `${day.number} ${month.name} ${year}`
+                      todo.deadline ===
+                      `${year}-${
+                        monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                          ? `0${monthsNames.indexOf(month.name) + 1}`
+                          : monthsNames.indexOf(month.name) + 1
+                      }-${day.number < 10 ? `0${day.number}` : day.number}`//check if number is inferior to ten, to add or not a 0 before number
                   ).length > 0 ? (
                     todos.map(
                       (todo) =>
                         todo.deadline ===
-                          `${day.number} ${month.name} ${year}` && (
-                          <td className={`priority-${todo.priority}`}>
+                          `${year}-${
+                            monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                              ? `0${monthsNames.indexOf(month.name) + 1}`
+                              : monthsNames.indexOf(month.name) + 1
+                          }-${
+                            day.number < 10 ? `0${day.number}` : day.number //check if number is inferior to ten, to add or not a 0 before number
+                          }` && (
+                          <td
+                            key={todo.id}
+                            className={`priority-${todo.priority}`}
+                          >
                             {todo.title}
                           </td>
                         )

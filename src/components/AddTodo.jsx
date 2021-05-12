@@ -37,6 +37,10 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
     isEditingTodo ? todoToEdit.priority : ""
   );
 
+  const [deadline, setDeadline] = useState(
+    isEditingTodo ? todoToEdit.deadline : ""
+  );
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -55,12 +59,14 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
           title,
           details,
           priority,
+          deadline,
         })
-      : onAdd({ title, details, priority });
+      : onAdd({ title, details, priority, deadline });
 
     setTitle("");
     setDetails("");
     setPriority("");
+    setDeadline("");
   };
 
   return (
@@ -92,6 +98,12 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
             <option value="medium">Medium</option>
             <option value="low">Low</option>
           </select>
+          <input
+            type="date"
+            name="deadline"
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+          />
           <input
             type="submit"
             value={isEditingTodo ? "Edit Todo" : "Add to the list"}

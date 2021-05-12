@@ -15,7 +15,7 @@ const App = () => {
       details: "Buy tomatoes, apple, and a book",
       priority: "medium",
       completed: false,
-      deadline: "20 January 2021",
+      deadline: "2021-01-10",
     },
     {
       id: 1,
@@ -23,7 +23,7 @@ const App = () => {
       details: "Do the daily jogging ",
       priority: "low",
       completed: false,
-      deadline: "30 October 2021",
+      deadline: "2021-10-05",
     },
     {
       id: 2,
@@ -31,7 +31,7 @@ const App = () => {
       details: "Go to 123, Sky Valley for interview",
       priority: "hight",
       completed: false,
-      deadline: "2 June 2022",
+      deadline: "2022-06-02",
     },
     {
       id: 3,
@@ -96,6 +96,7 @@ const App = () => {
       details: todo.details,
       priority: todo.priority,
       completed: false,
+      deadline: todo.deadline,
     };
     let newTodoList = [...todos, newTodo];
     setTodos([...todos, newTodo]);
