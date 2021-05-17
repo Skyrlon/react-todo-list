@@ -7,6 +7,7 @@ const StyledCalendar = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: 0.75em;
 
   & h2 {
     user-select: none;
@@ -49,6 +50,9 @@ const StyledCalendar = styled.div`
 
 const Calendar = ({ todos }) => {
   const [year, setYear] = useState(new Date(Date.now()).getFullYear());
+
+  const [dateGoingToSubmit, setDateGoingToSubmit] = useState(year);
+
   const monthsNames = [
     "January",
     "February",
@@ -90,18 +94,33 @@ const Calendar = ({ todos }) => {
         <div
           className="arrow"
           onClick={() => {
-            setYear(year - 1);
-            setCalendar(setUpCalendar(year - 1));
+            setYear((prev) => prev - 1);
+            setCalendar(setUpCalendar(year));
           }}
         >
           &#10092;
         </div>
-        {year}
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setYear(dateGoingToSubmit);
+          }}
+        >
+          <input
+            name="year-input"
+            type="text"
+            value={dateGoingToSubmit}
+            onChange={(e) => setDateGoingToSubmit(e.target.value)}
+          />
+          <input type="submit" />
+        </form>
+
         <div
           className="arrow"
           onClick={() => {
-            setYear(year + 1);
-            setCalendar(setUpCalendar(year + 1));
+            setYear((prev) => prev + 1);
+            setCalendar(setUpCalendar(year));
           }}
         >
           &#10093;
@@ -128,7 +147,7 @@ const Calendar = ({ todos }) => {
                         monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
                           ? `0${monthsNames.indexOf(month.name) + 1}`
                           : monthsNames.indexOf(month.name) + 1
-                      }-${day.number < 10 ? `0${day.number}` : day.number}`//check if number is inferior to ten, to add or not a 0 before number
+                      }-${day.number < 10 ? `0${day.number}` : day.number}` //check if number is inferior to ten, to add or not a 0 before number
                   ).length > 0 ? (
                     todos.map(
                       (todo) =>
