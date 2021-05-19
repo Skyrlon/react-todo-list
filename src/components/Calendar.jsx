@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const StyledCalendar = styled.div`
@@ -23,9 +23,10 @@ const StyledCalendar = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     width: 90%;
     & table {
+      margin: 0.25%;
       width: 16%;
     }
     & table,
@@ -68,25 +69,48 @@ const Calendar = ({ todos }) => {
     "December",
   ];
 
-  const setUpCalendar = (year) => {
+  const [calendarFormat, setCalendarFormat] = useState("year");
+
+  const setUpCalendar = () => {
     let array = [];
-    monthsNames.forEach((month, index) => {
-      let daysInMonth = new Date(year, index + 1, 0).getDate();
-      let days = [];
+    if (calendarFormat === "year") {
+      monthsNames.forEach((month, index) => {
+        let daysInMonth = new Date(dateGoingToSubmit, index + 1, 0).getDate();
+        let days = [];
+        for (let i = 0; i < daysInMonth; i++) {
+          days.push({
+            name: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(
+              new Date(`${i + 1} ${month} ${dateGoingToSubmit}`)
+            ),
+            number: i + 1,
+          });
+        }
+        array.push({ id: monthsNames.indexOf(month), name: month, days: days });
+      });
+    } else if (calendarFormat === "month") {
+      let daysInMonth = new Date(year, dateGoingToSubmit + 1, 0).getDate();
       for (let i = 0; i < daysInMonth; i++) {
-        days.push({
+        let day = {
+          id: i,
           name: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(
-            new Date(`${i + 1} ${month} ${year}`)
+            new Date(`${i + 1} ${monthsNames[dateGoingToSubmit]} ${year}`)
           ),
           number: i + 1,
-        });
+        };
+        array.push(day);
       }
-      array.push({ name: month, days: days });
-    });
+    }
     return array;
   };
 
-  const [calendar, setCalendar] = useState(setUpCalendar(year));
+  const [calendar, setCalendar] = useState([]);
+
+  useEffect(
+    () => {
+      setCalendar(setUpCalendar());
+    }, // eslint-disable-next-line
+    [dateGoingToSubmit]
+  );
 
   return (
     <StyledCalendar>
@@ -128,53 +152,74 @@ const Calendar = ({ todos }) => {
       </h2>
 
       <div className="calendar">
-        {calendar.map((month) => (
-          <table key={month.name}>
-            <thead>
-              <tr>
-                <th colSpan="2">{month.name}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {month.days.map((day) => (
-                <tr key={day.number}>
-                  <td>{day.name}</td>
-                  <td>{day.number}</td>
-                  {todos.filter(
-                    (todo) =>
-                      todo.deadline ===
-                      `${year}-${
-                        monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
-                          ? `0${monthsNames.indexOf(month.name) + 1}`
-                          : monthsNames.indexOf(month.name) + 1
-                      }-${day.number < 10 ? `0${day.number}` : day.number}` //check if number is inferior to ten, to add or not a 0 before number
-                  ).length > 0 ? (
-                    todos.map(
+        {calendarFormat === "year" &&
+          calendar.map((month) => (
+            <table
+              key={month.id}
+              onClick={() => {
+                setCalendarFormat("month");
+                setDateGoingToSubmit(monthsNames.indexOf(month.name));
+                setUpCalendar();
+              }}
+            >
+              <thead>
+                <tr>
+                  <th colSpan="3">{month.name}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {month.days.map((day) => (
+                  <tr key={day.number}>
+                    <td>{day.name}</td>
+                    <td>{day.number}</td>
+                    {todos.filter(
                       (todo) =>
                         todo.deadline ===
-                          `${year}-${
-                            monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
-                              ? `0${monthsNames.indexOf(month.name) + 1}`
-                              : monthsNames.indexOf(month.name) + 1
-                          }-${
-                            day.number < 10 ? `0${day.number}` : day.number //check if number is inferior to ten, to add or not a 0 before number
-                          }` && (
-                          <td
-                            key={todo.id}
-                            className={`priority-${todo.priority}`}
-                          >
-                            {todo.title}
-                          </td>
-                        )
-                    )
-                  ) : (
-                    <td></td>
-                  )}
+                        `${year}-${
+                          monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                            ? `0${monthsNames.indexOf(month.name) + 1}`
+                            : monthsNames.indexOf(month.name) + 1
+                        }-${day.number < 10 ? `0${day.number}` : day.number}` //check if number is inferior to ten, to add or not a 0 before number
+                    ).length > 0 ? (
+                      todos.map(
+                        (todo) =>
+                          todo.deadline ===
+                            `${year}-${
+                              monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                                ? `0${monthsNames.indexOf(month.name) + 1}`
+                                : monthsNames.indexOf(month.name) + 1
+                            }-${
+                              day.number < 10 ? `0${day.number}` : day.number //check if number is inferior to ten, to add or not a 0 before number
+                            }` && (
+                            <td
+                              key={todo.id}
+                              className={`priority-${todo.priority}`}
+                            >
+                              {todo.title}
+                            </td>
+                          )
+                      )
+                    ) : (
+                      <td key={day.number}></td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ))}
+
+        {calendarFormat === "month" && (
+          <table>
+            <tbody>
+              {calendar.map((day) => (
+                <tr key={day.id}>
+                  <td>{day.name}</td>
+                  <td>{day.number}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        ))}
+        )}
       </div>
     </StyledCalendar>
   );
