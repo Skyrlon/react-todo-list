@@ -52,7 +52,10 @@ const StyledCalendar = styled.div`
 const Calendar = ({ todos }) => {
   const [year, setYear] = useState(new Date(Date.now()).getFullYear());
 
-  const [dateGoingToSubmit, setDateGoingToSubmit] = useState(year);
+  const [yearGoingToSubmit, setYearGoingToSubmit] = useState(year);
+  const [monthGoingToSubmit, setMonthGoingToSubmit] = useState("");
+
+  const [dateAsked, setDateAsked] = useState(year);
 
   const monthsNames = [
     "January",
@@ -75,12 +78,12 @@ const Calendar = ({ todos }) => {
     let array = [];
     if (calendarFormat === "year") {
       monthsNames.forEach((month, index) => {
-        let daysInMonth = new Date(dateGoingToSubmit, index + 1, 0).getDate();
+        let daysInMonth = new Date(dateAsked, index + 1, 0).getDate();
         let days = [];
         for (let i = 0; i < daysInMonth; i++) {
           days.push({
             name: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(
-              new Date(`${i + 1} ${month} ${dateGoingToSubmit}`)
+              new Date(`${i + 1} ${month} ${dateAsked}`)
             ),
             number: i + 1,
           });
@@ -88,12 +91,16 @@ const Calendar = ({ todos }) => {
         array.push({ id: monthsNames.indexOf(month), name: month, days: days });
       });
     } else if (calendarFormat === "month") {
-      let daysInMonth = new Date(year, dateGoingToSubmit + 1, 0).getDate();
+      let daysInMonth = new Date(
+        year,
+        monthsNames.indexOf(dateAsked.split(" ")[0]) + 1,
+        0
+      ).getDate();
       for (let i = 0; i < daysInMonth; i++) {
         let day = {
           id: i,
           name: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(
-            new Date(`${i + 1} ${monthsNames[dateGoingToSubmit]} ${year}`)
+            new Date(`${i + 1} ${dateAsked}`)
           ),
           number: i + 1,
         };
@@ -103,13 +110,19 @@ const Calendar = ({ todos }) => {
     return array;
   };
 
+  const handleDateSubmit = (e) => {
+    e.preventDefault();
+    setCalendarFormat("month");
+    setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
+  };
+
   const [calendar, setCalendar] = useState([]);
 
   useEffect(
     () => {
       setCalendar(setUpCalendar());
     }, // eslint-disable-next-line
-    [dateGoingToSubmit]
+    [dateAsked]
   );
 
   return (
@@ -125,17 +138,22 @@ const Calendar = ({ todos }) => {
           &#10092;
         </div>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setYear(dateGoingToSubmit);
-          }}
+        <form //marche pas car calendarFormat ne change pas, si year mettre un seul input, si month mettre un input pour les mois et un autre pour l'année
+          onSubmit={handleDateSubmit}
         >
+          <input
+            name="month-input"
+            type="text"
+            value={monthGoingToSubmit}
+            onChange={(e) => {
+              setMonthGoingToSubmit(e.target.value);
+            }}
+          />
           <input
             name="year-input"
             type="text"
-            value={dateGoingToSubmit}
-            onChange={(e) => setDateGoingToSubmit(e.target.value)}
+            value={yearGoingToSubmit.year}
+            onChange={(e) => setYearGoingToSubmit(e.target.value)}
           />
           <input type="submit" />
         </form>
@@ -158,7 +176,7 @@ const Calendar = ({ todos }) => {
               key={month.id}
               onClick={() => {
                 setCalendarFormat("month");
-                setDateGoingToSubmit(monthsNames.indexOf(month.name));
+                setDateAsked(`${month.name} ${year}`);
                 setUpCalendar();
               }}
             >
@@ -215,6 +233,36 @@ const Calendar = ({ todos }) => {
                 <tr key={day.id}>
                   <td>{day.name}</td>
                   <td>{day.number}</td>
+                  {todos.filter(
+                      (todo) =>
+                        todo.deadline ===
+                        `${year}-${
+                          monthsNames.indexOf(monthGoingToSubmit) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                            ? `0${monthsNames.indexOf(monthGoingToSubmit) + 1}`
+                            : monthsNames.indexOf(monthGoingToSubmit) + 1
+                        }-${day.number < 10 ? `0${day.number}` : day.number}` //check if number is inferior to ten, to add or not a 0 before number
+                    ).length > 0 ? (
+                      todos.map(
+                        (todo) =>
+                          todo.deadline ===
+                            `${year}-${
+                              monthsNames.indexOf(monthGoingToSubmit) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                                ? `0${monthsNames.indexOf(monthGoingToSubmit) + 1}`
+                                : monthsNames.indexOf(monthGoingToSubmit) + 1
+                            }-${
+                              day.number < 10 ? `0${day.number}` : day.number //check if number is inferior to ten, to add or not a 0 before number
+                            }` && (
+                            <td
+                              key={todo.id}
+                              className={`priority-${todo.priority}`}
+                            >
+                              {todo.title}
+                            </td>
+                          )
+                      )
+                    ) : (
+                      <td key={day.number}></td>
+                    )}
                 </tr>
               ))}
             </tbody>
