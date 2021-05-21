@@ -92,7 +92,7 @@ const Calendar = ({ todos }) => {
       });
     } else if (calendarFormat === "month") {
       let daysInMonth = new Date(
-        year,
+        dateAsked.split(" ")[1],
         monthsNames.indexOf(dateAsked.split(" ")[0]) + 1,
         0
       ).getDate();
@@ -112,8 +112,15 @@ const Calendar = ({ todos }) => {
 
   const handleDateSubmit = (e) => {
     e.preventDefault();
-    setCalendarFormat("month");
-    setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
+    if (monthGoingToSubmit.length === 0) {
+      setCalendarFormat("year");
+      setYear(yearGoingToSubmit);
+      setDateAsked(yearGoingToSubmit);
+    } else if (monthGoingToSubmit.length > 0) {
+      setCalendarFormat("month");
+      setYear(yearGoingToSubmit);
+      setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
+    }
   };
 
   const [calendar, setCalendar] = useState([]);
@@ -138,9 +145,7 @@ const Calendar = ({ todos }) => {
           &#10092;
         </div>
 
-        <form //marche pas car calendarFormat ne change pas, si year mettre un seul input, si month mettre un input pour les mois et un autre pour l'année
-          onSubmit={handleDateSubmit}
-        >
+        <form onSubmit={handleDateSubmit}>
           <input
             name="month-input"
             type="text"
@@ -152,7 +157,7 @@ const Calendar = ({ todos }) => {
           <input
             name="year-input"
             type="text"
-            value={yearGoingToSubmit.year}
+            value={yearGoingToSubmit}
             onChange={(e) => setYearGoingToSubmit(e.target.value)}
           />
           <input type="submit" />
@@ -234,35 +239,37 @@ const Calendar = ({ todos }) => {
                   <td>{day.name}</td>
                   <td>{day.number}</td>
                   {todos.filter(
+                    (todo) =>
+                      todo.deadline ===
+                      `${year}-${
+                        monthsNames.indexOf(monthGoingToSubmit) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                          ? `0${monthsNames.indexOf(monthGoingToSubmit) + 1}`
+                          : monthsNames.indexOf(monthGoingToSubmit) + 1
+                      }-${day.number < 10 ? `0${day.number}` : day.number}` //check if number is inferior to ten, to add or not a 0 before number
+                  ).length > 0 ? (
+                    todos.map(
                       (todo) =>
                         todo.deadline ===
-                        `${year}-${
-                          monthsNames.indexOf(monthGoingToSubmit) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
-                            ? `0${monthsNames.indexOf(monthGoingToSubmit) + 1}`
-                            : monthsNames.indexOf(monthGoingToSubmit) + 1
-                        }-${day.number < 10 ? `0${day.number}` : day.number}` //check if number is inferior to ten, to add or not a 0 before number
-                    ).length > 0 ? (
-                      todos.map(
-                        (todo) =>
-                          todo.deadline ===
-                            `${year}-${
-                              monthsNames.indexOf(monthGoingToSubmit) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
-                                ? `0${monthsNames.indexOf(monthGoingToSubmit) + 1}`
-                                : monthsNames.indexOf(monthGoingToSubmit) + 1
-                            }-${
-                              day.number < 10 ? `0${day.number}` : day.number //check if number is inferior to ten, to add or not a 0 before number
-                            }` && (
-                            <td
-                              key={todo.id}
-                              className={`priority-${todo.priority}`}
-                            >
-                              {todo.title}
-                            </td>
-                          )
-                      )
-                    ) : (
-                      <td key={day.number}></td>
-                    )}
+                          `${year}-${
+                            monthsNames.indexOf(monthGoingToSubmit) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                              ? `0${
+                                  monthsNames.indexOf(monthGoingToSubmit) + 1
+                                }`
+                              : monthsNames.indexOf(monthGoingToSubmit) + 1
+                          }-${
+                            day.number < 10 ? `0${day.number}` : day.number //check if number is inferior to ten, to add or not a 0 before number
+                          }` && (
+                          <td
+                            key={todo.id}
+                            className={`priority-${todo.priority}`}
+                          >
+                            {todo.title}
+                          </td>
+                        )
+                    )
+                  ) : (
+                    <td key={day.number}></td>
+                  )}
                 </tr>
               ))}
             </tbody>
