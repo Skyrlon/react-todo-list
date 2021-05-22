@@ -123,6 +123,34 @@ const Calendar = ({ todos }) => {
     }
   };
 
+  const handleDateBackward = () => {
+    if (monthGoingToSubmit.length === 0) {
+      setYearGoingToSubmit((prev) => parseInt(prev) - 1);
+      setYear(parseInt(yearGoingToSubmit) - 1);
+      setDateAsked(yearGoingToSubmit);
+    } else if (monthGoingToSubmit.length > 0) {
+      setYear(yearGoingToSubmit);
+      setMonthGoingToSubmit(
+        (prev) => monthsNames[monthsNames.indexOf(prev) - 1]
+      );
+      setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
+    }
+  };
+
+  const handleDateForward = () => {
+    if (monthGoingToSubmit.length === 0) {
+      setYearGoingToSubmit((prev) => parseInt(prev) + 1);
+      setYear(parseInt(yearGoingToSubmit) + 1);
+      setDateAsked(yearGoingToSubmit);
+    } else if (monthGoingToSubmit.length > 0) {
+      setYear(yearGoingToSubmit);
+      setMonthGoingToSubmit(
+        (prev) => monthsNames[monthsNames.indexOf(prev) + 1]
+      );
+      setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
+    }
+  };
+
   const [calendar, setCalendar] = useState([]);
 
   useEffect(
@@ -135,13 +163,7 @@ const Calendar = ({ todos }) => {
   return (
     <StyledCalendar>
       <h2>
-        <div
-          className="arrow"
-          onClick={() => {
-            setYear((prev) => prev - 1);
-            setCalendar(setUpCalendar(year));
-          }}
-        >
+        <div className="arrow" onClick={handleDateBackward}>
           &#10092;
         </div>
 
@@ -150,9 +172,7 @@ const Calendar = ({ todos }) => {
             name="month-input"
             type="text"
             value={monthGoingToSubmit}
-            onChange={(e) => {
-              setMonthGoingToSubmit(e.target.value);
-            }}
+            onChange={(e) => setMonthGoingToSubmit(e.target.value)}
           />
           <input
             name="year-input"
@@ -163,13 +183,7 @@ const Calendar = ({ todos }) => {
           <input type="submit" />
         </form>
 
-        <div
-          className="arrow"
-          onClick={() => {
-            setYear((prev) => prev + 1);
-            setCalendar(setUpCalendar(year));
-          }}
-        >
+        <div className="arrow" onClick={handleDateForward}>
           &#10093;
         </div>
       </h2>
@@ -181,8 +195,8 @@ const Calendar = ({ todos }) => {
               key={month.id}
               onClick={() => {
                 setCalendarFormat("month");
+                setMonthGoingToSubmit(month.name);
                 setDateAsked(`${month.name} ${year}`);
-                setUpCalendar();
               }}
             >
               <thead>
@@ -191,42 +205,43 @@ const Calendar = ({ todos }) => {
                 </tr>
               </thead>
               <tbody>
-                {month.days.map((day) => (
-                  <tr key={day.number}>
-                    <td>{day.name}</td>
-                    <td>{day.number}</td>
-                    {todos.filter(
-                      (todo) =>
-                        todo.deadline ===
-                        `${year}-${
-                          monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
-                            ? `0${monthsNames.indexOf(month.name) + 1}`
-                            : monthsNames.indexOf(month.name) + 1
-                        }-${day.number < 10 ? `0${day.number}` : day.number}` //check if number is inferior to ten, to add or not a 0 before number
-                    ).length > 0 ? (
-                      todos.map(
+                {month.days &&
+                  month.days.map((day) => (
+                    <tr key={day.number}>
+                      <td>{day.name}</td>
+                      <td>{day.number}</td>
+                      {todos.filter(
                         (todo) =>
                           todo.deadline ===
-                            `${year}-${
-                              monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
-                                ? `0${monthsNames.indexOf(month.name) + 1}`
-                                : monthsNames.indexOf(month.name) + 1
-                            }-${
-                              day.number < 10 ? `0${day.number}` : day.number //check if number is inferior to ten, to add or not a 0 before number
-                            }` && (
-                            <td
-                              key={todo.id}
-                              className={`priority-${todo.priority}`}
-                            >
-                              {todo.title}
-                            </td>
-                          )
-                      )
-                    ) : (
-                      <td key={day.number}></td>
-                    )}
-                  </tr>
-                ))}
+                          `${year}-${
+                            monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                              ? `0${monthsNames.indexOf(month.name) + 1}`
+                              : monthsNames.indexOf(month.name) + 1
+                          }-${day.number < 10 ? `0${day.number}` : day.number}` //check if number is inferior to ten, to add or not a 0 before number
+                      ).length > 0 ? (
+                        todos.map(
+                          (todo) =>
+                            todo.deadline ===
+                              `${year}-${
+                                monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
+                                  ? `0${monthsNames.indexOf(month.name) + 1}`
+                                  : monthsNames.indexOf(month.name) + 1
+                              }-${
+                                day.number < 10 ? `0${day.number}` : day.number //check if number is inferior to ten, to add or not a 0 before number
+                              }` && (
+                              <td
+                                key={todo.id}
+                                className={`priority-${todo.priority}`}
+                              >
+                                {todo.title}
+                              </td>
+                            )
+                        )
+                      ) : (
+                        <td key={day.number}></td>
+                      )}
+                    </tr>
+                  ))}
               </tbody>
             </table>
           ))}
