@@ -152,10 +152,18 @@ const Calendar = ({ todos }) => {
             name: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(
               new Date(`${i + 1} ${month} ${dateAsked}`)
             ),
-            number: i + 1,
+            number: i + 1 < 10 ? `0${i + 1}` : i + 1,
           });
         }
-        array.push({ id: monthsNames.indexOf(month), name: month, days: days });
+        array.push({
+          id: monthsNames.indexOf(month),
+          number:
+            monthsNames.indexOf(month) + 1 < 10
+              ? `0${monthsNames.indexOf(month) + 1}`
+              : monthsNames.indexOf(month) + 1,
+          name: month,
+          days: days,
+        });
       });
     } else if (calendarFormat === "month") {
       let daysInMonth = new Date(
@@ -163,32 +171,38 @@ const Calendar = ({ todos }) => {
         monthsNames.indexOf(dateAsked.split(" ")[0]) + 1,
         0
       ).getDate();
+      let days = [];
       for (let i = 0; i < daysInMonth; i++) {
-        let day = {
+        days.push({
           id: i,
           name: new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
             new Date(`${i + 1} ${dateAsked}`)
           ),
-          number: i + 1,
-        };
-        array.push(day);
+          number: i + 1 < 10 ? `0${i + 1}` : i + 1,
+        });
       }
-      let daysBeforeFirstDay = [];
-      for (let j = 0; j < weekDaysNames.indexOf(array[0].name); j++) {
-        daysBeforeFirstDay.unshift({ id: -j - 1, name: "", number: "" });
+      array.push({
+        number:
+          monthsNames.indexOf(dateAsked.split(" ")[0]) + 1 < 10
+            ? `0${monthsNames.indexOf(dateAsked.split(" ")[0]) + 1}`
+            : monthsNames.indexOf(dateAsked.split(" ")[0]) + 1,
+        days: days,
+      });
+      let daysBeforeFirstDay = weekDaysNames.indexOf(array[0].days[0].name);
+      for (let j = 0; j < daysBeforeFirstDay; j++) {
+        array[0].days.unshift({ id: -j - 1, name: "", number: -j - 1 });
       }
-      array = daysBeforeFirstDay.concat(array);
-      let daysAfterLastDay = [];
-      for (
-        let k = 0;
-        k <
+      let daysAfterLastDay =
         weekDaysNames.length -
-          (weekDaysNames.indexOf(array[array.length - 1].name) + 1);
-        k++
-      ) {
-        daysAfterLastDay.push({ id: array.length + k, name: "", number: "" });
+        (weekDaysNames.indexOf(array[0].days[array[0].days.length - 1].name) +
+          1);
+      for (let k = 0; k < daysAfterLastDay; k++) {
+        array[0].days.push({
+          id: array[0].days.length,
+          name: "",
+          number: array[0].days.length + 1,
+        });
       }
-      array = array.concat(daysAfterLastDay);
     }
     return array;
   };
@@ -283,7 +297,7 @@ const Calendar = ({ todos }) => {
         {calendarFormat === "year" &&
           calendar.map((month) => (
             <div
-              key={month.id}
+              key={month.number}
               onClick={() => {
                 setCalendarFormat("month");
                 setMonthGoingToSubmit(month.name);
@@ -302,22 +316,12 @@ const Calendar = ({ todos }) => {
                       {todos.filter(
                         (todo) =>
                           todo.deadline ===
-                          `${year}-${
-                            monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
-                              ? `0${monthsNames.indexOf(month.name) + 1}`
-                              : monthsNames.indexOf(month.name) + 1
-                          }-${day.number < 10 ? `0${day.number}` : day.number}` //check if number is inferior to ten, to add or not a 0 before number
+                          `${year}-${month.number}-${day.number}`
                       ).length > 0 ? (
                         todos.map(
                           (todo) =>
                             todo.deadline ===
-                              `${year}-${
-                                monthsNames.indexOf(month.name) + 1 < 10 //check if number is inferior to ten, to add or not a 0 before number
-                                  ? `0${monthsNames.indexOf(month.name) + 1}`
-                                  : monthsNames.indexOf(month.name) + 1
-                              }-${
-                                day.number < 10 ? `0${day.number}` : day.number //check if number is inferior to ten, to add or not a 0 before number
-                              }` && (
+                              `${year}-${month.number}-${day.number}` && (
                               <div
                                 key={todo.id}
                                 className={`year_day-todo priority-${todo.priority}`}
@@ -342,41 +346,30 @@ const Calendar = ({ todos }) => {
                 <div key={weekday}>{weekday.slice(0, 3)}</div>
               ))}
             </div>
-            <div className="month">
-              {calendar.map((day) => (
-                <div className="month_day" key={day.id}>
-                  <div className="month_day-number">{day.number}</div>
-                  <div className="month_day-todo">
-                    {["hight", "medium", "low"].map((priority) => (
-                      <div key={priority} className={`priority-${priority}`}>
-                        {
-                          todos.filter(
-                            (todo) =>
-                              todo.priority === priority &&
-                              todo.deadline ===
-                                `${year}-${
-                                  monthsNames.indexOf(monthGoingToSubmit) + 1 <
-                                  10 //check if number is inferior to ten, to add or not a 0 before number
-                                    ? `0${
-                                        monthsNames.indexOf(
-                                          monthGoingToSubmit
-                                        ) + 1
-                                      }`
-                                    : monthsNames.indexOf(monthGoingToSubmit) +
-                                      1
-                                }-${
-                                  day.number < 10
-                                    ? `0${day.number}`
-                                    : day.number //check if number is inferior to ten, to add or not a 0 before number
-                                }`
-                          ).length
-                        }
-                      </div>
-                    ))}
+
+            {calendar.map((month) => (
+              <div key={month.number} className="month">
+                {month.days.map((day) => (
+                  <div className="month_day" key={day.number}>
+                    <div className="month_day-number">{day.number}</div>
+                    <div className="month_day-todo">
+                      {["hight", "medium", "low"].map((priority) => (
+                        <div key={priority} className={`priority-${priority}`}>
+                          {
+                            todos.filter(
+                              (todo) =>
+                                todo.priority === priority &&
+                                todo.deadline ===
+                                  `${year}-${month.number}-${day.number}`
+                            ).length
+                          }
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ))}
           </div>
         )}
       </div>
