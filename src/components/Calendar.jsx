@@ -174,7 +174,6 @@ const Calendar = ({ todos }) => {
       let days = [];
       for (let i = 0; i < daysInMonth; i++) {
         days.push({
-          id: i,
           name: new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
             new Date(`${i + 1} ${dateAsked}`)
           ),
@@ -190,7 +189,7 @@ const Calendar = ({ todos }) => {
       });
       let daysBeforeFirstDay = weekDaysNames.indexOf(array[0].days[0].name);
       for (let j = 0; j < daysBeforeFirstDay; j++) {
-        array[0].days.unshift({ id: -j - 1, name: "", number: -j - 1 });
+        array[0].days.unshift({ name: "", number: -j - 1 });
       }
       let daysAfterLastDay =
         weekDaysNames.length -
@@ -198,7 +197,6 @@ const Calendar = ({ todos }) => {
           1);
       for (let k = 0; k < daysAfterLastDay; k++) {
         array[0].days.push({
-          id: array[0].days.length,
           name: "",
           number: array[0].days.length + 1,
         });
@@ -351,18 +349,25 @@ const Calendar = ({ todos }) => {
               <div key={month.number} className="month">
                 {month.days.map((day) => (
                   <div className="month_day" key={day.number}>
-                    <div className="month_day-number">{day.number}</div>
+                    <div className="month_day-number">
+                      {day.name ? day.number : ""}
+                    </div>
                     <div className="month_day-todo">
                       {["hight", "medium", "low"].map((priority) => (
                         <div key={priority} className={`priority-${priority}`}>
-                          {
-                            todos.filter(
-                              (todo) =>
-                                todo.priority === priority &&
-                                todo.deadline ===
-                                  `${year}-${month.number}-${day.number}`
-                            ).length
-                          }
+                          {todos.filter(
+                            (todo) =>
+                              todo.priority === priority &&
+                              todo.deadline ===
+                                `${year}-${month.number}-${day.number}`
+                          ).length
+                            ? todos.filter(
+                                (todo) =>
+                                  todo.priority === priority &&
+                                  todo.deadline ===
+                                    `${year}-${month.number}-${day.number}`
+                              ).length
+                            : ""}
                         </div>
                       ))}
                     </div>
