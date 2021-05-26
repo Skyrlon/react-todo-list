@@ -7,39 +7,26 @@ import Calendar from "./components/Calendar.jsx";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App = () => {
-  const [todos, setTodos] = useState([
-    {
-      id: 0,
-      title: "Shopping",
-      details: "Buy tomatoes, apple, and a book",
-      priority: "medium",
-      completed: false,
-      deadline: "2021-01-10",
-    },
-    {
-      id: 1,
-      title: "Jogging",
-      details: "Do the daily jogging ",
-      priority: "low",
-      completed: false,
-      deadline: "2021-10-05",
-    },
-    {
-      id: 2,
-      title: "Interview",
-      details: "Go to 123, Sky Valley for interview",
-      priority: "hight",
-      completed: false,
-      deadline: "2022-06-02",
-    },
-    {
-      id: 3,
-      title: "Another task ",
-      details: "",
-      priority: "medium",
-      completed: true,
-    },
-  ]);
+  const [todos, setTodos] = useState(function () {
+    let array = [];
+    const completion = [true, false];
+    const priorities = ["hight", "medium", "low"];
+    function randomNumber(min, max) {
+      let number = Math.floor(Math.random() * (max - min) + min);
+      return number > 10 ? number : `0${number}`;
+    }
+    for (let i = 0; i < 200; i++) {
+      array.push({
+        id: i,
+        title: `Task ${i + 1}`,
+        details: `Details ${i + 1}`,
+        priority: priorities[Math.floor(Math.random() * 3)],
+        completed: completion[parseInt(randomNumber(0, 2))],
+        deadline: `2021-${randomNumber(3, 4)}-${randomNumber(1, 28)}`,
+      });
+    }
+    return array;
+  });
 
   return (
     <div className="App">
