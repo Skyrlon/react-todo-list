@@ -311,26 +311,57 @@ const Calendar = ({ todos }) => {
                     <div className="year_day" key={day.number}>
                       <div className="year_day-name">{day.name}</div>
                       <div className="year_day-number">{day.number}</div>
-                      {todos.filter(
+                      {(todos.filter(
                         (todo) =>
                           todo.deadline ===
                           `${year}-${month.number}-${day.number}`
-                      ).length > 0 ? (
-                        todos.map(
+                      ).length > 1 && (
+                        <div
+                          className={`year_day-todo priority-${
+                            todos.filter(
+                              (todo) =>
+                                !todo.completed &&
+                                todo.deadline ===
+                                  `${year}-${month.number}-${day.number}`
+                            )[0].priority
+                          }`}
+                        >
+                          {`${
+                            todos.filter(
+                              (todo) =>
+                                !todo.completed &&
+                                todo.deadline ===
+                                  `${year}-${month.number}-${day.number}`
+                            )[0].title
+                          } and ${
+                            todos.filter(
+                              (todo) =>
+                                todo.deadline ===
+                                `${year}-${month.number}-${day.number}`
+                            ).length - 1
+                          } others tasks`}
+                        </div>
+                      )) ||
+                        (todos.filter(
                           (todo) =>
                             todo.deadline ===
-                              `${year}-${month.number}-${day.number}` && (
-                              <div
-                                key={todo.id}
-                                className={`year_day-todo priority-${todo.priority}`}
-                              >
-                                {todo.title}
-                              </div>
-                            )
-                        )
-                      ) : (
-                        <div className="year_day-todo" key={day.number}></div>
-                      )}
+                            `${year}-${month.number}-${day.number}`
+                        ).length > 0 &&
+                          todos.map(
+                            (todo) =>
+                              !todo.completed &&
+                              todo.deadline ===
+                                `${year}-${month.number}-${day.number}` && (
+                                <div
+                                  key={todo.id}
+                                  className={`year_day-todo priority-${todo.priority}`}
+                                >
+                                  {todo.title}
+                                </div>
+                              )
+                          )) || (
+                          <div className="year_day-todo" key={day.number}></div>
+                        )}
                     </div>
                   ))}
               </div>
