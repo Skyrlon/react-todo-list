@@ -101,6 +101,19 @@ const StyledCalendar = styled.div`
             color: green;
           }
         }
+        &-number {
+          position: relative;
+          & .tooltip {
+            display: none;
+          }
+          &:hover {
+            & .tooltip {
+              position: absolute;
+              display: block;
+              top: -100%;
+            }
+          }
+        }
       }
     }
   }
@@ -385,20 +398,33 @@ const Calendar = ({ todos }) => {
                     </div>
                     <div className="month_day-todo">
                       {["hight", "medium", "low"].map((priority) => (
-                        <div key={priority} className={`priority-${priority}`}>
-                          {todos.filter(
+                        <div
+                          key={priority}
+                          className={`month_day-todo-number priority-${priority}`}
+                        >
+                          {(todos.filter(
                             (todo) =>
                               todo.priority === priority &&
                               todo.deadline ===
                                 `${year}-${month.number}-${day.number}`
-                          ).length
-                            ? todos.filter(
-                                (todo) =>
-                                  todo.priority === priority &&
-                                  todo.deadline ===
-                                    `${year}-${month.number}-${day.number}`
-                              ).length
-                            : ""}
+                          ).length &&
+                            todos.filter(
+                              (todo) =>
+                                todo.priority === priority &&
+                                todo.deadline ===
+                                  `${year}-${month.number}-${day.number}`
+                            ).length) ||
+                            ""}
+                          <div className="tooltip">
+                            {todos.map(
+                              (todo) =>
+                                todo.priority === priority &&
+                                todo.deadline ===
+                                  `${year}-${month.number}-${day.number}` && (
+                                  <div key={todo.id}>{todo.title}</div>
+                                )
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
