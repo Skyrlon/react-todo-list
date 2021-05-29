@@ -25,6 +25,7 @@ const StyledCalendar = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     width: 90%;
+    height: 75%;
     & > div {
       margin: 0.25%;
       width: 16%;
@@ -110,7 +111,11 @@ const StyledCalendar = styled.div`
             & .tooltip {
               position: absolute;
               display: block;
-              top: -100%;
+              z-index: 1;
+              background-color: white;
+              bottom: 100%;
+              width: 10em;
+              border: 1px solid black;
             }
           }
         }
