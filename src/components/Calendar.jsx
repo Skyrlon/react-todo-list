@@ -26,48 +26,65 @@ const StyledCalendar = styled.div`
     justify-content: center;
     width: 90%;
     height: 75%;
-    & > div {
-      margin: 0.25%;
-      width: 16%;
-      border: 1px solid #333;
-    }
-    & .year_day {
+    & .month {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      flex-wrap: wrap;
       justify-content: space-around;
-      & > div {
+      width: 13%;
+      margin-top: 1%;
+      margin-left: 1%;
+      margin-right: 1%;
+      border: 1px solid black;
+      &_days {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      &_day {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 13%;
+        height: 3em;
         border: 1px solid black;
-      }
-      &-name {
-        width: 10%;
-      }
-      &-number {
-        width: 10%;
-      }
-      &-todo {
-        width: 75%;
-        &.priority {
-          &-hight {
-            background-color: red;
+        &-todo {
+          position: absolute;
+          top: 0%;
+          right: 0.5em;
+          font-size: 0.75em;
+          & .priority {
+            &-hight {
+              color: red;
+            }
+            &-medium {
+              color: #ffcc00;
+            }
+            &-low {
+              color: green;
+            }
           }
-          &-medium {
-            background-color: yellow;
-          }
-          &-low {
-            background-color: green;
+          &-number {
+            position: relative;
+            & .tooltip {
+              display: none;
+            }
+            &:hover {
+              & .tooltip {
+                position: absolute;
+                display: block;
+                z-index: 1;
+                background-color: white;
+                bottom: 100%;
+                width: 10em;
+                border: 1px solid black;
+              }
+            }
           }
         }
       }
-    }
-    .month_container {
-      width: 50%;
-    }
-    & .month {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      margin-top: 1em;
     }
     & .month_weekday {
       display: flex;
@@ -76,49 +93,6 @@ const StyledCalendar = styled.div`
       & > div {
         width: 13%;
         border: 1px solid black;
-      }
-    }
-    & .month_day {
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      width: 13%;
-      height: 3em;
-      border: 1px solid black;
-      &-todo {
-        position: absolute;
-        top: 0%;
-        right: 0.5em;
-        font-size: 0.75em;
-        & .priority {
-          &-hight {
-            color: red;
-          }
-          &-medium {
-            color: #ffcc00;
-          }
-          &-low {
-            color: green;
-          }
-        }
-        &-number {
-          position: relative;
-          & .tooltip {
-            display: none;
-          }
-          &:hover {
-            & .tooltip {
-              position: absolute;
-              display: block;
-              z-index: 1;
-              background-color: white;
-              bottom: 100%;
-              width: 10em;
-              border: 1px solid black;
-            }
-          }
-        }
       }
     }
   }
@@ -272,6 +246,14 @@ const Calendar = ({ todos }) => {
     }
   };
 
+  const handleMonthClick = (monthName) => {
+    if (calendarFormat === "year") {
+      setCalendarFormat("month");
+      setMonthGoingToSubmit(monthName);
+      setDateAsked(`${monthName} ${year}`);
+    }
+  };
+
   const [calendar, setCalendar] = useState([]);
 
   useEffect(
@@ -310,135 +292,67 @@ const Calendar = ({ todos }) => {
       </h2>
 
       <div className="calendar">
-        {calendarFormat === "year" &&
-          calendar.map((month) => (
-            <div
-              key={month.number}
-              onClick={() => {
-                setCalendarFormat("month");
-                setMonthGoingToSubmit(month.name);
-                setDateAsked(`${month.name} ${year}`);
-              }}
-            >
+        {calendar.map((month) => (
+          <div
+            className="month"
+            key={month.number}
+            onClick={() => {
+              handleMonthClick(month.name);
+            }}
+          >
+            {calendarFormat === "year" && (
               <div>
                 <div>{month.name}</div>
               </div>
-              <div>
-                {month.days &&
-                  month.days.map((day) => (
-                    <div className="year_day" key={day.number}>
-                      <div className="year_day-name">{day.name}</div>
-                      <div className="year_day-number">{day.number}</div>
-                      {(todos.filter(
-                        (todo) =>
-                          todo.deadline ===
-                          `${year}-${month.number}-${day.number}`
-                      ).length > 1 && (
-                        <div
-                          className={`year_day-todo priority-${
-                            todos.filter(
-                              (todo) =>
-                                !todo.completed &&
-                                todo.deadline ===
-                                  `${year}-${month.number}-${day.number}`
-                            )[0].priority
-                          }`}
-                        >
-                          {`${
-                            todos.filter(
-                              (todo) =>
-                                !todo.completed &&
-                                todo.deadline ===
-                                  `${year}-${month.number}-${day.number}`
-                            )[0].title
-                          } and ${
-                            todos.filter(
-                              (todo) =>
-                                todo.deadline ===
-                                `${year}-${month.number}-${day.number}`
-                            ).length - 1
-                          } others tasks`}
-                        </div>
-                      )) ||
-                        (todos.filter(
-                          (todo) =>
-                            todo.deadline ===
-                            `${year}-${month.number}-${day.number}`
-                        ).length > 0 &&
-                          todos.map(
-                            (todo) =>
-                              !todo.completed &&
-                              todo.deadline ===
-                                `${year}-${month.number}-${day.number}` && (
-                                <div
-                                  key={todo.id}
-                                  className={`year_day-todo priority-${todo.priority}`}
-                                >
-                                  {todo.title}
-                                </div>
-                              )
-                          )) || (
-                          <div className="year_day-todo" key={day.number}></div>
-                        )}
-                    </div>
-                  ))}
-              </div>
-            </div>
-          ))}
-
-        {calendarFormat === "month" && (
-          <div className="month_container">
+            )}
             <div className="month_weekday">
               {weekDaysNames.map((weekday) => (
                 <div key={weekday}>{weekday.slice(0, 3)}</div>
               ))}
             </div>
-
-            {calendar.map((month) => (
-              <div key={month.number} className="month">
-                {month.days.map((day) => (
-                  <div className="month_day" key={day.number}>
-                    <div className="month_day-number">
-                      {day.name ? day.number : ""}
-                    </div>
-                    <div className="month_day-todo">
-                      {["hight", "medium", "low"].map((priority) => (
-                        <div
-                          key={priority}
-                          className={`month_day-todo-number priority-${priority}`}
-                        >
-                          {(todos.filter(
+            <div className="month_days">
+              {month.days.map((day) => (
+                <div className="month_day" key={day.number}>
+                  <div className="month_day-number">
+                    {day.name ? day.number : ""}
+                  </div>
+                  <div className="month_day-todo">
+                    {["hight", "medium", "low"].map((priority) => (
+                      <div
+                        key={priority}
+                        className={`month_day-todo-number priority-${priority}`}
+                      >
+                        {(todos.filter(
+                          (todo) =>
+                            todo.priority === priority &&
+                            todo.deadline ===
+                              `${year}-${month.number}-${day.number}`
+                        ).length &&
+                          todos.filter(
                             (todo) =>
                               todo.priority === priority &&
                               todo.deadline ===
                                 `${year}-${month.number}-${day.number}`
-                          ).length &&
-                            todos.filter(
-                              (todo) =>
-                                todo.priority === priority &&
-                                todo.deadline ===
-                                  `${year}-${month.number}-${day.number}`
-                            ).length) ||
-                            ""}
-                          <div className="tooltip">
-                            {todos.map(
-                              (todo) =>
-                                todo.priority === priority &&
-                                todo.deadline ===
-                                  `${year}-${month.number}-${day.number}` && (
-                                  <div key={todo.id}>{todo.title}</div>
-                                )
-                            )}
-                          </div>
+                          ).length) ||
+                          ""}
+                        <div className="tooltip">
+                          {todos.map(
+                            (todo) =>
+                              todo.priority === priority &&
+                              todo.deadline ===
+                                `${year}-${month.number}-${day.number}` && (
+                                <div key={todo.id}>{todo.title}</div>
+                              )
+                          )}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </StyledCalendar>
   );
