@@ -135,64 +135,56 @@ const Calendar = ({ todos }) => {
 
   const setUpCalendar = () => {
     let array = [];
+    let startingMonth, endingMonth;
     if (calendarFormat === "year") {
-      monthsNames.forEach((month, index) => {
-        let daysInMonth = new Date(dateAsked, index + 1, 0).getDate();
-        let days = [];
-        for (let i = 0; i < daysInMonth; i++) {
-          days.push({
-            name: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(
-              new Date(`${i + 1} ${month} ${dateAsked}`)
-            ),
-            number: i + 1 < 10 ? `0${i + 1}` : i + 1,
-          });
-        }
-        array.push({
-          id: monthsNames.indexOf(month),
-          number:
-            monthsNames.indexOf(month) + 1 < 10
-              ? `0${monthsNames.indexOf(month) + 1}`
-              : monthsNames.indexOf(month) + 1,
-          name: month,
-          days: days,
-        });
-      });
+      startingMonth = 0;
+      endingMonth = monthsNames.length;
     } else if (calendarFormat === "month") {
+      startingMonth = monthsNames.indexOf(monthGoingToSubmit);
+      endingMonth = startingMonth + 1;
+    }
+
+    for (let i = startingMonth; i < endingMonth; i++) {
       let daysInMonth = new Date(
-        dateAsked.split(" ")[1],
-        monthsNames.indexOf(dateAsked.split(" ")[0]) + 1,
+        yearGoingToSubmit,
+        monthsNames.indexOf(monthGoingToSubmit) + 1,
         0
       ).getDate();
       let days = [];
-      for (let i = 0; i < daysInMonth; i++) {
+      let date =
+        calendarFormat === "year"
+          ? `${monthsNames[i]} ${yearGoingToSubmit}`
+          : `${monthGoingToSubmit} ${yearGoingToSubmit}`;
+
+      for (let j = 0; j < daysInMonth; j++) {
         days.push({
           name: new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
-            new Date(`${i + 1} ${dateAsked}`)
+            new Date(`${j + 1} ${date}`)
           ),
-          number: i + 1 < 10 ? `0${i + 1}` : i + 1,
+          number: j + 1 < 10 ? `0${j + 1}` : j + 1,
         });
       }
-      array.push({
-        number:
-          monthsNames.indexOf(dateAsked.split(" ")[0]) + 1 < 10
-            ? `0${monthsNames.indexOf(dateAsked.split(" ")[0]) + 1}`
-            : monthsNames.indexOf(dateAsked.split(" ")[0]) + 1,
-        days: days,
-      });
-      let daysBeforeFirstDay = weekDaysNames.indexOf(array[0].days[0].name);
-      for (let j = 0; j < daysBeforeFirstDay; j++) {
-        array[0].days.unshift({ name: "", number: -j - 1 });
+
+      let daysBeforeFirstDay = weekDaysNames.indexOf(days[0].name);
+      for (let k = 0; k < daysBeforeFirstDay; k++) {
+        days.unshift({ name: "", number: -k - 1 });
       }
+
       let daysAfterLastDay =
         weekDaysNames.length -
-        (weekDaysNames.indexOf(array[0].days[array[0].days.length - 1].name) +
-          1);
-      for (let k = 0; k < daysAfterLastDay; k++) {
-        array[0].days.push({
+        (weekDaysNames.indexOf(days[days.length - 1].name) + 1);
+      for (let l = 0; l < daysAfterLastDay; l++) {
+        days.push({
           name: "",
-          number: array[0].days.length + 1,
+          number: days.length + 1,
         });
       }
+
+      array.push({
+        number: i + 1 < 10 ? `0${i + 1}` : i + 1,
+        name: monthsNames[i],
+        days: days,
+      });
     }
     return array;
   };
@@ -247,11 +239,9 @@ const Calendar = ({ todos }) => {
   };
 
   const handleMonthClick = (monthName) => {
-    if (calendarFormat === "year") {
-      setCalendarFormat("month");
-      setMonthGoingToSubmit(monthName);
-      setDateAsked(`${monthName} ${year}`);
-    }
+    setCalendarFormat("month");
+    setMonthGoingToSubmit(monthName);
+    setDateAsked(`${monthName} ${year}`);
   };
 
   const [calendar, setCalendar] = useState([]);
@@ -296,9 +286,9 @@ const Calendar = ({ todos }) => {
           <div
             className="month"
             key={month.number}
-            onClick={() => {
-              handleMonthClick(month.name);
-            }}
+            onClick={() =>
+              calendarFormat === "year" ? handleMonthClick(month.name) : ""
+            }
           >
             {calendarFormat === "year" && (
               <div>
