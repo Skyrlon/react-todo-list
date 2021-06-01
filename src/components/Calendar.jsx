@@ -24,13 +24,13 @@ const StyledCalendar = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    width: 90%;
+    width: 100%;
     height: 75%;
     & .month {
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
-      justify-content: space-around;
+      justify-content: space-between;
       width: 13%;
       margin-top: 1%;
       margin-left: 1%;
@@ -85,14 +85,14 @@ const StyledCalendar = styled.div`
           }
         }
       }
-    }
-    & .month_weekday {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      & > div {
-        width: 13%;
-        border: 1px solid black;
+      &_weekday {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        & > div {
+          width: 13%;
+          border: 1px solid black;
+        }
       }
     }
   }
@@ -244,6 +244,23 @@ const Calendar = ({ todos }) => {
     setDateAsked(`${monthName} ${year}`);
   };
 
+  const handleChangeView = (e) => {
+    let date = new Date(Date.now());
+    if (e.target.value === "month") {
+      setCalendarFormat(e.target.value);
+      setMonthGoingToSubmit(monthsNames[date.getMonth()]);
+      setYearGoingToSubmit(date.getFullYear());
+      setYear(date.getFullYear());
+      setDateAsked(`${monthsNames[date.getMonth()]} ${date.getFullYear()}`);
+    } else if (e.target.value === "year") {
+      setCalendarFormat(e.target.value);
+      setMonthGoingToSubmit("");
+      setYearGoingToSubmit(date.getFullYear());
+      setYear(date.getFullYear());
+      setDateAsked(date.getFullYear());
+    }
+  };
+
   const [calendar, setCalendar] = useState([]);
 
   useEffect(
@@ -255,7 +272,7 @@ const Calendar = ({ todos }) => {
 
   return (
     <StyledCalendar>
-      <h2>
+      <div>
         <div className="arrow" onClick={handleDateBackward}>
           &#10092;
         </div>
@@ -279,7 +296,13 @@ const Calendar = ({ todos }) => {
         <div className="arrow" onClick={handleDateForward}>
           &#10093;
         </div>
-      </h2>
+      </div>
+
+      <label htmlFor="view">View by : </label>
+      <select name="view" value={calendarFormat} onChange={handleChangeView}>
+        <option value="year">Year</option>
+        <option value="month">Month</option>
+      </select>
 
       <div className="calendar">
         {calendar.map((month) => (
