@@ -221,15 +221,24 @@ const Calendar = ({ todos }) => {
       setYear(parseInt(yearGoingToSubmit) - 1);
       setDateAsked(yearGoingToSubmit);
     } else if (monthGoingToSubmit.length > 0) {
-      setYear(yearGoingToSubmit);
-      setMonthGoingToSubmit(
-        (prev) => monthsNames[monthsNames.indexOf(prev) - 1]
-      );
-      setDateAsked(
-        `${
-          monthsNames[monthsNames.indexOf(monthGoingToSubmit) - 1]
-        } ${yearGoingToSubmit}`
-      );
+      if (monthGoingToSubmit === "January") {
+        setYear(yearGoingToSubmit - 1);
+        setYearGoingToSubmit((prev) => parseInt(prev) - 1);
+        setMonthGoingToSubmit(monthsNames[monthsNames.length - 1]);
+        setDateAsked(
+          `${monthsNames[monthsNames.length - 1]} ${yearGoingToSubmit - 1}`
+        );
+      } else {
+        setYear(yearGoingToSubmit);
+        setMonthGoingToSubmit(
+          (prev) => monthsNames[monthsNames.indexOf(prev) + 1]
+        );
+        setDateAsked(
+          `${
+            monthsNames[monthsNames.indexOf(monthGoingToSubmit) + 1]
+          } ${yearGoingToSubmit}`
+        );
+      }
     }
   };
 
@@ -239,15 +248,22 @@ const Calendar = ({ todos }) => {
       setYear(parseInt(yearGoingToSubmit) + 1);
       setDateAsked(yearGoingToSubmit);
     } else if (monthGoingToSubmit.length > 0) {
-      setYear(yearGoingToSubmit);
-      setMonthGoingToSubmit(
-        (prev) => monthsNames[monthsNames.indexOf(prev) + 1]
-      );
-      setDateAsked(
-        `${
-          monthsNames[monthsNames.indexOf(monthGoingToSubmit) + 1]
-        } ${yearGoingToSubmit}`
-      );
+      if (monthGoingToSubmit === "December") {
+        setYear(yearGoingToSubmit + 1);
+        setYearGoingToSubmit((prev) => parseInt(prev) + 1);
+        setMonthGoingToSubmit(monthsNames[0]);
+        setDateAsked(`${monthsNames[0]} ${yearGoingToSubmit + 1}`);
+      } else {
+        setYear(yearGoingToSubmit);
+        setMonthGoingToSubmit(
+          (prev) => monthsNames[monthsNames.indexOf(prev) + 1]
+        );
+        setDateAsked(
+          `${
+            monthsNames[monthsNames.indexOf(monthGoingToSubmit) + 1]
+          } ${yearGoingToSubmit}`
+        );
+      }
     }
   };
 
