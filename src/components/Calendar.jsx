@@ -50,6 +50,9 @@ const StyledCalendar = styled.div`
         width: 13%;
         height: 3em;
         border: 1px solid black;
+        &.selected {
+          background-color: green;
+        }
         &-todo {
           position: absolute;
           top: 0%;
@@ -120,6 +123,16 @@ const Calendar = ({ todos }) => {
     "November",
     "December",
   ];
+
+  const [dateSelected, setDateSelected] = useState(
+    `${
+      new Date(Date.now()).getDate() < 10
+        ? `0${new Date(Date.now()).getDate()}`
+        : new Date(Date.now()).getDate()
+    } ${monthsNames[new Date(Date.now()).getMonth()]} ${new Date(
+      Date.now()
+    ).getFullYear()}`
+  );
 
   const weekDaysNames = [
     "Monday",
@@ -245,7 +258,7 @@ const Calendar = ({ todos }) => {
   };
 
   const handleChangeView = (e) => {
-    let date = new Date(Date.now());
+    let date = new Date(dateSelected);
     if (e.target.value === "month") {
       setCalendarFormat(e.target.value);
       setMonthGoingToSubmit(monthsNames[date.getMonth()]);
@@ -259,6 +272,11 @@ const Calendar = ({ todos }) => {
       setYear(date.getFullYear());
       setDateAsked(date.getFullYear());
     }
+  };
+
+  const handleDayClick = (e, date) => {
+    e.stopPropagation();
+    setDateSelected(date);
   };
 
   const [calendar, setCalendar] = useState([]);
@@ -325,7 +343,17 @@ const Calendar = ({ todos }) => {
             </div>
             <div className="month_days">
               {month.days.map((day) => (
-                <div className="month_day" key={day.number}>
+                <div
+                  className={`month_day${
+                    dateSelected === `${day.number} ${month.name} ${year}`
+                      ? " selected"
+                      : ""
+                  }`}
+                  key={day.number}
+                  onClick={(e) =>
+                    handleDayClick(e, `${day.number} ${month.name} ${year}`)
+                  }
+                >
                   <div className="month_day-number">
                     {day.name ? day.number : ""}
                   </div>
