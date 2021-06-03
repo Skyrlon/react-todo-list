@@ -53,6 +53,13 @@ const StyledCalendar = styled.div`
         &.selected {
           background-color: green;
         }
+        &-tooltip {
+          position: absolute;
+          top: 3em;
+          z-index: 1;
+          background-color: grey;
+          min-width: 7em;
+        }
         &-todo {
           position: absolute;
           top: 0%;
@@ -109,6 +116,8 @@ const Calendar = ({ todos }) => {
 
   const [dateAsked, setDateAsked] = useState(year);
 
+  const [showTooltip, setShowTooltip] = useState(false);
+
   const monthsNames = [
     "January",
     "February",
@@ -158,11 +167,7 @@ const Calendar = ({ todos }) => {
     }
 
     for (let i = startingMonth; i < endingMonth; i++) {
-      let daysInMonth = new Date(
-        yearGoingToSubmit,
-        monthsNames.indexOf(monthGoingToSubmit) + 1,
-        0
-      ).getDate();
+      let daysInMonth = new Date(yearGoingToSubmit, i + 1, 0).getDate();
       let days = [];
       let date =
         calendarFormat === "year"
@@ -293,6 +298,11 @@ const Calendar = ({ todos }) => {
   const handleDayClick = (e, date) => {
     e.stopPropagation();
     setDateSelected(date);
+    if (dateSelected === date) {
+      setShowTooltip((prev) => !prev);
+    } else {
+      setShowTooltip(true);
+    }
   };
 
   const [calendar, setCalendar] = useState([]);
@@ -364,6 +374,11 @@ const Calendar = ({ todos }) => {
                     dateSelected === `${day.number} ${month.name} ${year}`
                       ? " selected"
                       : ""
+                  }${
+                    dateSelected === `${day.number} ${month.name} ${year}` &&
+                    showTooltip
+                      ? " showTooltip"
+                      : ""
                   }`}
                   key={day.number}
                   onClick={(e) =>
@@ -373,38 +388,53 @@ const Calendar = ({ todos }) => {
                   <div className="month_day-number">
                     {day.name ? day.number : ""}
                   </div>
-                  <div className="month_day-todo">
-                    {["hight", "medium", "low"].map((priority) => (
-                      <div
-                        key={priority}
-                        className={`month_day-todo-number priority-${priority}`}
-                      >
-                        {(todos.filter(
+                  {calendarFormat === "year" &&
+                    showTooltip &&
+                    dateSelected === `${day.number} ${month.name} ${year}` && (
+                      <div className="month_day-tooltip">
+                        {todos.map(
                           (todo) =>
-                            todo.priority === priority &&
                             todo.deadline ===
-                              `${year}-${month.number}-${day.number}`
-                        ).length &&
-                          todos.filter(
+                              `${year}-${month.number}-${day.number}` && (
+                              <div key={todo.id}>{todo.title}</div>
+                            )
+                        )}
+                      </div>
+                    )}
+                  {calendarFormat === "month" && (
+                    <div className="month_day-todo">
+                      {["hight", "medium", "low"].map((priority) => (
+                        <div
+                          key={priority}
+                          className={`month_day-todo-number priority-${priority}`}
+                        >
+                          {(todos.filter(
                             (todo) =>
                               todo.priority === priority &&
                               todo.deadline ===
                                 `${year}-${month.number}-${day.number}`
-                          ).length) ||
-                          ""}
-                        <div className="tooltip">
-                          {todos.map(
-                            (todo) =>
-                              todo.priority === priority &&
-                              todo.deadline ===
-                                `${year}-${month.number}-${day.number}` && (
-                                <div key={todo.id}>{todo.title}</div>
-                              )
-                          )}
+                          ).length &&
+                            todos.filter(
+                              (todo) =>
+                                todo.priority === priority &&
+                                todo.deadline ===
+                                  `${year}-${month.number}-${day.number}`
+                            ).length) ||
+                            ""}
+                          <div className="tooltip">
+                            {todos.map(
+                              (todo) =>
+                                todo.priority === priority &&
+                                todo.deadline ===
+                                  `${year}-${month.number}-${day.number}` && (
+                                  <div key={todo.id}>{todo.title}</div>
+                                )
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
