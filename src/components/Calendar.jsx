@@ -118,6 +118,8 @@ const Calendar = ({ todos }) => {
 
   const [showTooltip, setShowTooltip] = useState(false);
 
+  const [inputError, setInputError] = useState([]);
+
   const monthsNames = [
     "January",
     "February",
@@ -209,11 +211,18 @@ const Calendar = ({ todos }) => {
 
   const handleDateSubmit = (e) => {
     e.preventDefault();
+
     if (monthGoingToSubmit.length === 0) {
       setCalendarFormat("year");
       setYear(yearGoingToSubmit);
       setDateAsked(yearGoingToSubmit);
+    } else if (
+      monthGoingToSubmit.length > 0 &&
+      !monthsNames.some((element) => element === monthGoingToSubmit)
+    ) {
+      setInputError((prev) => [...prev, "month"]);
     } else if (monthGoingToSubmit.length > 0) {
+      setInputError("month");
       setCalendarFormat("month");
       setYear(yearGoingToSubmit);
       setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
@@ -328,6 +337,9 @@ const Calendar = ({ todos }) => {
             value={monthGoingToSubmit}
             onChange={(e) => setMonthGoingToSubmit(e.target.value)}
           />
+          {inputError.includes("month") && (
+            <div className="month-input_error">Put a valid month</div>
+          )}
           <input
             name="year-input"
             type="text"
