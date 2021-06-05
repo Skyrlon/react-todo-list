@@ -216,16 +216,18 @@ const Calendar = ({ todos }) => {
       setCalendarFormat("year");
       setYear(yearGoingToSubmit);
       setDateAsked(yearGoingToSubmit);
-    } else if (
-      monthGoingToSubmit.length > 0 &&
-      !monthsNames.some((element) => element === monthGoingToSubmit)
-    ) {
-      setInputError((prev) => [...prev, "month"]);
     } else if (monthGoingToSubmit.length > 0) {
-      setInputError("month");
-      setCalendarFormat("month");
-      setYear(yearGoingToSubmit);
-      setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
+      if (!monthsNames.some((element) => element === monthGoingToSubmit)) {
+        if (!inputError.includes("month"))
+          setInputError((prev) => [...prev, "month"]);
+      } else {
+        let arrayError = inputError;
+        arrayError.splice(arrayError.indexOf("month"), 1);
+        setInputError(arrayError);
+        setCalendarFormat("month");
+        setYear(yearGoingToSubmit);
+        setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
+      }
     }
   };
 
