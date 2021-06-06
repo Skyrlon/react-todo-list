@@ -109,7 +109,7 @@ const StyledCalendar = styled.div`
 `;
 
 const Calendar = ({ todos }) => {
-  const [year, setYear] = useState(new Date(Date.now()).getFullYear());
+  const [year, setYear] = useState(`${new Date(Date.now()).getFullYear()}`);
 
   const [yearGoingToSubmit, setYearGoingToSubmit] = useState(year);
   const [monthGoingToSubmit, setMonthGoingToSubmit] = useState("");
@@ -211,23 +211,49 @@ const Calendar = ({ todos }) => {
 
   const handleDateSubmit = (e) => {
     e.preventDefault();
-
-    if (monthGoingToSubmit.length === 0) {
+    let arrayError = inputError;
+    if (
+      yearGoingToSubmit < -271820 ||
+      yearGoingToSubmit > 275759 ||
+      yearGoingToSubmit
+        .split("")
+        .every((element) => !isNaN(parseInt(element))) ||
+      (monthGoingToSubmit.length > 0 &&
+        !monthsNames.some((element) => element === monthGoingToSubmit))
+    ) {
+      if (
+        yearGoingToSubmit < -271820 ||
+        yearGoingToSubmit > 275759 ||
+        yearGoingToSubmit
+          .split("")
+          .every((element) => !isNaN(parseInt(element))) === false
+      ) {
+        if (!inputError.includes("year")) {
+          arrayError = [...arrayError, "year"];
+        }
+      } else {
+        arrayError.splice(arrayError.indexOf("year"), 1);
+      }
+      if (
+        monthGoingToSubmit.length > 0 &&
+        !monthsNames.some((element) => element === monthGoingToSubmit)
+      ) {
+        if (!inputError.includes("month")) {
+          arrayError = [...arrayError, "month"];
+        }
+      } else {
+        arrayError.splice(arrayError.indexOf("month"), 1);
+      }
+      setInputError(arrayError);
+    }
+    if (arrayError.length === 0 && monthGoingToSubmit.length === 0) {
       setCalendarFormat("year");
       setYear(yearGoingToSubmit);
       setDateAsked(yearGoingToSubmit);
-    } else if (monthGoingToSubmit.length > 0) {
-      if (!monthsNames.some((element) => element === monthGoingToSubmit)) {
-        if (!inputError.includes("month"))
-          setInputError((prev) => [...prev, "month"]);
-      } else {
-        let arrayError = inputError;
-        arrayError.splice(arrayError.indexOf("month"), 1);
-        setInputError(arrayError);
-        setCalendarFormat("month");
-        setYear(yearGoingToSubmit);
-        setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
-      }
+    } else if (arrayError.length === 0 && monthGoingToSubmit.length > 0) {
+      setCalendarFormat("month");
+      setYear(yearGoingToSubmit);
+      setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
     }
   };
 
@@ -348,6 +374,9 @@ const Calendar = ({ todos }) => {
             value={yearGoingToSubmit}
             onChange={(e) => setYearGoingToSubmit(e.target.value)}
           />
+          {inputError.includes("year") && (
+            <div className="year-input_error">Put a valid year</div>
+          )}
           <input type="submit" />
         </form>
 
