@@ -209,7 +209,7 @@ const Calendar = ({ todos }) => {
     return array;
   };
 
-  const handleDateSubmit = (e) => {
+  const handleNewDate = (e, type) => {
     e.preventDefault();
     let arrayError = inputError;
     // Verify year is not inferior or superior to date limit and each character is a number
@@ -240,11 +240,19 @@ const Calendar = ({ todos }) => {
     setInputError([...arrayError]);
 
     //If all input values are correct, set up the calendar with the year and month (if there is one) submited
-    if (arrayError.length === 0 && monthGoingToSubmit.length === 0) {
+    if (arrayError.length === 0) {
+      if (type === "submit") handleDateSubmit();
+      if (type === "decrement") handleDateBackward();
+      if (type === "increment") handleDateForward();
+    }
+  };
+
+  const handleDateSubmit = () => {
+    if (monthGoingToSubmit.length === 0) {
       setCalendarFormat("year");
       setYear(yearGoingToSubmit);
       setDateAsked(yearGoingToSubmit);
-    } else if (arrayError.length === 0 && monthGoingToSubmit.length > 0) {
+    } else if (monthGoingToSubmit.length > 0) {
       setCalendarFormat("month");
       setYear(yearGoingToSubmit);
       setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
@@ -348,11 +356,11 @@ const Calendar = ({ todos }) => {
   return (
     <StyledCalendar>
       <div>
-        <div className="arrow" onClick={handleDateBackward}>
+        <div className="arrow" onClick={(e) => handleNewDate(e, "decrement")}>
           &#10092;
         </div>
 
-        <form onSubmit={handleDateSubmit}>
+        <form onSubmit={(e) => handleNewDate(e, "submit")}>
           <input
             name="month-input"
             type="text"
@@ -374,7 +382,7 @@ const Calendar = ({ todos }) => {
           <input type="submit" />
         </form>
 
-        <div className="arrow" onClick={handleDateForward}>
+        <div className="arrow" onClick={(e) => handleNewDate(e, "increment")}>
           &#10093;
         </div>
       </div>
