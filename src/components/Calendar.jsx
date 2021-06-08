@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import CalendarInput from "./CalendarInput.jsx";
 
 const StyledCalendar = styled.div`
   display: flex;
@@ -8,16 +9,6 @@ const StyledCalendar = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 0.75em;
-
-  & h2 {
-    user-select: none;
-  }
-
-  & .arrow {
-    display: inline;
-    margin-left: 1em;
-    margin-right: 1em;
-  }
 
   & .calendar {
     display: flex;
@@ -109,16 +100,14 @@ const StyledCalendar = styled.div`
 `;
 
 const Calendar = ({ todos }) => {
-  const [year, setYear] = useState(`${new Date(Date.now()).getFullYear()}`);
+  const [calendarYear, setCalendarYear] = useState(
+    `${new Date(Date.now()).getFullYear()}`
+  );
+  const [calendarMonth, setCalendarMonth] = useState("");
 
-  const [yearGoingToSubmit, setYearGoingToSubmit] = useState(year);
-  const [monthGoingToSubmit, setMonthGoingToSubmit] = useState("");
-
-  const [dateAsked, setDateAsked] = useState(year);
+  const [dateAsked, setDateAsked] = useState(calendarYear);
 
   const [showTooltip, setShowTooltip] = useState(false);
-
-  const [inputError, setInputError] = useState([]);
 
   const monthsNames = [
     "January",
@@ -164,17 +153,17 @@ const Calendar = ({ todos }) => {
       startingMonth = 0;
       endingMonth = monthsNames.length;
     } else if (calendarFormat === "month") {
-      startingMonth = monthsNames.indexOf(monthGoingToSubmit);
+      startingMonth = monthsNames.indexOf(calendarMonth);
       endingMonth = startingMonth + 1;
     }
 
     for (let i = startingMonth; i < endingMonth; i++) {
-      let daysInMonth = new Date(yearGoingToSubmit, i + 1, 0).getDate();
+      let daysInMonth = new Date(calendarYear, i + 1, 0).getDate();
       let days = [];
       let date =
         calendarFormat === "year"
-          ? `${monthsNames[i]} ${yearGoingToSubmit}`
-          : `${monthGoingToSubmit} ${yearGoingToSubmit}`;
+          ? `${monthsNames[i]} ${calendarYear}`
+          : `${calendarMonth} ${calendarYear}`;
 
       for (let j = 0; j < daysInMonth; j++) {
         days.push({
@@ -209,127 +198,23 @@ const Calendar = ({ todos }) => {
     return array;
   };
 
-  const handleNewDate = (e, type) => {
-    e.preventDefault();
-    let arrayError = inputError;
-    // Verify year is not inferior or superior to date limit and each character is a number
-    if (
-      yearGoingToSubmit < -271820 ||
-      yearGoingToSubmit > 275759 ||
-      yearGoingToSubmit
-        .split("")
-        .every((element) => !isNaN(parseInt(element))) === false
-    ) {
-      if (!inputError.includes("year")) {
-        arrayError = [...arrayError, "year"];
-      }
-    } else if (arrayError.includes("year")) {
-      arrayError.splice(arrayError.indexOf("year"), 1);
-    }
-    // Verify if there is month to submit and if it's a correct month name
-    if (
-      monthGoingToSubmit.length > 0 &&
-      !monthsNames.some((element) => element === monthGoingToSubmit)
-    ) {
-      if (!inputError.includes("month")) {
-        arrayError = [...arrayError, "month"];
-      }
-    } else if (arrayError.includes("month")) {
-      arrayError.splice(arrayError.indexOf("month"), 1);
-    }
-    setInputError([...arrayError]);
-
-    //If all input values are correct, set up the calendar with the year and month (if there is one) submited
-    if (arrayError.length === 0) {
-      if (type === "submit") handleDateSubmit();
-      if (type === "decrement") handleDateBackward();
-      if (type === "increment") handleDateForward();
-    }
-  };
-
-  const handleDateSubmit = () => {
-    if (monthGoingToSubmit.length === 0) {
-      setCalendarFormat("year");
-      setYear(yearGoingToSubmit);
-      setDateAsked(yearGoingToSubmit);
-    } else if (monthGoingToSubmit.length > 0) {
-      setCalendarFormat("month");
-      setYear(yearGoingToSubmit);
-      setDateAsked(`${monthGoingToSubmit} ${yearGoingToSubmit}`);
-    }
-  };
-
-  const handleDateBackward = () => {
-    if (monthGoingToSubmit.length === 0) {
-      setYearGoingToSubmit((prev) => `${parseInt(prev) - 1}`);
-      setYear(parseInt(yearGoingToSubmit) - 1);
-      setDateAsked(yearGoingToSubmit);
-    } else if (monthGoingToSubmit.length > 0) {
-      if (monthGoingToSubmit === "January") {
-        setYear(yearGoingToSubmit - 1);
-        setYearGoingToSubmit((prev) => `${parseInt(prev) - 1}`);
-        setMonthGoingToSubmit(monthsNames[monthsNames.length - 1]);
-        setDateAsked(
-          `${monthsNames[monthsNames.length - 1]} ${yearGoingToSubmit - 1}`
-        );
-      } else {
-        setYear(yearGoingToSubmit);
-        setMonthGoingToSubmit(
-          (prev) => monthsNames[monthsNames.indexOf(prev) + 1]
-        );
-        setDateAsked(
-          `${
-            monthsNames[monthsNames.indexOf(monthGoingToSubmit) + 1]
-          } ${yearGoingToSubmit}`
-        );
-      }
-    }
-  };
-
-  const handleDateForward = () => {
-    if (monthGoingToSubmit.length === 0) {
-      setYearGoingToSubmit((prev) => `${parseInt(prev) + 1}`);
-      setYear(parseInt(yearGoingToSubmit) + 1);
-      setDateAsked(yearGoingToSubmit);
-    } else if (monthGoingToSubmit.length > 0) {
-      if (monthGoingToSubmit === "December") {
-        setYear(yearGoingToSubmit + 1);
-        setYearGoingToSubmit((prev) => `${parseInt(prev) + 1}`);
-        setMonthGoingToSubmit(monthsNames[0]);
-        setDateAsked(`${monthsNames[0]} ${yearGoingToSubmit + 1}`);
-      } else {
-        setYear(yearGoingToSubmit);
-        setMonthGoingToSubmit(
-          (prev) => monthsNames[monthsNames.indexOf(prev) + 1]
-        );
-        setDateAsked(
-          `${
-            monthsNames[monthsNames.indexOf(monthGoingToSubmit) + 1]
-          } ${yearGoingToSubmit}`
-        );
-      }
-    }
-  };
-
   const handleMonthClick = (monthName) => {
     setCalendarFormat("month");
-    setMonthGoingToSubmit(monthName);
-    setDateAsked(`${monthName} ${year}`);
+    setCalendarMonth(monthName);
+    setDateAsked(`${monthName} ${calendarYear}`);
   };
 
   const handleChangeView = (e) => {
     let date = new Date(dateSelected);
     if (e.target.value === "month") {
       setCalendarFormat(e.target.value);
-      setMonthGoingToSubmit(monthsNames[date.getMonth()]);
-      setYearGoingToSubmit(date.getFullYear());
-      setYear(date.getFullYear());
+      setCalendarMonth(monthsNames[date.getMonth()]);
+      setCalendarYear(date.getFullYear());
       setDateAsked(`${monthsNames[date.getMonth()]} ${date.getFullYear()}`);
     } else if (e.target.value === "year") {
       setCalendarFormat(e.target.value);
-      setMonthGoingToSubmit("");
-      setYearGoingToSubmit(date.getFullYear());
-      setYear(date.getFullYear());
+      setCalendarMonth("");
+      setCalendarYear(date.getFullYear());
       setDateAsked(date.getFullYear());
     }
   };
@@ -344,6 +229,13 @@ const Calendar = ({ todos }) => {
     }
   };
 
+  const handleChangeDate = (newDate) => {
+    setCalendarYear(newDate.year);
+    setCalendarMonth(newDate.month);
+    setCalendarFormat(newDate.format);
+    setDateAsked(`${newDate.month} ${newDate.year}`);
+  };
+
   const [calendar, setCalendar] = useState([]);
 
   useEffect(
@@ -355,38 +247,7 @@ const Calendar = ({ todos }) => {
 
   return (
     <StyledCalendar>
-      <div>
-        <div className="arrow" onClick={(e) => handleNewDate(e, "decrement")}>
-          &#10092;
-        </div>
-
-        <form onSubmit={(e) => handleNewDate(e, "submit")}>
-          <input
-            name="month-input"
-            type="text"
-            value={monthGoingToSubmit}
-            onChange={(e) => setMonthGoingToSubmit(e.target.value)}
-          />
-          {inputError.includes("month") && (
-            <div className="month-input_error">Put a valid month</div>
-          )}
-          <input
-            name="year-input"
-            type="text"
-            value={yearGoingToSubmit}
-            onChange={(e) => setYearGoingToSubmit(e.target.value)}
-          />
-          {inputError.includes("year") && (
-            <div className="year-input_error">Put a valid year</div>
-          )}
-          <input type="submit" />
-        </form>
-
-        <div className="arrow" onClick={(e) => handleNewDate(e, "increment")}>
-          &#10093;
-        </div>
-      </div>
-
+      <CalendarInput changeDate={handleChangeDate} />
       <label htmlFor="view">View by : </label>
       <select name="view" value={calendarFormat} onChange={handleChangeView}>
         <option value="year">Year</option>
@@ -416,18 +277,23 @@ const Calendar = ({ todos }) => {
               {month.days.map((day) => (
                 <div
                   className={`month_day${
-                    dateSelected === `${day.number} ${month.name} ${year}`
+                    dateSelected ===
+                    `${day.number} ${month.name} ${calendarYear}`
                       ? " selected"
                       : ""
                   }${
-                    dateSelected === `${day.number} ${month.name} ${year}` &&
+                    dateSelected ===
+                      `${day.number} ${month.name} ${calendarYear}` &&
                     showTooltip
                       ? " showTooltip"
                       : ""
                   }`}
                   key={day.number}
                   onClick={(e) =>
-                    handleDayClick(e, `${day.number} ${month.name} ${year}`)
+                    handleDayClick(
+                      e,
+                      `${day.number} ${month.name} ${calendarYear}`
+                    )
                   }
                 >
                   <div className="month_day-number">
@@ -435,12 +301,13 @@ const Calendar = ({ todos }) => {
                   </div>
                   {calendarFormat === "year" &&
                     showTooltip &&
-                    dateSelected === `${day.number} ${month.name} ${year}` && (
+                    dateSelected ===
+                      `${day.number} ${month.name} ${calendarYear}` && (
                       <div className="month_day-tooltip">
                         {todos.map(
                           (todo) =>
                             todo.deadline ===
-                              `${year}-${month.number}-${day.number}` && (
+                              `${calendarYear}-${month.number}-${day.number}` && (
                               <div key={todo.id}>{todo.title}</div>
                             )
                         )}
@@ -457,13 +324,13 @@ const Calendar = ({ todos }) => {
                             (todo) =>
                               todo.priority === priority &&
                               todo.deadline ===
-                                `${year}-${month.number}-${day.number}`
+                                `${calendarYear}-${month.number}-${day.number}`
                           ).length &&
                             todos.filter(
                               (todo) =>
                                 todo.priority === priority &&
                                 todo.deadline ===
-                                  `${year}-${month.number}-${day.number}`
+                                  `${calendarYear}-${month.number}-${day.number}`
                             ).length) ||
                             ""}
                           <div className="tooltip">
@@ -471,7 +338,7 @@ const Calendar = ({ todos }) => {
                               (todo) =>
                                 todo.priority === priority &&
                                 todo.deadline ===
-                                  `${year}-${month.number}-${day.number}` && (
+                                  `${calendarYear}-${month.number}-${day.number}` && (
                                   <div key={todo.id}>{todo.title}</div>
                                 )
                             )}
