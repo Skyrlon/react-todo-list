@@ -81,8 +81,8 @@ const TodoList = ({ todos, modifyTodos }) => {
       .indexOf(todoToEdit.id);
     let newTodoList = todos;
     newTodoList.splice(indexOfTodoToEdit, 1, todoToEdit);
-    modifyTodos([...newTodoList]);
-    sortingTodos(sortBy, [...newTodoList]);
+    modifyTodos(newTodoList);
+    sortingTodos(sortBy, newTodoList);
   };
 
   const handleDeleteTodo = (idToDelete) => {

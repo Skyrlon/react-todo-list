@@ -8,7 +8,7 @@ const StyledAddTodo = styled.div`
     resize: none;
   }
   & .add-form {
-    position: absolute;
+    position: fixed;
     left: 40%;
     top: 40%;
     background: white;
@@ -17,7 +17,6 @@ const StyledAddTodo = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    height: 20%;
     width: 20%;
     & > * {
       width: 80%;
@@ -41,6 +40,8 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
     isEditingTodo ? todoToEdit.deadline : ""
   );
 
+  const [completed, setCompleted] = useState(todoToEdit.completed);
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -60,6 +61,7 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
           details,
           priority,
           deadline,
+          completed,
         })
       : onAdd({ title, details, priority, deadline });
 
@@ -104,6 +106,17 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
           />
+          {isEditingTodo && (
+            <>
+              <label htmlFor="completed">Completed</label>
+              <input
+                type="checkbox"
+                name="completed"
+                checked={completed}
+                onChange={() => setCompleted(!completed)}
+              />
+            </>
+          )}
           <input
             type="submit"
             value={isEditingTodo ? "Edit Todo" : "Add to the list"}
