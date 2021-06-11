@@ -97,6 +97,26 @@ const StyledCalendar = styled.div`
       }
     }
   }
+  & .day {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    &_hour {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid;
+      width: 90vw;
+      &-number {
+        position: absolute;
+        top: -1em;
+        left: -2.5em;
+      }
+      &-minute {
+        height: 10px;
+      }
+    }
+  }
 `;
 
 const Calendar = ({ todos }) => {
@@ -104,6 +124,8 @@ const Calendar = ({ todos }) => {
     `${new Date(Date.now()).getFullYear()}`
   );
   const [calendarMonth, setCalendarMonth] = useState("");
+
+  const [calendarDay, setCalendarDay] = useState("");
 
   const [dateAsked, setDateAsked] = useState(calendarYear);
 
@@ -148,52 +170,67 @@ const Calendar = ({ todos }) => {
 
   const setUpCalendar = () => {
     let array = [];
-    let startingMonth, endingMonth;
-    if (calendarFormat === "year") {
-      startingMonth = 0;
-      endingMonth = monthsNames.length;
-    } else if (calendarFormat === "month") {
-      startingMonth = monthsNames.indexOf(calendarMonth);
-      endingMonth = startingMonth + 1;
-    }
+    if (calendarFormat === "year" || calendarFormat === "month") {
+      let startingMonth, endingMonth;
+      if (calendarFormat === "year") {
+        startingMonth = 0;
+        endingMonth = monthsNames.length;
+      } else if (calendarFormat === "month") {
+        startingMonth = monthsNames.indexOf(calendarMonth);
+        endingMonth = startingMonth + 1;
+      }
 
-    for (let i = startingMonth; i < endingMonth; i++) {
-      let daysInMonth = new Date(calendarYear, i + 1, 0).getDate();
-      let days = [];
-      let date =
-        calendarFormat === "year"
-          ? `${monthsNames[i]} ${calendarYear}`
-          : `${calendarMonth} ${calendarYear}`;
+      for (let i = startingMonth; i < endingMonth; i++) {
+        let daysInMonth = new Date(calendarYear, i + 1, 0).getDate();
+        let days = [];
+        let date =
+          calendarFormat === "year"
+            ? `${monthsNames[i]} ${calendarYear}`
+            : `${calendarMonth} ${calendarYear}`;
 
-      for (let j = 0; j < daysInMonth; j++) {
-        days.push({
-          name: new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
-            new Date(`${j + 1} ${date}`)
-          ),
-          number: j + 1 < 10 ? `0${j + 1}` : j + 1,
+        for (let j = 0; j < daysInMonth; j++) {
+          days.push({
+            name: new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
+              new Date(`${j + 1} ${date}`)
+            ),
+            number: j + 1 < 10 ? `0${j + 1}` : j + 1,
+          });
+        }
+
+        let daysBeforeFirstDay = weekDaysNames.indexOf(days[0].name);
+        for (let k = 0; k < daysBeforeFirstDay; k++) {
+          days.unshift({ name: "", number: -k - 1 });
+        }
+
+        let daysAfterLastDay =
+          weekDaysNames.length -
+          (weekDaysNames.indexOf(days[days.length - 1].name) + 1);
+        for (let l = 0; l < daysAfterLastDay; l++) {
+          days.push({
+            name: "",
+            number: days.length + 1,
+          });
+        }
+
+        array.push({
+          number: i + 1 < 10 ? `0${i + 1}` : i + 1,
+          name: monthsNames[i],
+          days: days,
         });
       }
-
-      let daysBeforeFirstDay = weekDaysNames.indexOf(days[0].name);
-      for (let k = 0; k < daysBeforeFirstDay; k++) {
-        days.unshift({ name: "", number: -k - 1 });
-      }
-
-      let daysAfterLastDay =
-        weekDaysNames.length -
-        (weekDaysNames.indexOf(days[days.length - 1].name) + 1);
-      for (let l = 0; l < daysAfterLastDay; l++) {
-        days.push({
-          name: "",
-          number: days.length + 1,
+    } else if (calendarFormat === "day") {
+      const numberOfHours = 24;
+      const numberOfMinutes = 60;
+      for (let i = 0; i < numberOfHours; i++) {
+        let minutesArray = [];
+        for (let j = 0; j < numberOfMinutes; j++) {
+          minutesArray.push({ number: j < 10 ? `0${j}` : `${j}` });
+        }
+        array.push({
+          hour: i < 10 ? `0${i}` : `${i}`,
+          minutes: minutesArray,
         });
       }
-
-      array.push({
-        number: i + 1 < 10 ? `0${i + 1}` : i + 1,
-        name: monthsNames[i],
-        days: days,
-      });
     }
     return array;
   };
@@ -229,6 +266,16 @@ const Calendar = ({ todos }) => {
     }
   };
 
+  const handleDayDoubleClick = (e, date) => {
+    e.stopPropagation();
+    setCalendarFormat("day");
+    setDateSelected(date);
+    setCalendarYear(date.year);
+    setCalendarMonth(date.month);
+    setCalendarDay(date.day);
+    setDateAsked(`${date.day} ${date.month} ${date.year}`);
+  };
+
   const handleChangeDate = (newDate) => {
     setCalendarYear(newDate.year);
     setCalendarMonth(newDate.month);
@@ -255,103 +302,131 @@ const Calendar = ({ todos }) => {
       </select>
 
       <div className="calendar">
-        {calendar.map((month) => (
-          <div
-            className="month"
-            key={month.number}
-            onClick={() =>
-              calendarFormat === "year" ? handleMonthClick(month.name) : ""
-            }
-          >
-            {calendarFormat === "year" && (
-              <div>
-                <div>{month.name}</div>
+        {(calendarFormat === "year" || calendarFormat === "month") &&
+          calendar.map((month) => (
+            <div
+              className="month"
+              key={month.number}
+              onClick={() =>
+                calendarFormat === "year" ? handleMonthClick(month.name) : ""
+              }
+            >
+              {calendarFormat === "year" && (
+                <div>
+                  <div>{month.name}</div>
+                </div>
+              )}
+              <div className="month_weekday">
+                {weekDaysNames.map((weekday) => (
+                  <div key={weekday}>{weekday.slice(0, 3)}</div>
+                ))}
               </div>
-            )}
-            <div className="month_weekday">
-              {weekDaysNames.map((weekday) => (
-                <div key={weekday}>{weekday.slice(0, 3)}</div>
-              ))}
-            </div>
-            <div className="month_days">
-              {month.days.map((day) => (
-                <div
-                  className={`month_day${
-                    dateSelected ===
-                    `${day.number} ${month.name} ${calendarYear}`
-                      ? " selected"
-                      : ""
-                  }${
-                    dateSelected ===
-                      `${day.number} ${month.name} ${calendarYear}` &&
-                    showTooltip
-                      ? " showTooltip"
-                      : ""
-                  }`}
-                  key={day.number}
-                  onClick={(e) =>
-                    handleDayClick(
-                      e,
+              <div className="month_days">
+                {month.days.map((day) => (
+                  <div
+                    className={`month_day${
+                      dateSelected ===
                       `${day.number} ${month.name} ${calendarYear}`
-                    )
-                  }
-                >
-                  <div className="month_day-number">
-                    {day.name ? day.number : ""}
-                  </div>
-                  {calendarFormat === "year" &&
-                    showTooltip &&
-                    dateSelected ===
-                      `${day.number} ${month.name} ${calendarYear}` && (
-                      <div className="month_day-tooltip">
-                        {todos.map(
-                          (todo) =>
-                            todo.deadline ===
-                              `${calendarYear}-${month.number}-${day.number}` && (
-                              <div key={todo.id}>{todo.title}</div>
-                            )
-                        )}
-                      </div>
-                    )}
-                  {calendarFormat === "month" && (
-                    <div className="month_day-todo">
-                      {["hight", "medium", "low"].map((priority) => (
-                        <div
-                          key={priority}
-                          className={`month_day-todo-number priority-${priority}`}
-                        >
-                          {(todos.filter(
+                        ? " selected"
+                        : ""
+                    }${
+                      dateSelected ===
+                        `${day.number} ${month.name} ${calendarYear}` &&
+                      showTooltip
+                        ? " showTooltip"
+                        : ""
+                    }`}
+                    key={day.number}
+                    onClick={(e) =>
+                      handleDayClick(
+                        e,
+                        `${day.number} ${month.name} ${calendarYear}`
+                      )
+                    }
+                    onDoubleClick={(e) =>
+                      handleDayDoubleClick(e, {
+                        day: day.number,
+                        month: month.name,
+                        year: calendarYear,
+                      })
+                    }
+                  >
+                    <div className="month_day-number">
+                      {day.name ? day.number : ""}
+                    </div>
+                    {calendarFormat === "year" &&
+                      showTooltip &&
+                      dateSelected ===
+                        `${day.number} ${month.name} ${calendarYear}` && (
+                        <div className="month_day-tooltip">
+                          {todos.map(
                             (todo) =>
-                              todo.priority === priority &&
                               todo.deadline ===
-                                `${calendarYear}-${month.number}-${day.number}`
-                          ).length &&
-                            todos.filter(
+                                `${calendarYear}-${month.number}-${day.number}` && (
+                                <div key={todo.id}>{todo.title}</div>
+                              )
+                          )}
+                        </div>
+                      )}
+                    {calendarFormat === "month" && (
+                      <div className="month_day-todo">
+                        {["hight", "medium", "low"].map((priority) => (
+                          <div
+                            key={priority}
+                            className={`month_day-todo-number priority-${priority}`}
+                          >
+                            {(todos.filter(
                               (todo) =>
                                 todo.priority === priority &&
                                 todo.deadline ===
                                   `${calendarYear}-${month.number}-${day.number}`
-                            ).length) ||
-                            ""}
-                          <div className="tooltip">
-                            {todos.map(
-                              (todo) =>
-                                todo.priority === priority &&
-                                todo.deadline ===
-                                  `${calendarYear}-${month.number}-${day.number}` && (
-                                  <div key={todo.id}>{todo.title}</div>
-                                )
-                            )}
+                            ).length &&
+                              todos.filter(
+                                (todo) =>
+                                  todo.priority === priority &&
+                                  todo.deadline ===
+                                    `${calendarYear}-${month.number}-${day.number}`
+                              ).length) ||
+                              ""}
+                            <div className="tooltip">
+                              {todos.map(
+                                (todo) =>
+                                  todo.priority === priority &&
+                                  todo.deadline ===
+                                    `${calendarYear}-${month.number}-${day.number}` && (
+                                    <div key={todo.id}>{todo.title}</div>
+                                  )
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
+          ))}
+
+        {calendarFormat === "day" && (
+          <div className="day">
+            {calendar.map(
+              (day) =>
+                day.hour && (
+                  <div key={day.hour} className={"day_hour"}>
+                    <div className="day_hour-number">{day.hour}:00</div>
+                    {day.minutes &&
+                      day.minutes.map((minute) => (
+                        <div
+                          key={`${day.hour} ${minute.number}`}
+                          className="day_hour-minute"
+                        ></div>
+                      ))}
+                  </div>
+                )
+            )}
           </div>
-        ))}
+        )}
       </div>
     </StyledCalendar>
   );
