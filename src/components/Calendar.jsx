@@ -107,13 +107,39 @@ const StyledCalendar = styled.div`
       flex-direction: column;
       border: 1px solid;
       width: 90vw;
+      &::before {
+        position: absolute;
+        top: -2px;
+        left: -1em;
+        content: "";
+        border-top-width: 2px;
+        border-top-color: black;
+        border-top-style: solid;
+        width: 1em;
+      }
       &-number {
         position: absolute;
         top: -1em;
-        left: -2.5em;
+        left: -4em;
       }
       &-minute {
         height: 10px;
+      }
+    }
+    &_todo-nohour {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      & .priority {
+        &-hight {
+          background-color: red;
+        }
+        &-medium {
+          background-color: #ffcc00;
+        }
+        &-low {
+          background-color: green;
+        }
       }
     }
   }
@@ -410,6 +436,21 @@ const Calendar = ({ todos }) => {
 
         {calendarFormat === "day" && (
           <div className="day">
+            <div className="day_todo-nohour">
+              {todos.map(
+                (todo) =>
+                  todo.deadline ===
+                    `${calendarYear}-${
+                      monthsNames.indexOf(calendarMonth) + 1 < 10
+                        ? `0${monthsNames.indexOf(calendarMonth) + 1}`
+                        : `${monthsNames.indexOf(calendarMonth) + 1}`
+                    }-${calendarDay}` && (
+                    <div key={todo.id} className={`priority-${todo.priority}`}>
+                      {todo.title}
+                    </div>
+                  )
+              )}
+            </div>
             {calendar.map(
               (day) =>
                 day.hour && (
