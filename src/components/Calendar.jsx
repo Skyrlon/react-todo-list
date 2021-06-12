@@ -305,8 +305,9 @@ const Calendar = ({ todos }) => {
   const handleChangeDate = (newDate) => {
     setCalendarYear(newDate.year);
     setCalendarMonth(newDate.month);
+    setCalendarDay(newDate.day);
     setCalendarFormat(newDate.format);
-    setDateAsked(`${newDate.month} ${newDate.year}`);
+    setDateAsked(`${newDate.day} ${newDate.month} ${newDate.year}`);
   };
 
   const [calendar, setCalendar] = useState([]);
