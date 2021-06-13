@@ -9,13 +9,13 @@ const StyledCalendarInput = styled.div`
   }
 `;
 
-const CalendarInput = ({ changeDate }) => {
-  const [yearGoingToSubmit, setYearGoingToSubmit] = useState(
-    `${new Date(Date.now()).getFullYear()}`
-  );
-  const [monthGoingToSubmit, setMonthGoingToSubmit] = useState("");
-  const [dayGoingToSubmit, setDayGoingToSubmit] = useState("");
-
+const CalendarInput = ({
+  changeDate,
+  dayGoingToSubmit,
+  monthGoingToSubmit,
+  yearGoingToSubmit,
+  onInputChange,
+}) => {
   const [inputError, setInputError] = useState([]);
   const monthsNames = [
     "January",
@@ -177,9 +177,6 @@ const CalendarInput = ({ changeDate }) => {
       newMonth = monthGoingToSubmit;
       newDay = dayGoingToSubmit;
     }
-    setYearGoingToSubmit(newYear);
-    setMonthGoingToSubmit(newMonth);
-    setDayGoingToSubmit(newDay);
     changeDate({
       format: newFormat,
       year: newYear,
@@ -238,9 +235,6 @@ const CalendarInput = ({ changeDate }) => {
       newMonth = monthGoingToSubmit;
       newDay = dayGoingToSubmit;
     }
-    setYearGoingToSubmit(newYear);
-    setMonthGoingToSubmit(newMonth);
-    setDayGoingToSubmit(newDay);
     changeDate({
       format: newFormat,
       year: newYear,
@@ -260,7 +254,7 @@ const CalendarInput = ({ changeDate }) => {
           name="day-input"
           type="text"
           value={dayGoingToSubmit}
-          onChange={(e) => setDayGoingToSubmit(e.target.value)}
+          onChange={(e) => onInputChange(e.target.value, "day")}
         />
         {inputError.includes("day") && (
           <div className="day-input_error">Put a valid day</div>
@@ -269,7 +263,7 @@ const CalendarInput = ({ changeDate }) => {
           name="month-input"
           type="text"
           value={monthGoingToSubmit}
-          onChange={(e) => setMonthGoingToSubmit(e.target.value)}
+          onChange={(e) => onInputChange(e.target.value, "month")}
         />
         {inputError.includes("month") && (
           <div className="month-input_error">Put a valid month</div>
@@ -278,7 +272,7 @@ const CalendarInput = ({ changeDate }) => {
           name="year-input"
           type="text"
           value={yearGoingToSubmit}
-          onChange={(e) => setYearGoingToSubmit(e.target.value)}
+          onChange={(e) => onInputChange(e.target.value, "year")}
         />
         {inputError.includes("year") && (
           <div className="year-input_error">Put a valid year</div>
