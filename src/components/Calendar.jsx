@@ -303,9 +303,11 @@ const Calendar = ({ todos }) => {
   };
 
   const handleChangeDate = (newDate) => {
-    setCalendarYear(newDate.year);
-    setCalendarMonth(newDate.month);
-    setCalendarDay(newDate.day);
+    setCalendarYear(newDate.year.toString());
+    setCalendarMonth(newDate.month.toString());
+    setCalendarDay(
+      parseInt(newDate.day) < 10 ? `0${newDate.day}` : newDate.day.toString()
+    );
     setCalendarFormat(newDate.format);
     setDateAsked(`${newDate.day} ${newDate.month} ${newDate.year}`);
   };

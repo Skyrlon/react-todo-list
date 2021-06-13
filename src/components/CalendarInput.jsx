@@ -37,9 +37,10 @@ const CalendarInput = ({ changeDate }) => {
     let arrayError = inputError;
     // Verify year is not inferior or superior to date limit and each character is a number
     if (
-      yearGoingToSubmit < -271820 ||
-      yearGoingToSubmit > 275759 ||
+      parseInt(yearGoingToSubmit) < -271820 ||
+      parseInt(yearGoingToSubmit) > 275759 ||
       yearGoingToSubmit
+        .toString()
         .split("")
         .every((element) => !isNaN(parseInt(element))) === false ||
       yearGoingToSubmit.length === 0
@@ -62,10 +63,11 @@ const CalendarInput = ({ changeDate }) => {
     } else if (arrayError.includes("month")) {
       arrayError.splice(arrayError.indexOf("month"), 1);
     }
-    //verifier si le nombre n'est pas superieur au nombre de jours du mois (e.g 30 pour fevrier)
+    //Verify if there is a day to submit, if all elements are numbers, and it's not superior to max day of the month or inferior to 1
     if (
-      dayGoingToSubmit.length > 0 &&
+      dayGoingToSubmit.toString().length > 0 &&
       (dayGoingToSubmit
+        .toString()
         .split("")
         .every((element) => !isNaN(parseInt(element))) === false ||
         parseInt(dayGoingToSubmit) >
@@ -85,7 +87,7 @@ const CalendarInput = ({ changeDate }) => {
 
     setInputError([...arrayError]);
 
-    //If all input values are correct, set up the calendar with the year and month (if there is one) submited
+    //If all input values are correct, set up the calendar with the values submited
     if (arrayError.length === 0) {
       if (type === "submit") handleDateSubmit();
       if (type === "decrement") handleDateBackward();
@@ -94,75 +96,84 @@ const CalendarInput = ({ changeDate }) => {
   };
 
   const handleDateSubmit = () => {
+    let newFormat, newYear, newMonth, newDay;
     if (dayGoingToSubmit.length > 0) {
-      changeDate({
-        format: "day",
-        year: `${yearGoingToSubmit}`,
-        month: monthGoingToSubmit,
-        day: dayGoingToSubmit,
-      });
+      newFormat = "day";
+      newYear = yearGoingToSubmit;
+      newMonth = monthGoingToSubmit;
+      newDay = dayGoingToSubmit;
     } else if (monthGoingToSubmit.length > 0) {
-      changeDate({
-        format: "month",
-        year: `${yearGoingToSubmit}`,
-        month: monthGoingToSubmit,
-        day: dayGoingToSubmit,
-      });
+      newFormat = "month";
+      newYear = yearGoingToSubmit;
+      newMonth = monthGoingToSubmit;
+      newDay = dayGoingToSubmit;
     } else {
-      changeDate({
-        format: "year",
-        year: `${yearGoingToSubmit}`,
-        month: monthGoingToSubmit,
-        day: dayGoingToSubmit,
-      });
+      newFormat = "year";
+      newYear = `${yearGoingToSubmit}`;
+      newMonth = monthGoingToSubmit;
+      newDay = dayGoingToSubmit;
     }
+    changeDate({
+      format: newFormat,
+      year: newYear,
+      month: newMonth,
+      day: newDay,
+    });
   };
 
   const handleDateBackward = () => {
     let newFormat, newYear, newMonth, newDay;
-    if (dayGoingToSubmit.length > 0) {
+    //If there is a day to change
+    if (dayGoingToSubmit.toString().length > 0) {
       newFormat = "day";
+      //Change month if it's 1rst day of month
       if (
         parseInt(dayGoingToSubmit) === 1 &&
         monthGoingToSubmit !== "January"
       ) {
-        newYear = `${yearGoingToSubmit}`;
+        newYear = yearGoingToSubmit;
         newMonth = monthsNames[monthsNames.indexOf(monthGoingToSubmit) - 1];
         newDay = new Date(
           yearGoingToSubmit,
           monthsNames.indexOf(monthGoingToSubmit),
           0
-        );
-      } else if (
+        ).getDate();
+      }
+      //Change month and year if it's 1rst day of the month and it's January
+      else if (
         parseInt(dayGoingToSubmit) === 1 &&
         monthGoingToSubmit === "January"
       ) {
-        newYear = `${parseInt(yearGoingToSubmit) - 1}`;
+        newYear = parseInt(yearGoingToSubmit) - 1;
         newMonth = monthsNames[monthsNames.length - 1];
         newDay = new Date(
           yearGoingToSubmit,
           monthsNames.indexOf(monthGoingToSubmit),
           0
-        );
+        ).getDate();
       } else {
         newYear = yearGoingToSubmit;
         newMonth = monthGoingToSubmit;
         newDay = parseInt(dayGoingToSubmit) - 1;
       }
-    } else if (monthGoingToSubmit.length > 0) {
+    }
+    //If there is a month to change
+    else if (monthGoingToSubmit.length > 0) {
       newFormat = "month";
       if (monthGoingToSubmit === "January") {
-        newYear = `${parseInt(yearGoingToSubmit) - 1}`;
+        newYear = parseInt(yearGoingToSubmit) - 1;
         newMonth = monthsNames[monthsNames.length - 1];
         newDay = dayGoingToSubmit;
       } else {
-        newYear = `${yearGoingToSubmit}`;
+        newYear = yearGoingToSubmit;
         newMonth = monthsNames[monthsNames.indexOf(monthGoingToSubmit) - 1];
         newDay = dayGoingToSubmit;
       }
-    } else {
+    }
+    //Change Year
+    else {
       newFormat = "year";
-      newYear = `${yearGoingToSubmit - 1}`;
+      newYear = parseInt(yearGoingToSubmit) - 1;
       newMonth = monthGoingToSubmit;
       newDay = dayGoingToSubmit;
     }
@@ -170,27 +181,27 @@ const CalendarInput = ({ changeDate }) => {
     setMonthGoingToSubmit(newMonth);
     setDayGoingToSubmit(newDay);
     changeDate({
-      format: `${newFormat}`,
-      year: `${newYear}`,
-      month: `${newMonth}`,
-      day: `${newDay}`,
+      format: newFormat,
+      year: newYear,
+      month: newMonth,
+      day: newDay,
     });
   };
 
   const handleDateForward = () => {
     let newFormat, newYear, newMonth, newDay;
-    if (dayGoingToSubmit.length > 0) {
+    if (dayGoingToSubmit.toString().length > 0) {
       newFormat = "day";
       if (
         parseInt(dayGoingToSubmit) ===
           new Date(
             yearGoingToSubmit,
-            monthsNames.indexOf(monthGoingToSubmit),
+            monthsNames.indexOf(monthGoingToSubmit) + 1,
             0
-          ) &&
+          ).getDate() &&
         monthGoingToSubmit !== "December"
       ) {
-        newYear = `${yearGoingToSubmit}`;
+        newYear = yearGoingToSubmit;
         newMonth = monthsNames[monthsNames.indexOf(monthGoingToSubmit) + 1];
         newDay = 1;
       } else if (
@@ -199,11 +210,11 @@ const CalendarInput = ({ changeDate }) => {
             yearGoingToSubmit,
             monthsNames.indexOf(monthGoingToSubmit),
             0
-          ) &&
+          ).getDate() &&
         monthGoingToSubmit === "December"
       ) {
-        newYear = `${parseInt(yearGoingToSubmit) + 1}`;
-        newMonth = monthsNames[monthsNames.length + 1];
+        newYear = parseInt(yearGoingToSubmit) + 1;
+        newMonth = monthsNames[0];
         newDay = 1;
       } else {
         newYear = yearGoingToSubmit;
@@ -213,7 +224,7 @@ const CalendarInput = ({ changeDate }) => {
     } else if (monthGoingToSubmit.length > 0) {
       newFormat = "month";
       if (monthGoingToSubmit === "December") {
-        newYear = `${parseInt(yearGoingToSubmit) + 1}`;
+        newYear = parseInt(yearGoingToSubmit) + 1;
         newMonth = monthsNames[0];
         newDay = dayGoingToSubmit;
       } else {
@@ -223,7 +234,7 @@ const CalendarInput = ({ changeDate }) => {
       }
     } else {
       newFormat = "year";
-      newYear = `${yearGoingToSubmit + 1}`;
+      newYear = parseInt(yearGoingToSubmit) + 1;
       newMonth = monthGoingToSubmit;
       newDay = dayGoingToSubmit;
     }
@@ -231,10 +242,10 @@ const CalendarInput = ({ changeDate }) => {
     setMonthGoingToSubmit(newMonth);
     setDayGoingToSubmit(newDay);
     changeDate({
-      format: `${newFormat}`,
-      year: `${newYear}`,
-      month: `${newMonth}`,
-      day: `${newDay}`,
+      format: newFormat,
+      year: newYear,
+      month: newMonth,
+      day: newDay,
     });
   };
 
