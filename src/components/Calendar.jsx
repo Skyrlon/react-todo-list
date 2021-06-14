@@ -318,10 +318,13 @@ const Calendar = ({ todos }) => {
   const handleDayDoubleClick = (e, date) => {
     e.stopPropagation();
     setCalendarFormat("day");
-    setDateSelected(date);
+    setDateSelected(`${date.day} ${date.month} ${date.year}`);
     setCalendarYear(date.year);
     setCalendarMonth(date.month);
     setCalendarDay(date.day);
+    setInputYear(date.year);
+    setInputMonth(date.month);
+    setInputDay(date.day);
     setDateAsked(`${date.day} ${date.month} ${date.year}`);
   };
 
@@ -336,12 +339,16 @@ const Calendar = ({ todos }) => {
     setInputYear(newDate.year.toString());
     setInputMonth(monthWithFirstLetterCapital);
     setInputDay(
-      parseInt(newDate.day) < 10 ? `0${newDate.day}` : newDate.day.toString()
+      parseInt(newDate.day) < 10
+        ? `0${parseInt(newDate.day)}`
+        : parseInt(newDate.day).toString()
     );
     setCalendarYear(newDate.year.toString());
     setCalendarMonth(monthWithFirstLetterCapital);
     setCalendarDay(
-      parseInt(newDate.day) < 10 ? `0${newDate.day}` : newDate.day.toString()
+      parseInt(newDate.day) < 10
+        ? `0${parseInt(newDate.day)}`
+        : parseInt(newDate.day).toString()
     );
     setCalendarFormat(newDate.format);
     setDateAsked(`${newDate.day} ${newDate.month} ${newDate.year}`);
