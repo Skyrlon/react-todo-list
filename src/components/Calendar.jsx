@@ -326,13 +326,20 @@ const Calendar = ({ todos }) => {
   };
 
   const handleChangeDate = (newDate) => {
+    let monthWithFirstLetterCapital = newDate.month
+      .toLowerCase()
+      .split("")
+      .map((element, index) => {
+        return index === 0 ? element.toUpperCase() : element;
+      })
+      .join("");
     setInputYear(newDate.year.toString());
-    setInputMonth(newDate.month.toString());
+    setInputMonth(monthWithFirstLetterCapital);
     setInputDay(
       parseInt(newDate.day) < 10 ? `0${newDate.day}` : newDate.day.toString()
     );
     setCalendarYear(newDate.year.toString());
-    setCalendarMonth(newDate.month.toString());
+    setCalendarMonth(monthWithFirstLetterCapital);
     setCalendarDay(
       parseInt(newDate.day) < 10 ? `0${newDate.day}` : newDate.day.toString()
     );

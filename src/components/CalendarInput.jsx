@@ -54,7 +54,10 @@ const CalendarInput = ({
     // Verify if there is month to submit and if it's a correct month name
     if (
       (monthGoingToSubmit.length > 0 &&
-        !monthsNames.some((element) => element === monthGoingToSubmit)) ||
+        !monthsNames.some(
+          (element) =>
+            element.toLowerCase() === monthGoingToSubmit.toLowerCase()
+        )) ||
       (monthGoingToSubmit.length === 0 && dayGoingToSubmit.length > 0)
     ) {
       if (!inputError.includes("month")) {
