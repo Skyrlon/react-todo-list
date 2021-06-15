@@ -338,17 +338,11 @@ const Calendar = ({ todos }) => {
       .join("");
     setInputYear(newDate.year.toString());
     setInputMonth(monthWithFirstLetterCapital);
-    setInputDay(
-      parseInt(newDate.day) < 10
-        ? `0${parseInt(newDate.day)}`
-        : parseInt(newDate.day).toString()
-    );
+    setInputDay(newDate.day.toString().length > 0 ? parseInt(newDate.day) : "");
     setCalendarYear(newDate.year.toString());
     setCalendarMonth(monthWithFirstLetterCapital);
     setCalendarDay(
-      parseInt(newDate.day) < 10
-        ? `0${parseInt(newDate.day)}`
-        : parseInt(newDate.day).toString()
+      newDate.day.toString().length > 0 ? parseInt(newDate.day) : ""
     );
     setCalendarFormat(newDate.format);
     setDateAsked(`${newDate.day} ${newDate.month} ${newDate.year}`);
@@ -503,7 +497,11 @@ const Calendar = ({ todos }) => {
                       monthsNames.indexOf(calendarMonth) + 1 < 10
                         ? `0${monthsNames.indexOf(calendarMonth) + 1}`
                         : `${monthsNames.indexOf(calendarMonth) + 1}`
-                    }-${calendarDay}` && (
+                    }-${
+                      parseInt(calendarDay) < 10
+                        ? `0${parseInt(calendarDay)}`
+                        : parseInt(calendarDay).toString()
+                    }` && (
                     <div key={todo.id} className={`priority-${todo.priority}`}>
                       {todo.title}
                     </div>

@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const StyledCalendarInput = styled.div`
+  display: flex;
+  flex-direction: row;
   & .arrow {
     display: inline;
     margin-left: 1em;
@@ -17,6 +19,8 @@ const CalendarInput = ({
   onInputChange,
 }) => {
   const [inputError, setInputError] = useState([]);
+  const [showInputs, setShowInputs] = useState(false);
+
   const monthsNames = [
     "January",
     "February",
@@ -100,7 +104,7 @@ const CalendarInput = ({
 
   const handleDateSubmit = () => {
     let newFormat, newYear, newMonth, newDay;
-    if (dayGoingToSubmit.length > 0) {
+    if (dayGoingToSubmit.toString().length > 0) {
       newFormat = "day";
       newYear = yearGoingToSubmit;
       newMonth = monthGoingToSubmit;
@@ -122,6 +126,7 @@ const CalendarInput = ({
       month: newMonth,
       day: newDay,
     });
+    setShowInputs(false);
   };
 
   const handleDateBackward = () => {
@@ -248,44 +253,56 @@ const CalendarInput = ({
 
   return (
     <StyledCalendarInput>
-      <div className="arrow" onClick={(e) => handleNewDate(e, "decrement")}>
-        &#10092;
-      </div>
+      {!showInputs && (
+        <div className="arrow" onClick={(e) => handleNewDate(e, "decrement")}>
+          &#10092;
+        </div>
+      )}
 
-      <form onSubmit={(e) => handleNewDate(e, "submit")}>
-        <input
-          name="day-input"
-          type="text"
-          value={dayGoingToSubmit}
-          onChange={(e) => onInputChange(e.target.value, "day")}
-        />
-        {inputError.includes("day") && (
-          <div className="day-input_error">Put a valid day</div>
-        )}
-        <input
-          name="month-input"
-          type="text"
-          value={monthGoingToSubmit}
-          onChange={(e) => onInputChange(e.target.value, "month")}
-        />
-        {inputError.includes("month") && (
-          <div className="month-input_error">Put a valid month</div>
-        )}
-        <input
-          name="year-input"
-          type="text"
-          value={yearGoingToSubmit}
-          onChange={(e) => onInputChange(e.target.value, "year")}
-        />
-        {inputError.includes("year") && (
-          <div className="year-input_error">Put a valid year</div>
-        )}
-        <input type="submit" />
-      </form>
+      {!showInputs && (
+        <div onClick={() => setShowInputs(true)}>
+          {dayGoingToSubmit} {monthGoingToSubmit} {yearGoingToSubmit}
+        </div>
+      )}
 
-      <div className="arrow" onClick={(e) => handleNewDate(e, "increment")}>
-        &#10093;
-      </div>
+      {showInputs && (
+        <form onSubmit={(e) => handleNewDate(e, "submit")}>
+          <input
+            name="day-input"
+            type="text"
+            value={dayGoingToSubmit}
+            onChange={(e) => onInputChange(e.target.value, "day")}
+          />
+          {inputError.includes("day") && (
+            <div className="day-input_error">Put a valid day</div>
+          )}
+          <input
+            name="month-input"
+            type="text"
+            value={monthGoingToSubmit}
+            onChange={(e) => onInputChange(e.target.value, "month")}
+          />
+          {inputError.includes("month") && (
+            <div className="month-input_error">Put a valid month</div>
+          )}
+          <input
+            name="year-input"
+            type="text"
+            value={yearGoingToSubmit}
+            onChange={(e) => onInputChange(e.target.value, "year")}
+          />
+          {inputError.includes("year") && (
+            <div className="year-input_error">Put a valid year</div>
+          )}
+          <input type="submit" />
+        </form>
+      )}
+
+      {!showInputs && (
+        <div className="arrow" onClick={(e) => handleNewDate(e, "increment")}>
+          &#10093;
+        </div>
+      )}
     </StyledCalendarInput>
   );
 };
