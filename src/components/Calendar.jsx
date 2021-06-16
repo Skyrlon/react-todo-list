@@ -124,22 +124,25 @@ const StyledCalendar = styled.div`
       }
       &-minute {
         height: 10px;
+        & div {
+          font-size: 1em;
+        }
       }
     }
     &_todo-nohour {
       display: flex;
       flex-direction: row;
       justify-content: space-around;
-      & .priority {
-        &-hight {
-          background-color: red;
-        }
-        &-medium {
-          background-color: #ffcc00;
-        }
-        &-low {
-          background-color: green;
-        }
+    }
+    & .priority {
+      &-hight {
+        background-color: red;
+      }
+      &-medium {
+        background-color: #ffcc00;
+      }
+      &-low {
+        background-color: green;
       }
     }
   }
@@ -440,7 +443,7 @@ const Calendar = ({ todos }) => {
                           <div className="month_day-tooltip">
                             {todos.map(
                               (todo) =>
-                                todo.deadline ===
+                                todo.deadline.date ===
                                   `${calendarYear}-${month.number}-${day.number}` && (
                                   <div key={todo.id}>{todo.title}</div>
                                 )
@@ -457,13 +460,13 @@ const Calendar = ({ todos }) => {
                               {(todos.filter(
                                 (todo) =>
                                   todo.priority === priority &&
-                                  todo.deadline ===
+                                  todo.deadline.date ===
                                     `${calendarYear}-${month.number}-${day.number}`
                               ).length &&
                                 todos.filter(
                                   (todo) =>
                                     todo.priority === priority &&
-                                    todo.deadline ===
+                                    todo.deadline.date ===
                                       `${calendarYear}-${month.number}-${day.number}`
                                 ).length) ||
                                 ""}
@@ -471,7 +474,7 @@ const Calendar = ({ todos }) => {
                                 {todos.map(
                                   (todo) =>
                                     todo.priority === priority &&
-                                    todo.deadline ===
+                                    todo.deadline.date ===
                                       `${calendarYear}-${month.number}-${day.number}` && (
                                       <div key={todo.id}>{todo.title}</div>
                                     )
@@ -492,7 +495,7 @@ const Calendar = ({ todos }) => {
             <div className="day_todo-nohour">
               {todos.map(
                 (todo) =>
-                  todo.deadline ===
+                  todo.deadline.date ===
                     `${calendarYear}-${
                       monthsNames.indexOf(calendarMonth) + 1 < 10
                         ? `0${monthsNames.indexOf(calendarMonth) + 1}`
@@ -518,7 +521,17 @@ const Calendar = ({ todos }) => {
                         <div
                           key={`${day.hour} ${minute.number}`}
                           className="day_hour-minute"
-                        ></div>
+                        >
+                          {todos.map(
+                            (todo) =>
+                              todo.deadline.time ===
+                                `${day.hour}:${minute.number}` && (
+                                <div className={`priority-${todo.priority}`}>
+                                  {todo.title}
+                                </div>
+                              )
+                          )}
+                        </div>
                       ))}
                   </div>
                 )

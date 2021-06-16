@@ -22,7 +22,10 @@ const App = () => {
         details: `Details ${i + 1}`,
         priority: priorities[Math.floor(Math.random() * 3)],
         completed: completion[parseInt(randomNumber(0, 2))],
-        deadline: `2021-${randomNumber(3, 4)}-${randomNumber(1, 28)}`,
+        deadline: {
+          date: `2021-${randomNumber(3, 4)}-${randomNumber(1, 28)}`,
+          time: `${randomNumber(0, 23)}:${randomNumber(0, 59)}`,
+        },
       });
     }
     return array;

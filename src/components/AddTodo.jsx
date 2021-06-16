@@ -36,8 +36,12 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
     isEditingTodo ? todoToEdit.priority : ""
   );
 
-  const [deadline, setDeadline] = useState(
-    isEditingTodo ? todoToEdit.deadline : ""
+  const [deadlineDate, setDeadlineDate] = useState(
+    isEditingTodo ? todoToEdit.deadline.date : ""
+  );
+
+  const [deadlineTime, setDeadlineTime] = useState(
+    isEditingTodo ? todoToEdit.deadline.time : ""
   );
 
   const [completed, setCompleted] = useState(todoToEdit.completed);
@@ -60,15 +64,21 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
           title,
           details,
           priority,
-          deadline,
+          deadline: { date: deadlineDate, time: deadlineTime },
           completed,
         })
-      : onAdd({ title, details, priority, deadline });
+      : onAdd({
+          title,
+          details,
+          priority,
+          deadline: { date: deadlineDate, time: deadlineTime },
+        });
 
     setTitle("");
     setDetails("");
     setPriority("");
-    setDeadline("");
+    setDeadlineTime("");
+    setDeadlineDate("");
   };
 
   return (
@@ -103,8 +113,14 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
           <input
             type="date"
             name="deadline"
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
+            value={deadlineDate}
+            onChange={(e) => setDeadlineDate(e.target.value)}
+          />
+          <input
+            type="time"
+            name="deadline"
+            value={deadlineTime}
+            onChange={(e) => setDeadlineTime(e.target.value)}
           />
           {isEditingTodo && (
             <>
