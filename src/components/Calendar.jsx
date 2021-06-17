@@ -504,7 +504,8 @@ const Calendar = ({ todos }) => {
                       parseInt(calendarDay) < 10
                         ? `0${parseInt(calendarDay)}`
                         : parseInt(calendarDay).toString()
-                    }` && (
+                    }` &&
+                  todo.deadline.time.length === 0 && (
                     <div key={todo.id} className={`priority-${todo.priority}`}>
                       {todo.title}
                     </div>
@@ -524,6 +525,20 @@ const Calendar = ({ todos }) => {
                         >
                           {todos.map(
                             (todo) =>
+                              todo.deadline.date ===
+                                `${calendarYear}-${
+                                  monthsNames.indexOf(calendarMonth) + 1 < 10
+                                    ? `0${
+                                        monthsNames.indexOf(calendarMonth) + 1
+                                      }`
+                                    : `${
+                                        monthsNames.indexOf(calendarMonth) + 1
+                                      }`
+                                }-${
+                                  parseInt(calendarDay) < 10
+                                    ? `0${parseInt(calendarDay)}`
+                                    : parseInt(calendarDay).toString()
+                                }` &&
                               todo.deadline.time ===
                                 `${day.hour}:${minute.number}` && (
                                 <div className={`priority-${todo.priority}`}>
