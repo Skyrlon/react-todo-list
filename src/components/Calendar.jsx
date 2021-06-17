@@ -339,10 +339,10 @@ const Calendar = ({ todos }) => {
         return index === 0 ? element.toUpperCase() : element;
       })
       .join("");
-    setInputYear(newDate.year.toString());
+    setInputYear(parseInt(newDate.year).toString());
     setInputMonth(monthWithFirstLetterCapital);
     setInputDay(newDate.day.toString().length > 0 ? parseInt(newDate.day) : "");
-    setCalendarYear(newDate.year.toString());
+    setCalendarYear(parseInt(newDate.year).toString());
     setCalendarMonth(monthWithFirstLetterCapital);
     setCalendarDay(
       newDate.day.toString().length > 0 ? parseInt(newDate.day) : ""

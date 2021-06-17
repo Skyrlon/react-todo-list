@@ -41,12 +41,14 @@ const CalendarInput = ({
     let arrayError = inputError;
     // Verify year is not inferior or superior to date limit and each character is a number
     if (
-      parseInt(yearGoingToSubmit) < -271820 ||
+      parseInt(yearGoingToSubmit) < 1 ||
       parseInt(yearGoingToSubmit) > 275759 ||
-      yearGoingToSubmit
+      (type === "decrement" && parseInt(yearGoingToSubmit) === 1) ||
+      (type === "increment" && parseInt(yearGoingToSubmit) === 275759) ||
+      !yearGoingToSubmit
         .toString()
         .split("")
-        .every((element) => !isNaN(parseInt(element))) === false ||
+        .every((element) => !isNaN(parseInt(element))) ||
       yearGoingToSubmit.length === 0
     ) {
       if (!inputError.includes("year")) {
