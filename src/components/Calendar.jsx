@@ -48,7 +48,7 @@ const StyledCalendar = styled.div`
           position: absolute;
           top: 3em;
           z-index: 1;
-          background-color: grey;
+          background-color: lightblue;
           min-width: 7em;
         }
         &-todo {
@@ -143,6 +143,9 @@ const StyledCalendar = styled.div`
       }
       &-low {
         background-color: green;
+      }
+      &-completed {
+        background-color: grey;
       }
     }
   }
@@ -506,7 +509,12 @@ const Calendar = ({ todos }) => {
                         : parseInt(calendarDay).toString()
                     }` &&
                   todo.deadline.time.length === 0 && (
-                    <div key={todo.id} className={`priority-${todo.priority}`}>
+                    <div
+                      key={todo.id}
+                      className={`priority-${
+                        todo.completed ? "completed" : todo.priority
+                      }`}
+                    >
                       {todo.title}
                     </div>
                   )
@@ -541,7 +549,11 @@ const Calendar = ({ todos }) => {
                                 }` &&
                               todo.deadline.time ===
                                 `${day.hour}:${minute.number}` && (
-                                <div className={`priority-${todo.priority}`}>
+                                <div
+                                  className={`priority-${
+                                    todo.completed ? "completed" : todo.priority
+                                  }`}
+                                >
                                   {todo.title}
                                 </div>
                               )
