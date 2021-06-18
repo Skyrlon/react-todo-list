@@ -103,6 +103,7 @@ const TodoList = ({ todos, modifyTodos }) => {
       details: todo.details,
       priority: todo.priority,
       completed: !completedValue,
+      deadline: todo.deadline,
     });
     modifyTodos([...newTodoList]);
   };
