@@ -124,6 +124,18 @@ const StyledCalendar = styled.div`
       }
       &-minute {
         height: 10px;
+        &.now {
+          border-top: 1px solid red;
+          position: relative;
+          &::before {
+            content: "Now";
+            color: red;
+            position: absolute;
+            left: -2.5em;
+            top: -0.8em;
+          }
+        }
+
         & div {
           font-size: 1em;
         }
@@ -362,6 +374,27 @@ const Calendar = ({ todos }) => {
 
   const [calendar, setCalendar] = useState([]);
 
+  const currentDate = {
+    date: `${new Date(Date.now()).getFullYear()}-${
+      new Date(Date.now()).getMonth() + 1 < 10
+        ? `0${new Date(Date.now()).getMonth() + 1}`
+        : new Date(Date.now()).getMonth() + 1
+    }-${
+      new Date(Date.now()).getDate() < 10
+        ? `0${new Date(Date.now()).getDate()}`
+        : new Date(Date.now()).getDate()
+    }`,
+    time: `${
+      new Date(Date.now()).getHours() < 10
+        ? `0${new Date(Date.now()).getHours()}`
+        : new Date(Date.now()).getHours()
+    }:${
+      new Date(Date.now()).getMinutes() < 10
+        ? `0${new Date(Date.now()).getMinutes()}`
+        : new Date(Date.now()).getMinutes()
+    }`,
+  };
+
   useEffect(
     () => {
       setCalendar(setUpCalendar());
@@ -529,7 +562,26 @@ const Calendar = ({ todos }) => {
                       day.minutes.map((minute) => (
                         <div
                           key={`${day.hour} ${minute.number}`}
-                          className="day_hour-minute"
+                          className={`day_hour-minute${
+                            currentDate.date ===
+                              `${calendarYear}-${
+                                monthsNames.indexOf(calendarMonth) + 1 < 10
+                                  ? `0${monthsNames.indexOf(calendarMonth) + 1}`
+                                  : `${monthsNames.indexOf(calendarMonth) + 1}`
+                              }-${
+                                parseInt(calendarDay) < 10
+                                  ? `0${parseInt(calendarDay)}`
+                                  : parseInt(calendarDay).toString()
+                              }` &&
+                            currentDate.time ===
+                              `${day.hour < 10 ? `0${day.hour}` : day.hour}:${
+                                minute.number < 10
+                                  ? `0${minute.number}`
+                                  : minute.number
+                              }`
+                              ? " now"
+                              : ""
+                          }`}
                         >
                           {todos.map(
                             (todo) =>
