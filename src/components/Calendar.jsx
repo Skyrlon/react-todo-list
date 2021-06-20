@@ -266,18 +266,61 @@ const Calendar = ({ todos }) => {
           days: days,
         });
       }
-    } else if (calendarFormat === "day") {
+    } else if (calendarFormat === "day" || calendarFormat === "week") {
+      let numberOfDays;
+      let startingDay;
       const numberOfHours = 24;
       const numberOfMinutes = 60;
-      for (let i = 0; i < numberOfHours; i++) {
-        let minutesArray = [];
-        for (let j = 0; j < numberOfMinutes; j++) {
-          minutesArray.push({ number: j < 10 ? `0${j}` : `${j}` });
+      if (calendarFormat === "day") {
+        numberOfDays = 1;
+        startingDay = {
+          year: dateSelected.split(" ")[2],
+          month: dateSelected.split(" ")[1],
+          day: dateSelected.split(" ")[0],
+        };
+      }
+      if (calendarFormat === "week") {
+        numberOfDays = 7;
+        const weekDaySelected = new Date(
+          dateSelected.split(" ")[2],
+          dateSelected.split(" ")[1],
+          dateSelected.split(" ")[0]
+        ).getDay();
+
+        const mondayDay = {
+          year: dateSelected.split(" ")[2],
+          month: dateSelected.split(" ")[1],
+          day:
+            parseInt(dateSelected.split(" ")[0]) -
+            weekDaysNames.indexOf(weekDaySelected),
+        };
+        startingDay = mondayDay;
+      }
+
+      for (let i = 0; i < numberOfDays; i++) {
+        let date = new Date(
+          startingDay.year,
+          monthsNames.indexOf(startingDay.month),
+          parseInt(startingDay.day) + i
+        );
+
+        date = `${date.getFullYear()}-${
+          date.getMonth() + 1 < 10
+            ? `0${date.getMonth() + 1}`
+            : date.getMonth() + 1
+        }-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`;
+        let timeArray = [];
+        for (let j = 0; j < numberOfHours; j++) {
+          let minutesArray = [];
+          for (let k = 0; k < numberOfMinutes; k++) {
+            minutesArray.push({ number: k < 10 ? `0${k}` : `${k}` });
+          }
+          timeArray.push({
+            hour: j < 10 ? `0${j}` : `${j}`,
+            minutes: minutesArray,
+          });
         }
-        array.push({
-          hour: i < 10 ? `0${i}` : `${i}`,
-          minutes: minutesArray,
-        });
+        array.push({ date, time: timeArray });
       }
     }
     return array;
@@ -527,94 +570,118 @@ const Calendar = ({ todos }) => {
           ))}
 
         {calendarFormat === "day" && (
-          <div className="day">
-            <div className="day_todo-nohour">
-              {todos.map(
-                (todo) =>
-                  todo.deadline.date ===
-                    `${calendarYear}-${
-                      monthsNames.indexOf(calendarMonth) + 1 < 10
-                        ? `0${monthsNames.indexOf(calendarMonth) + 1}`
-                        : `${monthsNames.indexOf(calendarMonth) + 1}`
-                    }-${
-                      parseInt(calendarDay) < 10
-                        ? `0${parseInt(calendarDay)}`
-                        : parseInt(calendarDay).toString()
-                    }` &&
-                  todo.deadline.time.length === 0 && (
-                    <div
-                      key={todo.id}
-                      className={`priority-${
-                        todo.completed ? "completed" : todo.priority
-                      }`}
-                    >
-                      {todo.title}
-                    </div>
-                  )
-              )}
-            </div>
-            {calendar.map(
-              (day) =>
-                day.hour && (
-                  <div key={day.hour} className={"day_hour"}>
-                    <div className="day_hour-number">{day.hour}:00</div>
-                    {day.minutes &&
-                      day.minutes.map((minute) => (
+          <div className="week">
+            {calendar.map((day) => (
+              <div key={day.date} className="day">
+                <div className="day_todo-nohour">
+                  {todos.map(
+                    (todo) =>
+                      todo.deadline.date ===
+                        `${calendarYear}-${
+                          monthsNames.indexOf(calendarMonth) + 1 < 10
+                            ? `0${monthsNames.indexOf(calendarMonth) + 1}`
+                            : `${monthsNames.indexOf(calendarMonth) + 1}`
+                        }-${
+                          parseInt(calendarDay) < 10
+                            ? `0${parseInt(calendarDay)}`
+                            : parseInt(calendarDay).toString()
+                        }` &&
+                      todo.deadline.time.length === 0 && (
                         <div
-                          key={`${day.hour} ${minute.number}`}
-                          className={`day_hour-minute${
-                            currentDate.date ===
-                              `${calendarYear}-${
-                                monthsNames.indexOf(calendarMonth) + 1 < 10
-                                  ? `0${monthsNames.indexOf(calendarMonth) + 1}`
-                                  : `${monthsNames.indexOf(calendarMonth) + 1}`
-                              }-${
-                                parseInt(calendarDay) < 10
-                                  ? `0${parseInt(calendarDay)}`
-                                  : parseInt(calendarDay).toString()
-                              }` &&
-                            currentDate.time ===
-                              `${day.hour < 10 ? `0${day.hour}` : day.hour}:${
-                                minute.number < 10
-                                  ? `0${minute.number}`
-                                  : minute.number
-                              }`
-                              ? " now"
-                              : ""
+                          key={todo.id}
+                          className={`priority-${
+                            todo.completed ? "completed" : todo.priority
                           }`}
                         >
-                          {todos.map(
-                            (todo) =>
-                              todo.deadline.date ===
-                                `${calendarYear}-${
-                                  monthsNames.indexOf(calendarMonth) + 1 < 10
-                                    ? `0${
-                                        monthsNames.indexOf(calendarMonth) + 1
-                                      }`
-                                    : `${
-                                        monthsNames.indexOf(calendarMonth) + 1
-                                      }`
-                                }-${
-                                  parseInt(calendarDay) < 10
-                                    ? `0${parseInt(calendarDay)}`
-                                    : parseInt(calendarDay).toString()
-                                }` &&
-                              todo.deadline.time ===
-                                `${day.hour}:${minute.number}` && (
-                                <div
-                                  className={`priority-${
-                                    todo.completed ? "completed" : todo.priority
-                                  }`}
-                                >
-                                  {todo.title}
-                                </div>
-                              )
-                          )}
+                          {todo.title}
                         </div>
-                      ))}
-                  </div>
-                )
-            )}
+                      )
+                  )}
+                </div>
+                {day.time &&
+                  day.time.map(
+                    (time) =>
+                      time.hour && (
+                        <div key={time.hour} className={"day_hour"}>
+                          <div className="day_hour-number">{time.hour}:00</div>
+                          {time.minutes &&
+                            time.minutes.map((minute) => (
+                              <div
+                                key={`${time.hour} ${minute.number}`}
+                                className={`day_hour-minute${
+                                  currentDate.date ===
+                                    `${calendarYear}-${
+                                      monthsNames.indexOf(calendarMonth) + 1 <
+                                      10
+                                        ? `0${
+                                            monthsNames.indexOf(calendarMonth) +
+                                            1
+                                          }`
+                                        : `${
+                                            monthsNames.indexOf(calendarMonth) +
+                                            1
+                                          }`
+                                    }-${
+                                      parseInt(calendarDay) < 10
+                                        ? `0${parseInt(calendarDay)}`
+                                        : parseInt(calendarDay).toString()
+                                    }` &&
+                                  currentDate.time ===
+                                    `${
+                                      time.hour < 10
+                                        ? `0${time.hour}`
+                                        : time.hour
+                                    }:${
+                                      minute.number < 10
+                                        ? `0${minute.number}`
+                                        : minute.number
+                                    }`
+                                    ? " now"
+                                    : ""
+                                }`}
+                              >
+                                {todos.map(
+                                  (todo) =>
+                                    todo.deadline.date ===
+                                      `${calendarYear}-${
+                                        monthsNames.indexOf(calendarMonth) + 1 <
+                                        10
+                                          ? `0${
+                                              monthsNames.indexOf(
+                                                calendarMonth
+                                              ) + 1
+                                            }`
+                                          : `${
+                                              monthsNames.indexOf(
+                                                calendarMonth
+                                              ) + 1
+                                            }`
+                                      }-${
+                                        parseInt(calendarDay) < 10
+                                          ? `0${parseInt(calendarDay)}`
+                                          : parseInt(calendarDay).toString()
+                                      }` &&
+                                    todo.deadline.time ===
+                                      `${time.hour}:${minute.number}` && (
+                                      <div
+                                        key={todo.title}
+                                        className={`priority-${
+                                          todo.completed
+                                            ? "completed"
+                                            : todo.priority
+                                        }`}
+                                      >
+                                        {todo.title}
+                                      </div>
+                                    )
+                                )}
+                              </div>
+                            ))}
+                        </div>
+                      )
+                  )}
+              </div>
+            ))}
           </div>
         )}
       </div>
