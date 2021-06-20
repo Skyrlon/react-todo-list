@@ -97,16 +97,25 @@ const StyledCalendar = styled.div`
       }
     }
   }
+
+  & .week {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80vw;
+  }
+
   & .day {
     display: flex;
     flex-direction: column;
     border: 1px solid;
+    width: 10%;
     &_hour {
       position: relative;
       display: flex;
       flex-direction: column;
       border: 1px solid;
-      width: 90vw;
+      width: 100%;
       &::before {
         position: absolute;
         top: -2px;
@@ -195,13 +204,15 @@ const Calendar = ({ todos }) => {
   ];
 
   const [dateSelected, setDateSelected] = useState(
-    `${
+    `${new Date(Date.now()).getFullYear()}-${
+      new Date(Date.now()).getMonth() + 1 < 10
+        ? `0${new Date(Date.now()).getMonth() + 1}`
+        : new Date(Date.now()).getMonth() + 1
+    }-${
       new Date(Date.now()).getDate() < 10
         ? `0${new Date(Date.now()).getDate()}`
         : new Date(Date.now()).getDate()
-    } ${monthsNames[new Date(Date.now()).getMonth()]} ${new Date(
-      Date.now()
-    ).getFullYear()}`
+    }`
   );
 
   const weekDaysNames = [
@@ -274,24 +285,26 @@ const Calendar = ({ todos }) => {
       if (calendarFormat === "day") {
         numberOfDays = 1;
         startingDay = {
-          year: dateSelected.split(" ")[2],
-          month: dateSelected.split(" ")[1],
-          day: dateSelected.split(" ")[0],
+          year: dateSelected.split("-")[0],
+          month: parseInt(dateSelected.split("-")[1]),
+          day: dateSelected.split("-")[2],
         };
       }
       if (calendarFormat === "week") {
         numberOfDays = 7;
         const weekDaySelected = new Date(
-          dateSelected.split(" ")[2],
-          dateSelected.split(" ")[1],
-          dateSelected.split(" ")[0]
+          dateSelected.split("-")[0],
+          parseInt(dateSelected.split("-")[1]),
+          dateSelected.split("-")[2]
         ).getDay();
 
+        console.log(weekDaySelected);
+
         const mondayDay = {
-          year: dateSelected.split(" ")[2],
-          month: dateSelected.split(" ")[1],
+          year: dateSelected.split("-")[0],
+          month: parseInt(dateSelected.split("-")[1]),
           day:
-            parseInt(dateSelected.split(" ")[0]) -
+            parseInt(dateSelected.split("-")[2]) -
             weekDaysNames.indexOf(weekDaySelected),
         };
         startingDay = mondayDay;
@@ -300,7 +313,7 @@ const Calendar = ({ todos }) => {
       for (let i = 0; i < numberOfDays; i++) {
         let date = new Date(
           startingDay.year,
-          monthsNames.indexOf(startingDay.month),
+          startingDay.month,
           parseInt(startingDay.day) + i
         );
 
@@ -323,6 +336,7 @@ const Calendar = ({ todos }) => {
         array.push({ date, time: timeArray });
       }
     }
+    console.log(array);
     return array;
   };
 
@@ -335,7 +349,7 @@ const Calendar = ({ todos }) => {
   const handleChangeView = (e) => {
     let date = new Date(dateSelected);
     let newDay, newMonth, newYear, newFormat, newDate;
-    if (e.target.value === "day") {
+    if (e.target.value === "day" || e.target.value === "week") {
       newFormat = e.target.value;
       newDay = date.getDate();
       newMonth = monthsNames[date.getMonth()];
@@ -379,7 +393,7 @@ const Calendar = ({ todos }) => {
   const handleDayDoubleClick = (e, date) => {
     e.stopPropagation();
     setCalendarFormat("day");
-    setDateSelected(`${date.day} ${date.month} ${date.year}`);
+    setDateSelected(`${date.year}-${date.month}-${date.day}`);
     setCalendarYear(date.year);
     setCalendarMonth(date.month);
     setCalendarDay(date.day);
@@ -458,6 +472,7 @@ const Calendar = ({ todos }) => {
       <select name="view" value={calendarFormat} onChange={handleChangeView}>
         <option value="year">Year</option>
         <option value="month">Month</option>
+        <option value="week">Week</option>
         <option value="day">Day</option>
       </select>
 
@@ -487,12 +502,12 @@ const Calendar = ({ todos }) => {
                     <div
                       className={`month_day${
                         dateSelected ===
-                        `${day.number} ${month.name} ${calendarYear}`
+                        `${calendarYear}-${month.number}-${day.number}`
                           ? " selected"
                           : ""
                       }${
                         dateSelected ===
-                          `${day.number} ${month.name} ${calendarYear}` &&
+                          `${calendarYear}-${month.number}-${day.number}` &&
                         showTooltip
                           ? " showTooltip"
                           : ""
@@ -501,7 +516,7 @@ const Calendar = ({ todos }) => {
                       onClick={(e) =>
                         handleDayClick(
                           e,
-                          `${day.number} ${month.name} ${calendarYear}`
+                          `${calendarYear}-${month.number}-${day.number}`
                         )
                       }
                       onDoubleClick={(e) =>
@@ -518,7 +533,7 @@ const Calendar = ({ todos }) => {
                       {calendarFormat === "year" &&
                         showTooltip &&
                         dateSelected ===
-                          `${day.number} ${month.name} ${calendarYear}` && (
+                          `${calendarYear}-${month.number}-${day.number}` && (
                           <div className="month_day-tooltip">
                             {todos.map(
                               (todo) =>
@@ -569,7 +584,7 @@ const Calendar = ({ todos }) => {
             </div>
           ))}
 
-        {calendarFormat === "day" && (
+        {(calendarFormat === "day" || calendarFormat === "week") && (
           <div className="week">
             {calendar.map((day) => (
               <div key={day.date} className="day">
