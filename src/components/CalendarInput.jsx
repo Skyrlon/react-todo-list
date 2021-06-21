@@ -173,49 +173,31 @@ const CalendarInput = ({
   };
 
   const handleDateForward = () => {
-    let newFormat, newYear, newMonth, newDay;
+    let newDate, newFormat, newYear, newMonth, newDay;
     if (dayGoingToSubmit.toString().length > 0) {
       newFormat = "day";
-      if (
-        parseInt(dayGoingToSubmit) ===
-          new Date(
-            yearGoingToSubmit,
-            monthsNames.indexOf(monthGoingToSubmit) + 1,
-            0
-          ).getDate() &&
-        monthGoingToSubmit !== "December"
-      ) {
-        newYear = yearGoingToSubmit;
-        newMonth = monthsNames[monthsNames.indexOf(monthGoingToSubmit) + 1];
-        newDay = 1;
-      } else if (
-        parseInt(dayGoingToSubmit) >
-          new Date(
-            yearGoingToSubmit,
-            monthsNames.indexOf(monthGoingToSubmit),
-            0
-          ).getDate() &&
-        monthGoingToSubmit === "December"
-      ) {
-        newYear = parseInt(yearGoingToSubmit) + 1;
-        newMonth = monthsNames[0];
-        newDay = 1;
-      } else {
-        newYear = yearGoingToSubmit;
-        newMonth = monthGoingToSubmit;
-        newDay = parseInt(dayGoingToSubmit) + 1;
-      }
+      newDate = new Date(
+        yearGoingToSubmit,
+        monthsNames.indexOf(monthGoingToSubmit),
+        parseInt(dayGoingToSubmit) + 1
+      );
+      newYear = newDate.getFullYear();
+      newMonth = monthsNames[newDate.getMonth()];
+      newDay = newDate.getDate();
     } else if (monthGoingToSubmit.length > 0) {
       newFormat = "month";
-      if (monthGoingToSubmit === "December") {
-        newYear = parseInt(yearGoingToSubmit) + 1;
-        newMonth = monthsNames[0];
-        newDay = dayGoingToSubmit;
-      } else {
-        newYear = `${yearGoingToSubmit}`;
-        newMonth = monthsNames[monthsNames.indexOf(monthGoingToSubmit) + 1];
-        newDay = dayGoingToSubmit;
-      }
+      newDate = new Date(
+        yearGoingToSubmit,
+        monthsNames.indexOf(monthGoingToSubmit),
+        new Date(
+          yearGoingToSubmit,
+          monthsNames.indexOf(monthGoingToSubmit) + 1,
+          0
+        ).getDate() + 1
+      );
+      newYear = newDate.getFullYear();
+      newMonth = monthsNames[newDate.getMonth()];
+      newDay = newDate.getDate();
     } else {
       newFormat = "year";
       newYear = parseInt(yearGoingToSubmit) + 1;
