@@ -102,14 +102,14 @@ const StyledCalendar = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 80vw;
+    width: 90vw;
   }
 
   & .day {
     display: flex;
     flex-direction: column;
     border: 1px solid;
-    width: 10%;
+    width: 12%;
     &_hour {
       position: relative;
       display: flex;
@@ -292,13 +292,12 @@ const Calendar = ({ todos }) => {
       }
       if (calendarFormat === "week") {
         numberOfDays = 7;
-        const weekDaySelected = new Date(
-          dateSelected.split("-")[0],
-          parseInt(dateSelected.split("-")[1]),
-          dateSelected.split("-")[2]
-        ).getDay();
 
-        console.log(weekDaySelected);
+        let weekDaySelected = new Date(dateSelected).getDay();
+        weekDaySelected =
+          weekDaySelected === 0
+            ? weekDaysNames[weekDaysNames.length - 1]
+            : weekDaysNames[weekDaySelected - 1];
 
         const mondayDay = {
           year: dateSelected.split("-")[0],
@@ -313,10 +312,9 @@ const Calendar = ({ todos }) => {
       for (let i = 0; i < numberOfDays; i++) {
         let date = new Date(
           startingDay.year,
-          startingDay.month,
+          parseInt(startingDay.month) - 1,
           parseInt(startingDay.day) + i
         );
-
         date = `${date.getFullYear()}-${
           date.getMonth() + 1 < 10
             ? `0${date.getMonth() + 1}`
@@ -336,7 +334,6 @@ const Calendar = ({ todos }) => {
         array.push({ date, time: timeArray });
       }
     }
-    console.log(array);
     return array;
   };
 
@@ -398,7 +395,7 @@ const Calendar = ({ todos }) => {
     setCalendarMonth(date.month);
     setCalendarDay(date.day);
     setInputYear(date.year);
-    setInputMonth(date.month);
+    setInputMonth(monthsNames[parseInt(date.month) - 1]);
     setInputDay(date.day);
     setDateAsked(`${date.day} ${date.month} ${date.year}`);
   };
@@ -522,7 +519,7 @@ const Calendar = ({ todos }) => {
                       onDoubleClick={(e) =>
                         handleDayDoubleClick(e, {
                           day: day.number,
-                          month: month.name,
+                          month: month.number,
                           year: calendarYear,
                         })
                       }
@@ -588,19 +585,11 @@ const Calendar = ({ todos }) => {
           <div className="week">
             {calendar.map((day) => (
               <div key={day.date} className="day">
+                <div>{day.date}</div>
                 <div className="day_todo-nohour">
                   {todos.map(
                     (todo) =>
-                      todo.deadline.date ===
-                        `${calendarYear}-${
-                          monthsNames.indexOf(calendarMonth) + 1 < 10
-                            ? `0${monthsNames.indexOf(calendarMonth) + 1}`
-                            : `${monthsNames.indexOf(calendarMonth) + 1}`
-                        }-${
-                          parseInt(calendarDay) < 10
-                            ? `0${parseInt(calendarDay)}`
-                            : parseInt(calendarDay).toString()
-                        }` &&
+                      todo.deadline.date === day.date &&
                       todo.deadline.time.length === 0 && (
                         <div
                           key={todo.id}
@@ -624,23 +613,7 @@ const Calendar = ({ todos }) => {
                               <div
                                 key={`${time.hour} ${minute.number}`}
                                 className={`day_hour-minute${
-                                  currentDate.date ===
-                                    `${calendarYear}-${
-                                      monthsNames.indexOf(calendarMonth) + 1 <
-                                      10
-                                        ? `0${
-                                            monthsNames.indexOf(calendarMonth) +
-                                            1
-                                          }`
-                                        : `${
-                                            monthsNames.indexOf(calendarMonth) +
-                                            1
-                                          }`
-                                    }-${
-                                      parseInt(calendarDay) < 10
-                                        ? `0${parseInt(calendarDay)}`
-                                        : parseInt(calendarDay).toString()
-                                    }` &&
+                                  currentDate.date === day.date &&
                                   currentDate.time ===
                                     `${
                                       time.hour < 10
@@ -657,25 +630,7 @@ const Calendar = ({ todos }) => {
                               >
                                 {todos.map(
                                   (todo) =>
-                                    todo.deadline.date ===
-                                      `${calendarYear}-${
-                                        monthsNames.indexOf(calendarMonth) + 1 <
-                                        10
-                                          ? `0${
-                                              monthsNames.indexOf(
-                                                calendarMonth
-                                              ) + 1
-                                            }`
-                                          : `${
-                                              monthsNames.indexOf(
-                                                calendarMonth
-                                              ) + 1
-                                            }`
-                                      }-${
-                                        parseInt(calendarDay) < 10
-                                          ? `0${parseInt(calendarDay)}`
-                                          : parseInt(calendarDay).toString()
-                                      }` &&
+                                    todo.deadline.date === day.date &&
                                     todo.deadline.time ===
                                       `${time.hour}:${minute.number}` && (
                                       <div
