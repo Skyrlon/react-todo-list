@@ -340,6 +340,7 @@ const Calendar = ({ todos }) => {
   const handleMonthClick = (monthName) => {
     setCalendarFormat("month");
     setCalendarMonth(monthName);
+    setInputMonth(monthName);
     setDateAsked(`${monthName} ${calendarYear}`);
   };
 

@@ -132,53 +132,30 @@ const CalendarInput = ({
   };
 
   const handleDateBackward = () => {
-    let newFormat, newYear, newMonth, newDay;
+    let newDate, newFormat, newYear, newMonth, newDay;
     //If there is a day to change
     if (dayGoingToSubmit.toString().length > 0) {
       newFormat = "day";
-      //Change month if it's 1rst day of month
-      if (
-        parseInt(dayGoingToSubmit) === 1 &&
-        monthGoingToSubmit !== "January"
-      ) {
-        newYear = yearGoingToSubmit;
-        newMonth = monthsNames[monthsNames.indexOf(monthGoingToSubmit) - 1];
-        newDay = new Date(
-          yearGoingToSubmit,
-          monthsNames.indexOf(monthGoingToSubmit),
-          0
-        ).getDate();
-      }
-      //Change month and year if it's 1rst day of the month and it's January
-      else if (
-        parseInt(dayGoingToSubmit) === 1 &&
-        monthGoingToSubmit === "January"
-      ) {
-        newYear = parseInt(yearGoingToSubmit) - 1;
-        newMonth = monthsNames[monthsNames.length - 1];
-        newDay = new Date(
-          yearGoingToSubmit,
-          monthsNames.indexOf(monthGoingToSubmit),
-          0
-        ).getDate();
-      } else {
-        newYear = yearGoingToSubmit;
-        newMonth = monthGoingToSubmit;
-        newDay = parseInt(dayGoingToSubmit) - 1;
-      }
+      newDate = new Date(
+        yearGoingToSubmit,
+        monthsNames.indexOf(monthGoingToSubmit),
+        parseInt(dayGoingToSubmit) - 1
+      );
+      newYear = newDate.getFullYear();
+      newMonth = monthsNames[newDate.getMonth()];
+      newDay = newDate.getDate();
     }
     //If there is a month to change
     else if (monthGoingToSubmit.length > 0) {
       newFormat = "month";
-      if (monthGoingToSubmit === "January") {
-        newYear = parseInt(yearGoingToSubmit) - 1;
-        newMonth = monthsNames[monthsNames.length - 1];
-        newDay = dayGoingToSubmit;
-      } else {
-        newYear = yearGoingToSubmit;
-        newMonth = monthsNames[monthsNames.indexOf(monthGoingToSubmit) - 1];
-        newDay = dayGoingToSubmit;
-      }
+      newDate = new Date(
+        yearGoingToSubmit,
+        monthsNames.indexOf(monthGoingToSubmit),
+        0
+      );
+      newYear = newDate.getFullYear();
+      newMonth = monthsNames[newDate.getMonth()];
+      newDay = "";
     }
     //Change Year
     else {
