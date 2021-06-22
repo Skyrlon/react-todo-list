@@ -419,6 +419,28 @@ const Calendar = ({ todos }) => {
     );
     setCalendarFormat(newDate.format);
     setDateAsked(`${newDate.day} ${newDate.month} ${newDate.year}`);
+    if (newDate.format === "day")
+      setDateSelected(
+        `${newDate.year}-${
+          monthsNames.indexOf(monthWithFirstLetterCapital) + 1 < 10
+            ? `0${monthsNames.indexOf(monthWithFirstLetterCapital) + 1}`
+            : monthsNames.indexOf(monthWithFirstLetterCapital) + 1
+        }-${newDate.day < 10 ? `0${newDate.day}` : newDate.day}`
+      );
+    if (newDate.format === "month")
+      setDateSelected(
+        `${newDate.year}-${
+          monthsNames.indexOf(monthWithFirstLetterCapital) + 1 < 10
+            ? `0${monthsNames.indexOf(monthWithFirstLetterCapital) + 1}`
+            : monthsNames.indexOf(monthWithFirstLetterCapital) + 1
+        }-${dateSelected.split("-")[2]}`
+      );
+    if (newDate.format === "year")
+      setDateSelected(
+        `${newDate.year}-${dateSelected.split("-")[1]}-${
+          dateSelected.split("-")[2]
+        }`
+      );
   };
 
   const onInputChange = (value, input) => {
