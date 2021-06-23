@@ -476,7 +476,7 @@ const Calendar = ({ todos }) => {
     () => {
       setCalendar(setUpCalendar());
     }, // eslint-disable-next-line
-    [dateAsked]
+    [dateAsked, calendarFormat]
   );
 
   return (
@@ -498,183 +498,193 @@ const Calendar = ({ todos }) => {
 
       <div className="calendar">
         {(calendarFormat === "year" || calendarFormat === "month") &&
-          calendar.map((month) => (
-            <div
-              className="month"
-              key={month.number}
-              onClick={() =>
-                calendarFormat === "year" ? handleMonthClick(month.name) : ""
-              }
-            >
-              {calendarFormat === "year" && (
-                <div>
-                  <div>{month.name}</div>
-                </div>
-              )}
-              <div className="month_weekday">
-                {weekDaysNames.map((weekday) => (
-                  <div key={weekday}>{weekday.slice(0, 3)}</div>
-                ))}
-              </div>
-              <div className="month_days">
-                {month.days &&
-                  month.days.map((day) => (
-                    <div
-                      className={`month_day${
-                        dateSelected ===
-                        `${calendarYear}-${month.number}-${day.number}`
-                          ? " selected"
-                          : ""
-                      }${
-                        dateSelected ===
-                          `${calendarYear}-${month.number}-${day.number}` &&
-                        showTooltip
-                          ? " showTooltip"
-                          : ""
-                      }`}
-                      key={`${day.number}${day.name}`}
-                      onClick={(e) =>
-                        handleDayClick(
-                          e,
-                          `${calendarYear}-${month.number}-${day.number}`
-                        )
-                      }
-                      onDoubleClick={(e) =>
-                        handleDayDoubleClick(e, {
-                          day: day.number,
-                          month: month.number,
-                          year: calendarYear,
-                        })
-                      }
-                    >
-                      <div className="month_day-number">
-                        {day.name ? day.number : ""}
-                      </div>
-                      {calendarFormat === "year" &&
-                        showTooltip &&
-                        dateSelected ===
-                          `${calendarYear}-${month.number}-${day.number}` && (
-                          <div className="month_day-tooltip">
-                            {todos.map(
-                              (todo) =>
-                                todo.deadline.date ===
-                                  `${calendarYear}-${month.number}-${day.number}` && (
-                                  <div key={todo.id}>{todo.title}</div>
-                                )
-                            )}
+          calendar.map(
+            (month) =>
+              month.name && (
+                <div
+                  className="month"
+                  key={month.name}
+                  onClick={() =>
+                    calendarFormat === "year"
+                      ? handleMonthClick(month.name)
+                      : ""
+                  }
+                >
+                  {calendarFormat === "year" && (
+                    <div>
+                      <div>{month.name}</div>
+                    </div>
+                  )}
+                  <div className="month_weekday">
+                    {weekDaysNames.map((weekday) => (
+                      <div key={weekday}>{weekday.slice(0, 3)}</div>
+                    ))}
+                  </div>
+                  <div className="month_days">
+                    {month.days &&
+                      month.days.map((day) => (
+                        <div
+                          key={`${day.number}${day.name}`}
+                          className={`month_day${
+                            dateSelected ===
+                            `${calendarYear}-${month.number}-${day.number}`
+                              ? " selected"
+                              : ""
+                          }${
+                            dateSelected ===
+                              `${calendarYear}-${month.number}-${day.number}` &&
+                            showTooltip
+                              ? " showTooltip"
+                              : ""
+                          }`}
+                          onClick={(e) =>
+                            handleDayClick(
+                              e,
+                              `${calendarYear}-${month.number}-${day.number}`
+                            )
+                          }
+                          onDoubleClick={(e) =>
+                            handleDayDoubleClick(e, {
+                              day: day.number,
+                              month: month.number,
+                              year: calendarYear,
+                            })
+                          }
+                        >
+                          <div className="month_day-number">
+                            {day.name ? day.number : ""}
                           </div>
-                        )}
-                      {calendarFormat === "month" && (
-                        <div className="month_day-todo">
-                          {["hight", "medium", "low"].map((priority) => (
-                            <div
-                              key={priority}
-                              className={`month_day-todo-number priority-${priority}`}
-                            >
-                              {(todos.filter(
-                                (todo) =>
-                                  todo.priority === priority &&
-                                  todo.deadline.date ===
-                                    `${calendarYear}-${month.number}-${day.number}`
-                              ).length &&
-                                todos.filter(
-                                  (todo) =>
-                                    todo.priority === priority &&
-                                    todo.deadline.date ===
-                                      `${calendarYear}-${month.number}-${day.number}`
-                                ).length) ||
-                                ""}
-                              <div className="tooltip">
+                          {calendarFormat === "year" &&
+                            showTooltip &&
+                            dateSelected ===
+                              `${calendarYear}-${month.number}-${day.number}` && (
+                              <div className="month_day-tooltip">
                                 {todos.map(
                                   (todo) =>
-                                    todo.priority === priority &&
                                     todo.deadline.date ===
                                       `${calendarYear}-${month.number}-${day.number}` && (
                                       <div key={todo.id}>{todo.title}</div>
                                     )
                                 )}
                               </div>
+                            )}
+                          {calendarFormat === "month" && (
+                            <div className="month_day-todo">
+                              {["hight", "medium", "low"].map((priority) => (
+                                <div
+                                  key={priority}
+                                  className={`month_day-todo-number priority-${priority}`}
+                                >
+                                  {(todos.filter(
+                                    (todo) =>
+                                      todo.priority === priority &&
+                                      todo.deadline.date ===
+                                        `${calendarYear}-${month.number}-${day.number}`
+                                  ).length &&
+                                    todos.filter(
+                                      (todo) =>
+                                        todo.priority === priority &&
+                                        todo.deadline.date ===
+                                          `${calendarYear}-${month.number}-${day.number}`
+                                    ).length) ||
+                                    ""}
+                                  <div className="tooltip">
+                                    {todos.map(
+                                      (todo) =>
+                                        todo.priority === priority &&
+                                        todo.deadline.date ===
+                                          `${calendarYear}-${month.number}-${day.number}` && (
+                                          <div key={todo.id}>{todo.title}</div>
+                                        )
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
                             </div>
-                          ))}
+                          )}
                         </div>
-                      )}
-                    </div>
-                  ))}
-              </div>
-            </div>
-          ))}
+                      ))}
+                  </div>
+                </div>
+              )
+          )}
 
         {(calendarFormat === "day" || calendarFormat === "week") && (
           <div className="week">
-            {calendar.map((day) => (
-              <div key={day.date} className="day">
-                <div>{day.date}</div>
-                <div className="day_todo-nohour">
-                  {todos.map(
-                    (todo) =>
-                      todo.deadline.date === day.date &&
-                      todo.deadline.time.length === 0 && (
-                        <div
-                          key={todo.id}
-                          className={`priority-${
-                            todo.completed ? "completed" : todo.priority
-                          }`}
-                        >
-                          {todo.title}
-                        </div>
-                      )
-                  )}
-                </div>
-                {day.time &&
-                  day.time.map(
-                    (time) =>
-                      time.hour && (
-                        <div key={time.hour} className={"day_hour"}>
-                          <div className="day_hour-number">{time.hour}:00</div>
-                          {time.minutes &&
-                            time.minutes.map((minute) => (
-                              <div
-                                key={`${time.hour} ${minute.number}`}
-                                className={`day_hour-minute${
-                                  currentDate.date === day.date &&
-                                  currentDate.time ===
-                                    `${
-                                      time.hour < 10
-                                        ? `0${time.hour}`
-                                        : time.hour
-                                    }:${
-                                      minute.number < 10
-                                        ? `0${minute.number}`
-                                        : minute.number
-                                    }`
-                                    ? " now"
-                                    : ""
-                                }`}
-                              >
-                                {todos.map(
-                                  (todo) =>
-                                    todo.deadline.date === day.date &&
-                                    todo.deadline.time ===
-                                      `${time.hour}:${minute.number}` && (
-                                      <div
-                                        key={todo.title}
-                                        className={`priority-${
-                                          todo.completed
-                                            ? "completed"
-                                            : todo.priority
-                                        }`}
-                                      >
-                                        {todo.title}
-                                      </div>
-                                    )
-                                )}
+            {calendar.map(
+              (day) =>
+                day.date && (
+                  <div key={day.date} className="day">
+                    <div>{day.date}</div>
+                    <div className="day_todo-nohour">
+                      {todos.map(
+                        (todo) =>
+                          todo.deadline.date === day.date &&
+                          todo.deadline.time.length === 0 && (
+                            <div
+                              key={todo.id}
+                              className={`priority-${
+                                todo.completed ? "completed" : todo.priority
+                              }`}
+                            >
+                              {todo.title}
+                            </div>
+                          )
+                      )}
+                    </div>
+                    {day.time &&
+                      day.time.map(
+                        (time) =>
+                          time.hour && (
+                            <div key={time.hour} className={"day_hour"}>
+                              <div className="day_hour-number">
+                                {time.hour}:00
                               </div>
-                            ))}
-                        </div>
-                      )
-                  )}
-              </div>
-            ))}
+                              {time.minutes &&
+                                time.minutes.map((minute) => (
+                                  <div
+                                    key={`${time.hour} ${minute.number}`}
+                                    className={`day_hour-minute${
+                                      currentDate.date === day.date &&
+                                      currentDate.time ===
+                                        `${
+                                          time.hour < 10
+                                            ? `0${time.hour}`
+                                            : time.hour
+                                        }:${
+                                          minute.number < 10
+                                            ? `0${minute.number}`
+                                            : minute.number
+                                        }`
+                                        ? " now"
+                                        : ""
+                                    }`}
+                                  >
+                                    {todos.map(
+                                      (todo) =>
+                                        todo.deadline.date === day.date &&
+                                        todo.deadline.time ===
+                                          `${time.hour}:${minute.number}` && (
+                                          <div
+                                            key={todo.title}
+                                            className={`priority-${
+                                              todo.completed
+                                                ? "completed"
+                                                : todo.priority
+                                            }`}
+                                          >
+                                            {todo.title}
+                                          </div>
+                                        )
+                                    )}
+                                  </div>
+                                ))}
+                            </div>
+                          )
+                      )}
+                  </div>
+                )
+            )}
           </div>
         )}
       </div>
