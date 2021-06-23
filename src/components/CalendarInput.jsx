@@ -17,6 +17,7 @@ const CalendarInput = ({
   monthGoingToSubmit,
   yearGoingToSubmit,
   onInputChange,
+  calendarFormat,
 }) => {
   const [inputError, setInputError] = useState([]);
   const [showInputs, setShowInputs] = useState(false);
@@ -132,10 +133,17 @@ const CalendarInput = ({
   };
 
   const handleDateBackward = () => {
-    let newDate, newFormat, newYear, newMonth, newDay;
-    //If there is a day to change
-    if (dayGoingToSubmit.toString().length > 0) {
-      newFormat = "day";
+    let newDate, newYear, newMonth, newDay;
+    if (calendarFormat === "week") {
+      newDate = new Date(
+        yearGoingToSubmit,
+        monthsNames.indexOf(monthGoingToSubmit),
+        parseInt(dayGoingToSubmit) - 7
+      );
+      newYear = newDate.getFullYear();
+      newMonth = monthsNames[newDate.getMonth()];
+      newDay = newDate.getDate();
+    } else if (calendarFormat === "day") {
       newDate = new Date(
         yearGoingToSubmit,
         monthsNames.indexOf(monthGoingToSubmit),
@@ -144,10 +152,7 @@ const CalendarInput = ({
       newYear = newDate.getFullYear();
       newMonth = monthsNames[newDate.getMonth()];
       newDay = newDate.getDate();
-    }
-    //If there is a month to change
-    else if (monthGoingToSubmit.length > 0) {
-      newFormat = "month";
+    } else if (calendarFormat === "month") {
       newDate = new Date(
         yearGoingToSubmit,
         monthsNames.indexOf(monthGoingToSubmit),
@@ -156,16 +161,13 @@ const CalendarInput = ({
       newYear = newDate.getFullYear();
       newMonth = monthsNames[newDate.getMonth()];
       newDay = "";
-    }
-    //Change Year
-    else {
-      newFormat = "year";
+    } else if (calendarFormat === "year") {
       newYear = parseInt(yearGoingToSubmit) - 1;
       newMonth = monthGoingToSubmit;
       newDay = dayGoingToSubmit;
     }
     changeDate({
-      format: newFormat,
+      format: calendarFormat,
       year: newYear,
       month: newMonth,
       day: newDay,
@@ -173,9 +175,17 @@ const CalendarInput = ({
   };
 
   const handleDateForward = () => {
-    let newDate, newFormat, newYear, newMonth, newDay;
-    if (dayGoingToSubmit.toString().length > 0) {
-      newFormat = "day";
+    let newDate, newYear, newMonth, newDay;
+    if (calendarFormat === "week") {
+      newDate = new Date(
+        yearGoingToSubmit,
+        monthsNames.indexOf(monthGoingToSubmit),
+        parseInt(dayGoingToSubmit) + 7
+      );
+      newYear = newDate.getFullYear();
+      newMonth = monthsNames[newDate.getMonth()];
+      newDay = newDate.getDate();
+    } else if (calendarFormat === "day") {
       newDate = new Date(
         yearGoingToSubmit,
         monthsNames.indexOf(monthGoingToSubmit),
@@ -184,8 +194,7 @@ const CalendarInput = ({
       newYear = newDate.getFullYear();
       newMonth = monthsNames[newDate.getMonth()];
       newDay = newDate.getDate();
-    } else if (monthGoingToSubmit.length > 0) {
-      newFormat = "month";
+    } else if (calendarFormat === "month") {
       newDate = new Date(
         yearGoingToSubmit,
         monthsNames.indexOf(monthGoingToSubmit),
@@ -198,14 +207,13 @@ const CalendarInput = ({
       newYear = newDate.getFullYear();
       newMonth = monthsNames[newDate.getMonth()];
       newDay = newDate.getDate();
-    } else {
-      newFormat = "year";
+    } else if (calendarFormat === "year") {
       newYear = parseInt(yearGoingToSubmit) + 1;
       newMonth = monthGoingToSubmit;
       newDay = dayGoingToSubmit;
     }
     changeDate({
-      format: newFormat,
+      format: calendarFormat,
       year: newYear,
       month: newMonth,
       day: newDay,

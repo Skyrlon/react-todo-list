@@ -419,6 +419,15 @@ const Calendar = ({ todos }) => {
     );
     setCalendarFormat(newDate.format);
     setDateAsked(`${newDate.day} ${newDate.month} ${newDate.year}`);
+    if (newDate.format === "week") {
+      setDateSelected(
+        `${newDate.year}-${
+          monthsNames.indexOf(monthWithFirstLetterCapital) + 1 < 10
+            ? `0${monthsNames.indexOf(monthWithFirstLetterCapital) + 1}`
+            : monthsNames.indexOf(monthWithFirstLetterCapital) + 1
+        }-${newDate.day < 10 ? `0${newDate.day}` : newDate.day}`
+      );
+    }
     if (newDate.format === "day")
       setDateSelected(
         `${newDate.year}-${
@@ -487,6 +496,7 @@ const Calendar = ({ todos }) => {
         monthGoingToSubmit={inputMonth}
         dayGoingToSubmit={inputDay}
         onInputChange={onInputChange}
+        calendarFormat={calendarFormat}
       />
       <label htmlFor="view">View by : </label>
       <select name="view" value={calendarFormat} onChange={handleChangeView}>
