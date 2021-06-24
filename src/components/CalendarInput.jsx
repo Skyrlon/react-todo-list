@@ -40,12 +40,12 @@ const CalendarInput = ({
   const handleNewDate = (e, type) => {
     e.preventDefault();
     let arrayError = inputError;
-    // Verify year is not inferior or superior to date limit and each character is a number
+    // Verify year is not inferior or superior to date limit (stay in year with 4 numerical digits) and each character is a number
     if (
-      parseInt(yearGoingToSubmit) < 1 ||
-      parseInt(yearGoingToSubmit) > 275759 ||
-      (type === "decrement" && parseInt(yearGoingToSubmit) === 1) ||
-      (type === "increment" && parseInt(yearGoingToSubmit) === 275759) ||
+      parseInt(yearGoingToSubmit) < 1000 ||
+      parseInt(yearGoingToSubmit) > 9999 ||
+      (type === "decrement" && parseInt(yearGoingToSubmit) === 1000) ||
+      (type === "increment" && parseInt(yearGoingToSubmit) === 9999) ||
       !yearGoingToSubmit
         .toString()
         .split("")
