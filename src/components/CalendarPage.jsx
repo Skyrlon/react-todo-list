@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import CalendarInput from "./CalendarInput.jsx";
 
-const StyledCalendar = styled.div`
+const StyledCalendarPage = styled.div`
   display: flex;
   width: 99vw;
   flex-direction: column;
@@ -172,7 +172,7 @@ const StyledCalendar = styled.div`
   }
 `;
 
-const Calendar = ({ todos }) => {
+const CalendarPage = ({ todos }) => {
   const [calendarYear, setCalendarYear] = useState(
     `${new Date(Date.now()).getFullYear()}`
   );
@@ -489,7 +489,7 @@ const Calendar = ({ todos }) => {
   );
 
   return (
-    <StyledCalendar>
+    <StyledCalendarPage>
       <CalendarInput
         changeDate={handleChangeDate}
         yearGoingToSubmit={inputYear}
@@ -698,8 +698,8 @@ const Calendar = ({ todos }) => {
           </div>
         )}
       </div>
-    </StyledCalendar>
+    </StyledCalendarPage>
   );
 };
 
-export default Calendar;
+export default CalendarPage;

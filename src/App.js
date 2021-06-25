@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 
 import TodoList from "./components/TodoList.jsx";
-import Calendar from "./components/Calendar.jsx";
+import CalendarPage from "./components/CalendarPage.jsx";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const App = () => {
         deadline: {
           date: `2021-${randomNumber(3, 4)}-${randomNumber(1, 28)}`,
           time:
-            randomNumber(0, 2) === '00'
+            randomNumber(0, 2) === "00"
               ? `${randomNumber(0, 23)}:${randomNumber(0, 59)}`
               : "",
         },
@@ -52,7 +52,7 @@ const App = () => {
 
           <Switch>
             <Route path="/calendar">
-              <Calendar todos={todos} />
+              <CalendarPage todos={todos} />
             </Route>
             <Route path="/">
               <TodoList todos={todos} modifyTodos={(e) => setTodos(e)} />
