@@ -44,8 +44,12 @@ const CalendarInput = ({
     if (
       parseInt(yearGoingToSubmit) < 1000 ||
       parseInt(yearGoingToSubmit) > 9999 ||
-      (type === "decrement" && parseInt(yearGoingToSubmit) === 1000) ||
-      (type === "increment" && parseInt(yearGoingToSubmit) === 9999) ||
+      (calendarFormat === "year" &&
+        type === "decrement" &&
+        parseInt(yearGoingToSubmit) === 1000) ||
+      (calendarFormat === "year" &&
+        type === "increment" &&
+        parseInt(yearGoingToSubmit) === 9999) ||
       !yearGoingToSubmit
         .toString()
         .split("")
@@ -220,9 +224,74 @@ const CalendarInput = ({
     });
   };
 
+  const dateGoingOutLimit = (type) => {
+    let outLimit;
+    if (type === "decrement") {
+      if (calendarFormat === "year") {
+        outLimit =
+          new Date(parseInt(yearGoingToSubmit) - 1, 1, 1).getFullYear() < 1000;
+      }
+      if (calendarFormat === "month") {
+        outLimit =
+          new Date(
+            parseInt(yearGoingToSubmit),
+            monthsNames.indexOf(monthGoingToSubmit) - 1,
+            1
+          ).getFullYear() < 1000;
+      }
+      if (calendarFormat === "week") {
+        outLimit =
+          new Date(
+            parseInt(yearGoingToSubmit),
+            monthsNames.indexOf(monthGoingToSubmit),
+            parseInt(dayGoingToSubmit) - 7
+          ).getFullYear() < 1000;
+      }
+      if (calendarFormat === "day") {
+        outLimit =
+          new Date(
+            parseInt(yearGoingToSubmit),
+            monthsNames.indexOf(monthGoingToSubmit),
+            parseInt(dayGoingToSubmit) - 1
+          ).getFullYear() < 1000;
+      }
+    }
+    if (type === "increment") {
+      if (calendarFormat === "year") {
+        outLimit =
+          new Date(parseInt(yearGoingToSubmit) + 1, 1, 1).getFullYear() > 9999;
+      }
+      if (calendarFormat === "month") {
+        outLimit =
+          new Date(
+            parseInt(yearGoingToSubmit),
+            monthsNames.indexOf(monthGoingToSubmit) + 1,
+            1
+          ).getFullYear() > 9999;
+      }
+      if (calendarFormat === "week") {
+        outLimit =
+          new Date(
+            parseInt(yearGoingToSubmit),
+            monthsNames.indexOf(monthGoingToSubmit),
+            parseInt(dayGoingToSubmit) + 7
+          ).getFullYear() > 9999;
+      }
+      if (calendarFormat === "day") {
+        outLimit =
+          new Date(
+            parseInt(yearGoingToSubmit),
+            monthsNames.indexOf(monthGoingToSubmit),
+            parseInt(dayGoingToSubmit) + 1
+          ).getFullYear() > 9999;
+      }
+    }
+    return outLimit;
+  };
+
   return (
     <StyledCalendarInput>
-      {!showInputs && (
+      {!showInputs && !dateGoingOutLimit("decrement") && (
         <div className="arrow" onClick={(e) => handleNewDate(e, "decrement")}>
           &#10092;
         </div>
@@ -267,7 +336,7 @@ const CalendarInput = ({
         </form>
       )}
 
-      {!showInputs && (
+      {!showInputs && !dateGoingOutLimit("increment") && (
         <div className="arrow" onClick={(e) => handleNewDate(e, "increment")}>
           &#10093;
         </div>
