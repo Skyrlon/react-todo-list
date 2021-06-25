@@ -324,6 +324,7 @@ const CalendarPage = ({ todos }) => {
   useEffect(
     () => {
       setCalendarArray(setUpCalendar());
+      setShowTooltip(false);
     }, // eslint-disable-next-line
     [dateAsked, calendarFormat]
   );
