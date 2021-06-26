@@ -1,5 +1,20 @@
 import styled from "styled-components";
 
+const monthsNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 const StyledCalendar = styled.div`
   display: flex;
   flex-direction: row;
@@ -169,8 +184,8 @@ const Calendar = ({
   calendarYear,
   onMonthClick,
   dateSelected,
-  onDayClick,
-  onDayDoubleClick,
+  onDayInMonthClick,
+  onDayInMonthDoubleClick,
   showTooltip,
 }) => {
   const weekDaysNames = [
@@ -222,19 +237,21 @@ const Calendar = ({
                             ? " showTooltip"
                             : ""
                         }`}
-                        onClick={(e) =>
-                          onDayClick(
-                            e,
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDayInMonthClick(
                             `${calendarYear}-${month.number}-${day.number}`
-                          )
-                        }
-                        onDoubleClick={(e) =>
-                          onDayDoubleClick(e, {
+                          );
+                        }}
+                        onDoubleClick={(e) => {
+                          e.stopPropagation();
+                          onDayInMonthDoubleClick({
                             day: day.number,
-                            month: month.number,
+                            month: monthsNames[parseInt(month.number) - 1],
                             year: calendarYear,
-                          })
-                        }
+                            format: "day",
+                          });
+                        }}
                       >
                         <div className="month_day-number">
                           {day.name ? day.number : ""}

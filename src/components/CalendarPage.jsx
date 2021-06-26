@@ -218,27 +218,13 @@ const CalendarPage = ({ todos }) => {
     setDateAsked(newDate);
   };
 
-  const handleDayClick = (e, date) => {
-    e.stopPropagation();
+  const handleDayInMonthClick = (date) => {
     setDateSelected(date);
     if (dateSelected === date) {
       setShowTooltip((prev) => !prev);
     } else {
       setShowTooltip(true);
     }
-  };
-
-  const handleDayDoubleClick = (e, date) => {
-    e.stopPropagation();
-    setCalendarFormat("day");
-    setDateSelected(`${date.year}-${date.month}-${date.day}`);
-    setCalendarYear(date.year);
-    setCalendarMonth(date.month);
-    setCalendarDay(date.day);
-    setInputYear(date.year);
-    setInputMonth(monthsNames[parseInt(date.month) - 1]);
-    setInputDay(date.day);
-    setDateAsked(`${date.day} ${date.month} ${date.year}`);
   };
 
   const handleChangeDate = (newDate) => {
@@ -339,6 +325,7 @@ const CalendarPage = ({ todos }) => {
         onInputChange={onInputChange}
         calendarFormat={calendarFormat}
       />
+
       <label htmlFor="view">View by : </label>
       <select name="view" value={calendarFormat} onChange={handleChangeView}>
         <option value="year">Year</option>
@@ -346,6 +333,7 @@ const CalendarPage = ({ todos }) => {
         <option value="week">Week</option>
         <option value="day">Day</option>
       </select>
+
       <Calendar
         todos={todos}
         calendarArray={calendarArray}
@@ -354,8 +342,8 @@ const CalendarPage = ({ todos }) => {
         calendarYear={calendarYear}
         onMonthClick={handleMonthClick}
         dateSelected={dateSelected}
-        onDayClick={handleDayClick}
-        onDayDoubleClick={handleDayDoubleClick}
+        onDayInMonthClick={handleDayInMonthClick}
+        onDayInMonthDoubleClick={handleChangeDate}
         showTooltip={showTooltip}
       />
     </StyledCalendarPage>
