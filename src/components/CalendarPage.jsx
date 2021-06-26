@@ -177,13 +177,6 @@ const CalendarPage = ({ todos }) => {
     return array;
   };
 
-  const handleMonthClick = (monthName) => {
-    setCalendarFormat("month");
-    setCalendarMonth(monthName);
-    setInputMonth(monthName);
-    setDateAsked(`${monthName} ${calendarYear}`);
-  };
-
   const handleChangeView = (e) => {
     let date = new Date(dateSelected);
     let newDay, newMonth, newYear, newFormat, newDate;
@@ -340,7 +333,7 @@ const CalendarPage = ({ todos }) => {
         format={calendarFormat}
         currentDate={currentDate}
         calendarYear={calendarYear}
-        onMonthClick={handleMonthClick}
+        onMonthClick={handleChangeDate}
         dateSelected={dateSelected}
         onDayInMonthClick={handleDayInMonthClick}
         onDayInMonthDoubleClick={handleChangeDate}

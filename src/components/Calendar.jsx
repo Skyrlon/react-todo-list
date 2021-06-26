@@ -207,7 +207,14 @@ const Calendar = ({
                 className="month"
                 key={month.name}
                 onClick={() =>
-                  format === "year" ? onMonthClick(month.name) : ""
+                  format === "year"
+                    ? onMonthClick({
+                        day: "",
+                        month: monthsNames[parseInt(month.number) - 1],
+                        year: calendarYear,
+                        format: "month",
+                      })
+                    : ""
                 }
               >
                 {format === "year" && (
