@@ -244,7 +244,11 @@ const CalendarPage = ({ todos }) => {
           monthsNames.indexOf(monthWithFirstLetterCapital) + 1 < 10
             ? `0${monthsNames.indexOf(monthWithFirstLetterCapital) + 1}`
             : monthsNames.indexOf(monthWithFirstLetterCapital) + 1
-        }-${newDate.day < 10 ? `0${newDate.day}` : newDate.day}`
+        }-${
+          parseInt(newDate.day) < 10
+            ? `0${parseInt(newDate.day)}`
+            : parseInt(newDate.day)
+        }`
       );
     }
     if (newDate.format === "day")
@@ -253,7 +257,11 @@ const CalendarPage = ({ todos }) => {
           monthsNames.indexOf(monthWithFirstLetterCapital) + 1 < 10
             ? `0${monthsNames.indexOf(monthWithFirstLetterCapital) + 1}`
             : monthsNames.indexOf(monthWithFirstLetterCapital) + 1
-        }-${newDate.day < 10 ? `0${newDate.day}` : newDate.day}`
+        }-${
+          parseInt(newDate.day) < 10
+            ? `0${parseInt(newDate.day)}`
+            : parseInt(newDate.day)
+        }`
       );
     if (newDate.format === "month")
       setDateSelected(
