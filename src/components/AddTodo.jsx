@@ -113,6 +113,8 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
           <input
             type="date"
             name="deadline"
+            min="1000-01-01"
+            max="9999-12-31"
             value={deadlineDate}
             onChange={(e) => setDeadlineDate(e.target.value)}
           />
