@@ -336,7 +336,7 @@ const CalendarPage = ({ todos }) => {
         onMonthClick={handleChangeDate}
         dateSelected={dateSelected}
         onDayInMonthClick={handleDayInMonthClick}
-        onDayInMonthDoubleClick={handleChangeDate}
+        goToThisDay={handleChangeDate}
         showTooltip={showTooltip}
       />
     </StyledCalendarPage>

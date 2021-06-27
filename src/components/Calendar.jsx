@@ -185,7 +185,7 @@ const Calendar = ({
   onMonthClick,
   dateSelected,
   onDayInMonthClick,
-  onDayInMonthDoubleClick,
+  goToThisDay,
   showTooltip,
 }) => {
   const weekDaysNames = [
@@ -252,7 +252,7 @@ const Calendar = ({
                         }}
                         onDoubleClick={(e) => {
                           e.stopPropagation();
-                          onDayInMonthDoubleClick({
+                          goToThisDay({
                             day: day.number,
                             month: monthsNames[parseInt(month.number) - 1],
                             year: calendarYear,
@@ -324,7 +324,24 @@ const Calendar = ({
             (day) =>
               day.date && (
                 <div key={day.date} className="day">
-                  <div>{day.date}</div>
+                  <div
+                    onClick={() =>
+                      !(
+                        parseInt(day.date.split("-")[0]) < 1000 ||
+                        parseInt(day.date.split("-")[0]) > 9999
+                      )
+                        ? goToThisDay({
+                            day: day.date.split("-")[2],
+                            month:
+                              monthsNames[parseInt(day.date.split("-")[1]) - 1],
+                            year: day.date.split("-")[0],
+                            format: "day",
+                          })
+                        : ""
+                    }
+                  >
+                    {day.date}
+                  </div>
                   <div className="day_todo-nohour">
                     {todos.map(
                       (todo) =>
