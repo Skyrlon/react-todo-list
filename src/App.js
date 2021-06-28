@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
-import TodoList from "./components/TodoList.jsx";
+import TodosPage from "./components/TodosPage.jsx";
 import CalendarPage from "./components/CalendarPage.jsx";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -42,7 +42,7 @@ const App = () => {
           <nav>
             <ul>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/">Todos</Link>
               </li>
               <li>
                 <Link to="/calendar">Calendar</Link>
@@ -55,7 +55,7 @@ const App = () => {
               <CalendarPage todos={todos} />
             </Route>
             <Route path="/">
-              <TodoList todos={todos} modifyTodos={(e) => setTodos(e)} />
+              <TodosPage todos={todos} modifyTodos={(e) => setTodos(e)} />
             </Route>
           </Switch>
         </div>

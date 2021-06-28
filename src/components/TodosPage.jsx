@@ -7,9 +7,9 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import Todos from "./Todos.jsx";
 import AddTodo from "./AddTodo.jsx";
 
-const StyledTodoList = styled.div``;
+const StyledTodosPage = styled.div``;
 
-const TodoList = ({ todos, modifyTodos }) => {
+const TodosPage = ({ todos, modifyTodos }) => {
   const [todoToEdit, setTodoToEdit] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [editingTodo, setEditingTodo] = useState(false);
@@ -127,7 +127,7 @@ const TodoList = ({ todos, modifyTodos }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todos]);
   return (
-    <StyledTodoList>
+    <StyledTodosPage>
       <div className="add-button" onClick={() => setShowForm(true)}>
         <FontAwesomeIcon icon={faPlusCircle} />
       </div>
@@ -176,7 +176,7 @@ const TodoList = ({ todos, modifyTodos }) => {
         deleteTodo={handleDeleteTodo}
         toggleCompleteTodo={handleToggleCompleteTodo}
       />
-    </StyledTodoList>
+    </StyledTodosPage>
   );
 };
-export default TodoList;
+export default TodosPage;
