@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Todo from "./Todo.jsx";
 
-const StyledTodos = styled.div`
+const StyledTodoList = styled.div`
   & .todos {
     display: flex;
     flex-direction: row;
@@ -13,7 +13,7 @@ const StyledTodos = styled.div`
   }
 `;
 
-const Todos = ({
+const TodoList = ({
   TodoListItems,
   editTodo,
   deleteTodo,
@@ -21,7 +21,7 @@ const Todos = ({
   display,
 }) => {
   return (
-    <StyledTodos>
+    <StyledTodoList>
       {display === "all" && (
         <div>
           <h2>All ({TodoListItems.length})</h2>
@@ -105,11 +105,11 @@ const Todos = ({
           </div>
         </div>
       )}
-    </StyledTodos>
+    </StyledTodoList>
   );
 };
 
-Todos.propTypes = {
+TodoList.propTypes = {
   display: PropTypes.string,
   TodoListItems: PropTypes.array,
   editTodo: PropTypes.func,
@@ -117,4 +117,4 @@ Todos.propTypes = {
   toggleCompleteTodo: PropTypes.func,
 };
 
-export default Todos;
+export default TodoList;

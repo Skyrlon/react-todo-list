@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
-import Todos from "./Todos.jsx";
+import TodoList from "./TodoList.jsx";
 import AddTodo from "./AddTodo.jsx";
 
 const StyledTodosPage = styled.div``;
@@ -165,7 +165,7 @@ const TodosPage = ({ todos, modifyTodos }) => {
         />
       )}
 
-      <Todos
+      <TodoList
         display={todosListDisplay}
         TodoListItems={sortedTodos}
         editTodo={(e) => {
