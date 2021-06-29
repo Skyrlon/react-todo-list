@@ -22,92 +22,96 @@ const StyledCalendar = styled.div`
   justify-content: center;
   width: 100%;
   height: 75%;
-  & .month {
+`;
+
+const StyledMonth = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 13%;
+  margin-top: 1%;
+  margin-left: 1%;
+  margin-right: 1%;
+  border: 1px solid black;
+
+  & .weekday {
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 13%;
-    margin-top: 1%;
-    margin-left: 1%;
-    margin-right: 1%;
-    border: 1px solid black;
-    &_days {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-around;
-    }
-    &_day {
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
+    flex-direction: row;
+    justify-content: space-around;
+    & > div {
       width: 13%;
-      height: 3em;
       border: 1px solid black;
-      &.selected {
-        background-color: green;
-      }
-      &-tooltip {
-        position: absolute;
-        top: 3em;
-        z-index: 1;
-        background-color: lightblue;
-        min-width: 7em;
-      }
-      &-todo {
-        position: absolute;
-        top: 0%;
-        right: 0.5em;
-        font-size: 0.75em;
-        & .priority {
-          &-hight {
-            color: red;
-          }
-          &-medium {
-            color: #ffcc00;
-          }
-          &-low {
-            color: green;
-          }
-        }
-        &-number {
-          position: relative;
-          & .tooltip {
-            display: none;
-          }
-          &:hover {
-            & .tooltip {
-              position: absolute;
-              display: block;
-              z-index: 1;
-              background-color: white;
-              bottom: 100%;
-              width: 10em;
-              border: 1px solid black;
-            }
-          }
-        }
-      }
-    }
-    &_weekday {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      & > div {
-        width: 13%;
-        border: 1px solid black;
-      }
     }
   }
 
-  & .week {
+  & .days {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 90vw;
+    flex-wrap: wrap;
+    justify-content: space-around;
   }
+
+  & .day {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 13%;
+    height: 3em;
+    border: 1px solid black;
+    &.selected {
+      background-color: green;
+    }
+    &-tooltip {
+      position: absolute;
+      top: 3em;
+      z-index: 1;
+      background-color: lightblue;
+      min-width: 7em;
+    }
+    &-todo {
+      position: absolute;
+      top: 0%;
+      right: 0.5em;
+      font-size: 0.75em;
+      & .priority {
+        &-hight {
+          color: red;
+        }
+        &-medium {
+          color: #ffcc00;
+        }
+        &-low {
+          color: green;
+        }
+      }
+      &-number {
+        position: relative;
+        & .tooltip {
+          display: none;
+        }
+        &:hover {
+          & .tooltip {
+            position: absolute;
+            display: block;
+            z-index: 1;
+            background-color: white;
+            bottom: 100%;
+            width: 10em;
+            border: 1px solid black;
+          }
+        }
+      }
+    }
+  }
+`;
+
+const StyledWeek = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90vw;
 
   & .day {
     display: flex;
@@ -203,8 +207,7 @@ const Calendar = ({
         calendarArray.map(
           (month) =>
             month.name && (
-              <div
-                className="month"
+              <StyledMonth
                 key={month.name}
                 onClick={() =>
                   format === "year"
@@ -222,17 +225,17 @@ const Calendar = ({
                     <div>{month.name}</div>
                   </div>
                 )}
-                <div className="month_weekday">
+                <div className="weekday">
                   {weekDaysNames.map((weekday) => (
                     <div key={weekday}>{weekday.slice(0, 3)}</div>
                   ))}
                 </div>
-                <div className="month_days">
+                <div className="days">
                   {month.days &&
                     month.days.map((day) => (
                       <div
                         key={`${day.number}${day.name}`}
-                        className={`month_day${
+                        className={`day${
                           dateSelected ===
                           `${calendarYear}-${month.number}-${day.number}`
                             ? " selected"
@@ -260,14 +263,14 @@ const Calendar = ({
                           });
                         }}
                       >
-                        <div className="month_day-number">
+                        <div className="day-number">
                           {day.name ? day.number : ""}
                         </div>
                         {format === "year" &&
                           showTooltip &&
                           dateSelected ===
                             `${calendarYear}-${month.number}-${day.number}` && (
-                            <div className="month_day-tooltip">
+                            <div className="day-tooltip">
                               {todos.map(
                                 (todo) =>
                                   todo.deadline.date ===
@@ -278,11 +281,11 @@ const Calendar = ({
                             </div>
                           )}
                         {format === "month" && (
-                          <div className="month_day-todo">
+                          <div className="day-todo">
                             {["hight", "medium", "low"].map((priority) => (
                               <div
                                 key={priority}
-                                className={`month_day-todo-number priority-${priority}`}
+                                className={`day-todo-number priority-${priority}`}
                               >
                                 {(todos.filter(
                                   (todo) =>
@@ -314,12 +317,12 @@ const Calendar = ({
                       </div>
                     ))}
                 </div>
-              </div>
+              </StyledMonth>
             )
         )}
 
       {(format === "day" || format === "week") && (
-        <div className="week">
+        <StyledWeek>
           {calendarArray.map(
             (day) =>
               day.date && (
@@ -411,7 +414,7 @@ const Calendar = ({
                 </div>
               )
           )}
-        </div>
+        </StyledWeek>
       )}
     </StyledCalendar>
   );
