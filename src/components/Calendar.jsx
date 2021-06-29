@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const monthsNames = [
   "January",
@@ -418,6 +419,19 @@ const Calendar = ({
       )}
     </StyledCalendar>
   );
+};
+
+Calendar.propTypes = {
+  todos: PropTypes.array,
+  calendarArray: PropTypes.array,
+  format: PropTypes.string,
+  currentDate: PropTypes.object,
+  calendarYear: PropTypes.string,
+  onMonthClick: PropTypes.func,
+  dateSelected: PropTypes.string,
+  onDayInMonthClick: PropTypes.func,
+  goToThisDay: PropTypes.func,
+  showTooltip: PropTypes.bool,
 };
 
 export default Calendar;
