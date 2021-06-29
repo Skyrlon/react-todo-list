@@ -201,13 +201,13 @@ const CalendarPage = ({ todos }) => {
       newYear = date.getFullYear();
       newDate = date.getFullYear();
     }
-    setInputDay(newDay);
+    setInputDay(newDay.toString());
     setInputMonth(newMonth);
-    setInputYear(newYear);
+    setInputYear(newYear.toString());
     setCalendarFormat(newFormat);
-    setCalendarDay(newDay);
+    setCalendarDay(newDay.toString());
     setCalendarMonth(newMonth);
-    setCalendarYear(newYear);
+    setCalendarYear(newYear.toString());
     setDateAsked(newDate);
   };
 
@@ -230,11 +230,13 @@ const CalendarPage = ({ todos }) => {
       .join("");
     setInputYear(parseInt(newDate.year).toString());
     setInputMonth(monthWithFirstLetterCapital);
-    setInputDay(newDate.day.toString().length > 0 ? parseInt(newDate.day) : "");
+    setInputDay(
+      newDate.day.toString().length > 0 ? parseInt(newDate.day).toString() : ""
+    );
     setCalendarYear(parseInt(newDate.year).toString());
     setCalendarMonth(monthWithFirstLetterCapital);
     setCalendarDay(
-      newDate.day.toString().length > 0 ? parseInt(newDate.day) : ""
+      newDate.day.toString().length > 0 ? parseInt(newDate.day).toString() : ""
     );
     setCalendarFormat(newDate.format);
     setDateAsked(`${newDate.day} ${newDate.month} ${newDate.year}`);

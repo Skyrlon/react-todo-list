@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledCalendarInput = styled.div`
   display: flex;
@@ -343,6 +344,15 @@ const CalendarInput = ({
       )}
     </StyledCalendarInput>
   );
+};
+
+CalendarInput.propTypes = {
+  changeDate: PropTypes.func,
+  dayGoingToSubmit: PropTypes.string,
+  monthGoingToSubmit: PropTypes.string,
+  yearGoingToSubmit: PropTypes.string,
+  onInputChange: PropTypes.func,
+  calendarFormat: PropTypes.string,
 };
 
 export default CalendarInput;
