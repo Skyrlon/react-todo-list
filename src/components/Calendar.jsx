@@ -111,8 +111,8 @@ const StyledMonth = styled.div`
 const StyledWeek = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 90vw;
+  justify-content: center;
+  width: 100%;
 
   & .day {
     display: flex;
@@ -123,23 +123,25 @@ const StyledWeek = styled.div`
       position: relative;
       display: flex;
       flex-direction: column;
-      border: 1px solid;
+      border-top: 1px solid grey;
+      border-bottom: 1px solid grey;
       width: 100%;
-      &::before {
-        position: absolute;
-        top: -2px;
-        left: -1em;
-        content: "";
-        border-top-width: 2px;
-        border-top-color: black;
-        border-top-style: solid;
-        width: 1em;
-      }
       &-number {
         position: absolute;
         top: -1em;
         left: -4em;
+        &::before {
+          position: absolute;
+          top: 0.8em;
+          right: -1.65em;
+          content: "";
+          border-top-width: 2px;
+          border-top-color: grey;
+          border-top-style: solid;
+          width: 1em;
+        }
       }
+
       &-minute {
         height: 10px;
         &.now {
@@ -163,6 +165,7 @@ const StyledWeek = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: space-around;
+      height: 3em;
     }
     & .priority {
       &-hight {
@@ -325,7 +328,7 @@ const Calendar = ({
       {(format === "day" || format === "week") && (
         <StyledWeek>
           {calendarArray.map(
-            (day) =>
+            (day, index) =>
               day.date && (
                 <div key={day.date} className="day">
                   <div
@@ -367,9 +370,11 @@ const Calendar = ({
                       (time) =>
                         time.hour && (
                           <div key={time.hour} className={"day_hour"}>
-                            <div className="day_hour-number">
-                              {time.hour}:00
-                            </div>
+                            {index === 0 && (
+                              <div className="day_hour-number">
+                                {time.hour}:00
+                              </div>
+                            )}
                             {time.minutes &&
                               time.minutes.map((minute) => (
                                 <div
