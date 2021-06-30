@@ -165,7 +165,7 @@ const CalendarInput = ({
       );
       newYear = newDate.getFullYear();
       newMonth = monthsNames[newDate.getMonth()];
-      newDay = "";
+      newDay = dayGoingToSubmit;
     } else if (calendarFormat === "year") {
       newYear = parseInt(yearGoingToSubmit) - 1;
       newMonth = monthGoingToSubmit;
@@ -211,7 +211,7 @@ const CalendarInput = ({
       );
       newYear = newDate.getFullYear();
       newMonth = monthsNames[newDate.getMonth()];
-      newDay = newDate.getDate();
+      newDay = dayGoingToSubmit;
     } else if (calendarFormat === "year") {
       newYear = parseInt(yearGoingToSubmit) + 1;
       newMonth = monthGoingToSubmit;
