@@ -18,7 +18,8 @@ const TodoList = ({
   editTodo,
   deleteTodo,
   toggleCompleteTodo,
-  display,
+  display,showCheckBoxes,
+  selectedToBeDeleted,
 }) => {
   return (
     <StyledTodoList>
@@ -29,6 +30,7 @@ const TodoList = ({
             {TodoListItems.map((element) => (
               <Todo
                 key={element.id}
+                id={element.id}
                 title={element.title}
                 details={element.details}
                 priority={element.priority}
@@ -38,6 +40,8 @@ const TodoList = ({
                 onComplete={() =>
                   toggleCompleteTodo(element, element.completed)
                 }
+                showCheckBoxes={showCheckBoxes}
+                selectedToBeDeleted={selectedToBeDeleted}
               />
             ))}
           </div>
@@ -61,6 +65,7 @@ const TodoList = ({
               ).map((element) => (
                 <Todo
                   key={element.id}
+                  id={element.id}
                   title={element.title}
                   details={element.details}
                   priority={element.priority}
@@ -70,6 +75,8 @@ const TodoList = ({
                   onComplete={() =>
                     toggleCompleteTodo(element, element.completed)
                   }
+                  showCheckBoxes={showCheckBoxes}
+                  selectedToBeDeleted={selectedToBeDeleted}
                 />
               ))}
             </div>
@@ -90,6 +97,7 @@ const TodoList = ({
               ).map((element) => (
                 <Todo
                   key={element.id}
+                  id={element.id}
                   title={element.title}
                   details={element.details}
                   priority={element.priority}
@@ -99,6 +107,8 @@ const TodoList = ({
                   onComplete={() =>
                     toggleCompleteTodo(element, element.completed)
                   }
+                  showCheckBoxes={showCheckBoxes}
+                  selectedToBeDeleted={selectedToBeDeleted}
                 />
               ))}
             </div>
@@ -115,6 +125,8 @@ TodoList.propTypes = {
   editTodo: PropTypes.func,
   deleteTodo: PropTypes.func,
   toggleCompleteTodo: PropTypes.func,
+  showCheckBoxes: PropTypes.bool,
+  selectedToBeDeleted: PropTypes.func,
 };
 
 export default TodoList;

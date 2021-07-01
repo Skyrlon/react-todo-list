@@ -26,6 +26,7 @@ const StyledTodo = styled.div`
 `;
 
 const Todo = ({
+  id,
   title,
   details,
   priority,
@@ -33,11 +34,19 @@ const Todo = ({
   onEdit,
   onDelete,
   onComplete,
+  showCheckBoxes,
+  selectedToBeDeleted,
 }) => {
   return (
     <StyledTodo
       className={`todo priority-${priority} ${completed ? "done" : ""}`}
     >
+      {showCheckBoxes && (
+        <input
+          type="checkbox"
+          onChange={(e) => selectedToBeDeleted(e.target.checked, id)}
+        />
+      )}
       <h3>{title}</h3>
       <div>{details}</div>
       <FontAwesomeIcon icon={faEdit} onClick={() => onEdit()} />
@@ -57,4 +66,5 @@ Todo.propTypes = {
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
   onComplete: PropTypes.func,
+  selectedToBeDeleted: PropTypes.func,
 };

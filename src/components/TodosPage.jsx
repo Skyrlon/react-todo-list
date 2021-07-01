@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle, faBan } from "@fortawesome/free-solid-svg-icons";
 
 import TodoList from "./TodoList.jsx";
 import AddTodo from "./AddTodo.jsx";
@@ -17,6 +17,10 @@ const TodosPage = ({ todos, modifyTodos }) => {
   const [sortedTodos, setSortedTodos] = useState(todos);
 
   const [todosListDisplay, setTodosListDisplay] = useState("all");
+
+  const [todosIdsGoingToBeDeleted, setTodosIdsGoingToBeDeleted] = useState([]);
+
+  const [showCheckBoxes, setShowCheckBoxes] = useState(false);
 
   const sortingTodos = (sortingValue, todoToSort) => {
     let newSortedTodos = todoToSort;
@@ -117,6 +121,24 @@ const TodosPage = ({ todos, modifyTodos }) => {
     setSortedTodos([...filteredTodos]);
   };
 
+  const handleSelectedToBeDeleted = (selected, id) => {
+    let ids = todosIdsGoingToBeDeleted;
+    if (selected) {
+      setTodosIdsGoingToBeDeleted([...todosIdsGoingToBeDeleted, id]);
+    } else {
+      ids.splice(ids.indexOf(id), 1);
+      setTodosIdsGoingToBeDeleted([...ids]);
+    }
+  };
+
+  const deleteAllTodosSelected = () => {
+    let allTodos = todos;
+    modifyTodos(
+      allTodos.filter((todo) => !todosIdsGoingToBeDeleted.includes(todo.id))
+    );
+    setShowCheckBoxes(false);
+  };
+
   const closeForm = () => {
     setShowForm(false);
     setEditingTodo(false);
@@ -130,6 +152,28 @@ const TodosPage = ({ todos, modifyTodos }) => {
     <StyledTodosPage>
       <div className="add-button" onClick={() => setShowForm(true)}>
         <FontAwesomeIcon icon={faPlusCircle} />
+      </div>
+
+      <div>
+        {!showCheckBoxes && (
+          <FontAwesomeIcon
+            icon={faBan}
+            onClick={() => setShowCheckBoxes(true)}
+          />
+        )}
+        {showCheckBoxes && (
+          <div>
+            <div onClick={deleteAllTodosSelected}>Delete All Selected</div>
+            <div
+              onClick={() => {
+                setShowCheckBoxes(false);
+                setTodosIdsGoingToBeDeleted([]);
+              }}
+            >
+              Cancel
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="todos-list-display">
@@ -175,6 +219,8 @@ const TodosPage = ({ todos, modifyTodos }) => {
         }}
         deleteTodo={handleDeleteTodo}
         toggleCompleteTodo={handleToggleCompleteTodo}
+        showCheckBoxes={showCheckBoxes}
+        selectedToBeDeleted={handleSelectedToBeDeleted}
       />
     </StyledTodosPage>
   );
