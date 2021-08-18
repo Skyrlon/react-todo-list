@@ -3,7 +3,6 @@ import "./App.css";
 
 import TodosPage from "./components/TodosPage.jsx";
 import CalendarPage from "./components/CalendarPage.jsx";
-import Month from "./components/Month";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -48,16 +47,10 @@ const App = () => {
               <li>
                 <Link to="/calendar">Calendar</Link>
               </li>
-              <li>
-                <Link to="/test">Test</Link>
-              </li>
             </ul>
           </nav>
 
           <Switch>
-            <Route path="/test">
-              <Month month="August" year="2021" />
-            </Route>
             <Route path="/calendar">
               <CalendarPage todos={todos} />
             </Route>

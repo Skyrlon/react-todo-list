@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import YearlyCalendar from "./YearlyCalendar";
 
 const monthsNames = [
   "January",
@@ -422,6 +423,7 @@ const Calendar = ({
           )}
         </StyledWeek>
       )}
+      <YearlyCalendar year="2021" />
     </StyledCalendar>
   );
 };

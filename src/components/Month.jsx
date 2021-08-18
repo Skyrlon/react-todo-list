@@ -5,19 +5,21 @@ const StyledMonth = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 90%;
+  align-items: center;
+  width: 99%;
   margin-top: 1%;
   margin-left: 1%;
   margin-right: 1%;
-  border: 1px solid black;
 
   & .weekdays {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    width: 100%;
     & > div {
       width: 13%;
       border: 1px solid black;
+      box-sizing: border-box;
     }
   }
 
@@ -26,6 +28,7 @@ const StyledMonth = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+    width: 100%;
   }
 
   & .day {
@@ -36,6 +39,7 @@ const StyledMonth = styled.div`
     width: 13%;
     height: 3em;
     border: 1px solid black;
+    box-sizing: border-box;
     &.selected {
       background-color: green;
     }
@@ -76,6 +80,7 @@ const StyledMonth = styled.div`
             bottom: 100%;
             width: 10em;
             border: 1px solid black;
+            box-sizing: border-box;
           }
         }
       }
@@ -146,7 +151,7 @@ const Month = ({ month, year }) => {
     <StyledMonth>
       <div className="weekdays">
         {weekDaysNames.map((weekday) => (
-          <div key={weekday}>{weekday}</div>
+          <div key={weekday}>{weekday.slice(0, 3)}</div>
         ))}
       </div>
       <div className="days">
