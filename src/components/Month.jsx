@@ -114,7 +114,14 @@ const monthsNames = [
   "December",
 ];
 
-const Month = ({ month, year, dateSelected, onDayInMonthClick }) => {
+const Month = ({
+  month,
+  year,
+  dateSelected,
+  onDayInMonthClick,
+  showTooltip,
+  todos,
+}) => {
   const days = function () {
     let daysArray = [];
     const numberOfDays = new Date(
@@ -181,7 +188,28 @@ const Month = ({ month, year, dateSelected, onDayInMonthClick }) => {
                 );
               }}
             >
-              {day.name ? day.number : ""}
+              <div className="day-number">{day.name ? day.number : ""}</div>
+              {showTooltip &&
+                dateSelected ===
+                  `${year}-${
+                    monthsNames.indexOf(month) + 1 > 10
+                      ? monthsNames.indexOf(month) + 1
+                      : `0${monthsNames.indexOf(month) + 1}`
+                  }-${day.number}` && (
+                  <div className="day-tooltip">
+                    {todos.map(
+                      (todo) =>
+                        todo.deadline.date ===
+                          `${year}-${
+                            monthsNames.indexOf(month) + 1 > 10
+                              ? monthsNames.indexOf(month) + 1
+                              : `0${monthsNames.indexOf(month) + 1}`
+                          }-${day.number}` && (
+                          <div key={todo.id}>{todo.title}</div>
+                        )
+                    )}
+                  </div>
+                )}
             </div>
           ))}
       </div>
@@ -195,4 +223,6 @@ Month.propTypes = {
   year: PropTypes.string,
   dateSelected: PropTypes.string,
   onDayInMonthClick: PropTypes.func,
+  showTooltip: PropTypes.bool,
+  todos: PropTypes.array,
 };

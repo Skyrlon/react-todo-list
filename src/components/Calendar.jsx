@@ -428,6 +428,8 @@ const Calendar = ({
         onMonthClick={onMonthClick}
         dateSelected={dateSelected}
         onDayInMonthClick={onDayInMonthClick}
+        showTooltip={showTooltip}
+        todos={todos}
       />
     </StyledCalendar>
   );

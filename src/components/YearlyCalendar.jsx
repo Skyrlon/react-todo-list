@@ -41,6 +41,8 @@ const YearlyCalendar = ({
   onMonthClick,
   dateSelected,
   onDayInMonthClick,
+  showTooltip,
+  todos,
 }) => {
   return (
     <StyledYearlyCalendar>
@@ -64,6 +66,8 @@ const YearlyCalendar = ({
             year={year}
             dateSelected={dateSelected}
             onDayInMonthClick={onDayInMonthClick}
+            showTooltip={showTooltip}
+            todos={todos}
           />
         </div>
       ))}
@@ -78,4 +82,6 @@ YearlyCalendar.propTypes = {
   onMonthClick: PropTypes.func,
   dateSelected: PropTypes.string,
   onDayInMonthClick: PropTypes.func,
+  showTooltip: PropTypes.bool,
+  todos: PropTypes.array,
 };
