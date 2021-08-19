@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const StyledMonth = styled.div`
@@ -113,7 +114,7 @@ const monthsNames = [
   "December",
 ];
 
-const Month = ({ month, year }) => {
+const Month = ({ month, year, dateSelected, onDayInMonthClick }) => {
   const days = function () {
     let daysArray = [];
     const numberOfDays = new Date(
@@ -157,7 +158,29 @@ const Month = ({ month, year }) => {
       <div className="days">
         {days().length > 0 &&
           days().map((day) => (
-            <div className="day" key={day.number}>
+            <div
+              className={`day${
+                dateSelected ===
+                `${year}-${
+                  monthsNames.indexOf(month) + 1 > 10
+                    ? monthsNames.indexOf(month) + 1
+                    : `0${monthsNames.indexOf(month) + 1}`
+                }-${day.number}`
+                  ? " selected"
+                  : ""
+              }`}
+              key={day.number}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDayInMonthClick(
+                  `${year}-${
+                    monthsNames.indexOf(month) + 1 > 10
+                      ? monthsNames.indexOf(month) + 1
+                      : `0${monthsNames.indexOf(month) + 1}`
+                  }-${day.number}`
+                );
+              }}
+            >
               {day.name ? day.number : ""}
             </div>
           ))}
@@ -166,3 +189,10 @@ const Month = ({ month, year }) => {
   );
 };
 export default Month;
+
+Month.propTypes = {
+  month: PropTypes.string,
+  year: PropTypes.string,
+  dateSelected: PropTypes.string,
+  onDayInMonthClick: PropTypes.func,
+};

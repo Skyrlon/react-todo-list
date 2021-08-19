@@ -423,7 +423,12 @@ const Calendar = ({
           )}
         </StyledWeek>
       )}
-      <YearlyCalendar year={calendarYear} onMonthClick={onMonthClick} />
+      <YearlyCalendar
+        year={calendarYear}
+        onMonthClick={onMonthClick}
+        dateSelected={dateSelected}
+        onDayInMonthClick={onDayInMonthClick}
+      />
     </StyledCalendar>
   );
 };

@@ -36,7 +36,12 @@ const monthsNames = [
   "December",
 ];
 
-const YearlyCalendar = ({ year, onMonthClick }) => {
+const YearlyCalendar = ({
+  year,
+  onMonthClick,
+  dateSelected,
+  onDayInMonthClick,
+}) => {
   return (
     <StyledYearlyCalendar>
       {monthsNames.map((month) => (
@@ -54,7 +59,12 @@ const YearlyCalendar = ({ year, onMonthClick }) => {
           >
             {month}
           </div>
-          <Month month={month} year={year} />
+          <Month
+            month={month}
+            year={year}
+            dateSelected={dateSelected}
+            onDayInMonthClick={onDayInMonthClick}
+          />
         </div>
       ))}
     </StyledYearlyCalendar>
@@ -66,4 +76,6 @@ export default YearlyCalendar;
 YearlyCalendar.propTypes = {
   year: PropTypes.string,
   onMonthClick: PropTypes.func,
+  dateSelected: PropTypes.string,
+  onDayInMonthClick: PropTypes.func,
 };
