@@ -423,7 +423,7 @@ const Calendar = ({
           )}
         </StyledWeek>
       )}
-      <YearlyCalendar year="2021" />
+      <YearlyCalendar year={calendarYear} onMonthClick={onMonthClick} />
     </StyledCalendar>
   );
 };

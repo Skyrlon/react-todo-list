@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import Month from "./Month";
 
@@ -35,12 +36,24 @@ const monthsNames = [
   "December",
 ];
 
-const YearlyCalendar = ({ year }) => {
+const YearlyCalendar = ({ year, onMonthClick }) => {
   return (
     <StyledYearlyCalendar>
       {monthsNames.map((month) => (
         <div key={month} className="month">
-          <div className="month-name">{month}</div>
+          <div
+            className="month-name"
+            onClick={() =>
+              onMonthClick({
+                day: "",
+                month: month,
+                year: year,
+                format: "month",
+              })
+            }
+          >
+            {month}
+          </div>
           <Month month={month} year={year} />
         </div>
       ))}
@@ -49,3 +62,8 @@ const YearlyCalendar = ({ year }) => {
 };
 
 export default YearlyCalendar;
+
+YearlyCalendar.propTypes = {
+  year: PropTypes.string,
+  onMonthClick: PropTypes.func,
+};
