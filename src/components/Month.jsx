@@ -118,7 +118,8 @@ const Month = ({
   month,
   year,
   dateSelected,
-  onDayInMonthClick,
+  onDayClick,
+  onDayDoubleClick,
   showTooltip,
   todos,
 }) => {
@@ -179,13 +180,22 @@ const Month = ({
               key={day.number}
               onClick={(e) => {
                 e.stopPropagation();
-                onDayInMonthClick(
+                onDayClick(
                   `${year}-${
                     monthsNames.indexOf(month) + 1 > 10
                       ? monthsNames.indexOf(month) + 1
                       : `0${monthsNames.indexOf(month) + 1}`
                   }-${day.number}`
                 );
+              }}
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+                onDayDoubleClick({
+                  day: day.number,
+                  month: month,
+                  year: year,
+                  format: "day",
+                });
               }}
             >
               <div className="day-number">{day.name ? day.number : ""}</div>
@@ -223,6 +233,7 @@ Month.propTypes = {
   year: PropTypes.string,
   dateSelected: PropTypes.string,
   onDayInMonthClick: PropTypes.func,
+  onDayDoubleClick: PropTypes.func,
   showTooltip: PropTypes.bool,
   todos: PropTypes.array,
 };

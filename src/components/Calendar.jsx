@@ -194,6 +194,7 @@ const Calendar = ({
   onMonthClick,
   dateSelected,
   onDayInMonthClick,
+  onDayInMonthDoubleClick,
   goToThisDay,
   showTooltip,
 }) => {
@@ -427,7 +428,8 @@ const Calendar = ({
         year={calendarYear}
         onMonthClick={onMonthClick}
         dateSelected={dateSelected}
-        onDayInMonthClick={onDayInMonthClick}
+        onDayClick={onDayInMonthClick}
+        onDayDoubleClick={onDayInMonthDoubleClick}
         showTooltip={showTooltip}
         todos={todos}
       />
@@ -444,6 +446,7 @@ Calendar.propTypes = {
   onMonthClick: PropTypes.func,
   dateSelected: PropTypes.string,
   onDayInMonthClick: PropTypes.func,
+  onDayInMonthDoubleClick: PropTypes.func,
   goToThisDay: PropTypes.func,
   showTooltip: PropTypes.bool,
 };
