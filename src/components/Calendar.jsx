@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import YearlyCalendar from "./YearlyCalendar";
+import MonthlyCalendar from "./MonthlyCalendar";
 
 const monthsNames = [
   "January",
@@ -191,6 +192,7 @@ const Calendar = ({
   format,
   currentDate,
   calendarYear,
+  calendarMonth,
   onMonthClick,
   dateSelected,
   onDayInMonthClick,
@@ -424,15 +426,30 @@ const Calendar = ({
           )}
         </StyledWeek>
       )}
-      <YearlyCalendar
-        year={calendarYear}
-        onMonthClick={onMonthClick}
-        dateSelected={dateSelected}
-        onDayClick={onDayInMonthClick}
-        onDayDoubleClick={onDayInMonthDoubleClick}
-        showTooltip={showTooltip}
-        todos={todos}
-      />
+      {format === "year" && (
+        <YearlyCalendar
+          year={calendarYear}
+          onMonthClick={onMonthClick}
+          dateSelected={dateSelected}
+          onDayClick={onDayInMonthClick}
+          onDayDoubleClick={onDayInMonthDoubleClick}
+          showTooltip={showTooltip}
+          todos={todos}
+        />
+      )}
+
+      {format === "month" && (
+        <MonthlyCalendar
+          year={calendarYear}
+          month={calendarMonth}
+          onMonthClick={onMonthClick}
+          dateSelected={dateSelected}
+          onDayClick={onDayInMonthClick}
+          onDayDoubleClick={onDayInMonthDoubleClick}
+          showTooltip={showTooltip}
+          todos={todos}
+        />
+      )}
     </StyledCalendar>
   );
 };
