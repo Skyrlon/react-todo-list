@@ -2,6 +2,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import YearlyCalendar from "./YearlyCalendar";
 import MonthlyCalendar from "./MonthlyCalendar";
+import Day from "./Day";
 
 const monthsNames = [
   "January",
@@ -193,6 +194,7 @@ const Calendar = ({
   currentDate,
   calendarYear,
   calendarMonth,
+  calendarDay,
   onMonthClick,
   dateSelected,
   onDayInMonthClick,
@@ -450,6 +452,9 @@ const Calendar = ({
           todos={todos}
         />
       )}
+      {format === "day" && (
+        <Day year={calendarYear} month={calendarMonth} day={calendarDay} />
+      )}
     </StyledCalendar>
   );
 };
@@ -460,6 +465,8 @@ Calendar.propTypes = {
   format: PropTypes.string,
   currentDate: PropTypes.object,
   calendarYear: PropTypes.string,
+  calendarMonth: PropTypes.string,
+  calendarDay: PropTypes.string,
   onMonthClick: PropTypes.func,
   dateSelected: PropTypes.string,
   onDayInMonthClick: PropTypes.func,

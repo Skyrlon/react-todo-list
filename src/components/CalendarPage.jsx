@@ -344,6 +344,7 @@ const CalendarPage = ({ todos }) => {
         currentDate={currentDate}
         calendarYear={calendarYear}
         calendarMonth={calendarMonth}
+        calendarDay={calendarDay}
         onMonthClick={handleChangeDate}
         dateSelected={dateSelected}
         onDayInMonthClick={handleDayInMonthClick}
