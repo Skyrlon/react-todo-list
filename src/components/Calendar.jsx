@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import YearlyCalendar from "./YearlyCalendar";
-import MonthlyCalendar from "./MonthlyCalendar";
+import Month from "./Month";
 import Day from "./Day";
 
 const monthsNames = [
@@ -441,7 +441,7 @@ const Calendar = ({
       )}
 
       {format === "month" && (
-        <MonthlyCalendar
+        <Month
           year={calendarYear}
           month={calendarMonth}
           onMonthClick={onMonthClick}
