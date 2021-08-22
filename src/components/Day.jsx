@@ -5,7 +5,7 @@ const StyledDay = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid;
-  width: 90%;
+  width: 100%;
   & .hour {
     position: relative;
     display: flex;
@@ -81,7 +81,7 @@ const monthsNames = [
   "December",
 ];
 
-const Day = ({ year, month, day, todos }) => {
+const Day = ({ year, month, day, todos, showHours }) => {
   const time = function () {
     const numberOfHours = 24;
     const numberOfMinutes = 60;
@@ -124,7 +124,7 @@ const Day = ({ year, month, day, todos }) => {
       </div>
       {time().map((time) => (
         <div key={time.hour} className="hour">
-          <div className="hour-number">{time.hour}</div>
+          {showHours && <div className="hour-number">{time.hour}:00</div>}
           {time.minutes.map((minute) => (
             <div key={minute.number} className="hour-minute">
               {todos.map(
@@ -161,4 +161,5 @@ Day.propTypes = {
   month: PropTypes.string,
   day: PropTypes.string,
   todos: PropTypes.array,
+  showHours: PropTypes.bool,
 };

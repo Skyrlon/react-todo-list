@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import YearlyCalendar from "./YearlyCalendar";
 import Month from "./Month";
 import Day from "./Day";
+import WeeklyCalendar from "./WeeklyCalendar";
 
 const monthsNames = [
   "January",
@@ -453,7 +454,21 @@ const Calendar = ({
         />
       )}
       {format === "day" && (
-        <Day year={calendarYear} month={calendarMonth} day={calendarDay} todos={todos}/>
+        <Day
+          year={calendarYear}
+          month={calendarMonth}
+          day={calendarDay}
+          todos={todos}
+          showHours={true}
+        />
+      )}
+      {format === "week" && (
+        <WeeklyCalendar
+          year={calendarYear}
+          month={calendarMonth}
+          day={calendarDay}
+          todos={todos}
+        />
       )}
     </StyledCalendar>
   );
