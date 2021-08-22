@@ -453,7 +453,7 @@ const Calendar = ({
         />
       )}
       {format === "day" && (
-        <Day year={calendarYear} month={calendarMonth} day={calendarDay} />
+        <Day year={calendarYear} month={calendarMonth} day={calendarDay} todos={todos}/>
       )}
     </StyledCalendar>
   );

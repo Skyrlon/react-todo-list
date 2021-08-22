@@ -42,13 +42,9 @@ const StyledDay = styled.div`
           top: -0.8em;
         }
       }
-
-      & div {
-        font-size: 1em;
-      }
     }
   }
-  &_todo-nohour {
+  & .todo-nohour {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -70,7 +66,22 @@ const StyledDay = styled.div`
   }
 `;
 
-const Day = ({ year, month, day }) => {
+const monthsNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const Day = ({ year, month, day, todos }) => {
   const time = function () {
     const numberOfHours = 24;
     const numberOfMinutes = 60;
@@ -90,11 +101,52 @@ const Day = ({ year, month, day }) => {
 
   return (
     <StyledDay>
+      <div className="todo-nohour">
+        {todos.map(
+          (todo) =>
+            todo.deadline.date ===
+              `${year}-${
+                monthsNames.indexOf(month) + 1 > 10
+                  ? monthsNames.indexOf(month) + 1
+                  : `0${monthsNames.indexOf(month) + 1}`
+              }-${parseInt(day) > 10 ? day : `0${day}`}` &&
+            todo.deadline.time.length === 0 && (
+              <div
+                key={todo.id}
+                className={`priority-${
+                  todo.completed ? "completed" : todo.priority
+                }`}
+              >
+                {todo.title}
+              </div>
+            )
+        )}
+      </div>
       {time().map((time) => (
         <div key={time.hour} className="hour">
           <div className="hour-number">{time.hour}</div>
           {time.minutes.map((minute) => (
-            <div key={minute.number} className="hour-minute"></div>
+            <div key={minute.number} className="hour-minute">
+              {todos.map(
+                (todo) =>
+                  todo.deadline.date ===
+                    `${year}-${
+                      monthsNames.indexOf(month) + 1 > 10
+                        ? monthsNames.indexOf(month) + 1
+                        : `0${monthsNames.indexOf(month) + 1}`
+                    }-${parseInt(day) > 10 ? day : `0${day}`}` &&
+                  todo.deadline.time === `${time.hour}:${minute.number}` && (
+                    <div
+                      key={todo.id}
+                      className={`todo priority-${
+                        todo.completed ? "completed" : todo.priority
+                      }`}
+                    >
+                      {todo.title}
+                    </div>
+                  )
+              )}
+            </div>
           ))}
         </div>
       ))}
@@ -108,4 +160,5 @@ Day.propTypes = {
   year: PropTypes.string,
   month: PropTypes.string,
   day: PropTypes.string,
+  todos: PropTypes.array,
 };
