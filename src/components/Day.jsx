@@ -81,6 +81,27 @@ const monthsNames = [
   "December",
 ];
 
+const currentDate = {
+  date: `${new Date(Date.now()).getFullYear()}-${
+    new Date(Date.now()).getMonth() + 1 < 10
+      ? `0${new Date(Date.now()).getMonth() + 1}`
+      : new Date(Date.now()).getMonth() + 1
+  }-${
+    new Date(Date.now()).getDate() < 10
+      ? `0${new Date(Date.now()).getDate()}`
+      : new Date(Date.now()).getDate()
+  }`,
+  time: `${
+    new Date(Date.now()).getHours() < 10
+      ? `0${new Date(Date.now()).getHours()}`
+      : new Date(Date.now()).getHours()
+  }:${
+    new Date(Date.now()).getMinutes() < 10
+      ? `0${new Date(Date.now()).getMinutes()}`
+      : new Date(Date.now()).getMinutes()
+  }`,
+};
+
 const Day = ({ year, month, day, todos, showHours }) => {
   const time = function () {
     const numberOfHours = 24;
@@ -126,7 +147,20 @@ const Day = ({ year, month, day, todos, showHours }) => {
         <div key={time.hour} className="hour">
           {showHours && <div className="hour-number">{time.hour}:00</div>}
           {time.minutes.map((minute) => (
-            <div key={minute.number} className="hour-minute">
+            <div
+              key={minute.number}
+              className={`hour-minute${
+                currentDate.date ===
+                  `${year}-${
+                    monthsNames.indexOf(month) + 1 > 10
+                      ? monthsNames.indexOf(month) + 1
+                      : `0${monthsNames.indexOf(month) + 1}`
+                  }-${parseInt(day) > 10 ? day : `0${day}`}` &&
+                currentDate.time === `${time.hour}:${minute.number}`
+                  ? " now"
+                  : ""
+              }`}
+            >
               {todos.map(
                 (todo) =>
                   todo.deadline.date ===
