@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Day from "./Day";
 
 const StyledWeeklyCalendar = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;

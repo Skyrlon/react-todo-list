@@ -7,7 +7,7 @@ const StyledMonth = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  width: 99%;
+  width: 100%;
   margin-top: 1%;
   margin-left: 1%;
   margin-right: 1%;
