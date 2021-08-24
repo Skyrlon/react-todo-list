@@ -2,14 +2,18 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import CalendarInput from "./CalendarInput.jsx";
 import Calendar from "./Calendar.jsx";
+import TodosNoDeadlineSidebar from "./TodosNoDeadlineSidebar.jsx";
 
 const StyledCalendarPage = styled.div`
-  display: flex;
+  display: grid;
   width: 99vw;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.75em;
+  grid-template: "sidebar input input" 3vh "sidebar view view" 3vh "sidebar calendar calendar" 40vh "sidebar calendar calendar" 40vh / 10vw auto;
+  grid-column-gap: 4rem;
+  & .view {
+    grid-area: view;
+    margin-left: 45%;
+    width: 10vw;
+  }
 `;
 
 const CalendarPage = ({ todos }) => {
@@ -206,13 +210,17 @@ const CalendarPage = ({ todos }) => {
         calendarFormat={calendarFormat}
       />
 
-      <label htmlFor="view">View by : </label>
-      <select name="view" value={calendarFormat} onChange={handleChangeView}>
-        <option value="year">Year</option>
-        <option value="month">Month</option>
-        <option value="week">Week</option>
-        <option value="day">Day</option>
-      </select>
+      <div className="view">
+        <label htmlFor="view">View by : </label>
+        <select name="view" value={calendarFormat} onChange={handleChangeView}>
+          <option value="year">Year</option>
+          <option value="month">Month</option>
+          <option value="week">Week</option>
+          <option value="day">Day</option>
+        </select>
+      </div>
+
+      <TodosNoDeadlineSidebar todos={todos} />
 
       <Calendar
         todos={todos}

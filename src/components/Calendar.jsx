@@ -5,7 +5,7 @@ import Month from "./Month";
 import Day from "./Day";
 import WeeklyCalendar from "./WeeklyCalendar";
 
-const StyledCalendar = styled.div`
+const StyledCalendar = styled.div`grid-area: calendar;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

@@ -3,6 +3,9 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const StyledCalendarInput = styled.div`
+  grid-area: input;
+  margin-left: 45%;
+  width: 30vw;
   display: flex;
   flex-direction: row;
   & .arrow {
