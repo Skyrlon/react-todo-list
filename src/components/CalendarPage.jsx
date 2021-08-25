@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CalendarInput from "./CalendarInput.jsx";
 import Calendar from "./Calendar.jsx";
 import TodosNoDeadlineSidebar from "./TodosNoDeadlineSidebar.jsx";
+import DraggedTodo from "./DraggedTodo.jsx";
 
 const StyledCalendarPage = styled.div`
   display: grid;
@@ -31,6 +32,8 @@ const CalendarPage = ({ todos }) => {
   const [dateAsked, setDateAsked] = useState(calendarYear);
 
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const [showDraggedTodo, setShowDraggedTodo] = useState(false);
 
   const monthsNames = [
     "January",
@@ -192,6 +195,8 @@ const CalendarPage = ({ todos }) => {
     }`,
   };
 
+  const [mouseDraggingPosition, setMouseDraggingPosition] = useState({});
+
   useEffect(
     () => {
       setShowTooltip(false);
@@ -220,7 +225,12 @@ const CalendarPage = ({ todos }) => {
         </select>
       </div>
 
-      <TodosNoDeadlineSidebar todos={todos} />
+      <TodosNoDeadlineSidebar
+        todos={todos}
+        todoToCopy={(id) => console.log(id)}
+        mouseLocation={(pos) => setMouseDraggingPosition(pos)}
+        isDragging={(e) => setShowDraggedTodo(e)}
+      />
 
       <Calendar
         todos={todos}
@@ -236,6 +246,8 @@ const CalendarPage = ({ todos }) => {
         goToThisDay={handleChangeDate}
         showTooltip={showTooltip}
       />
+
+      {showDraggedTodo && <DraggedTodo position={mouseDraggingPosition} />}
     </StyledCalendarPage>
   );
 };
