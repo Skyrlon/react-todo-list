@@ -54,7 +54,7 @@ const App = () => {
           </nav>
           <Switch>
             <Route path="/calendar">
-              <CalendarPage todos={todos} />
+              <CalendarPage todos={todos} modifyTodos={(e) => setTodos(e)} />
             </Route>
             <Route path="/">
               <TodosPage todos={todos} modifyTodos={(e) => setTodos(e)} />

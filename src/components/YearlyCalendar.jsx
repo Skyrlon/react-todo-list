@@ -44,6 +44,7 @@ const YearlyCalendar = ({
   onDayDoubleClick,
   showTooltip,
   todos,
+  onDrop,
 }) => {
   return (
     <StyledYearlyCalendar>
@@ -70,6 +71,7 @@ const YearlyCalendar = ({
             onDayDoubleClick={onDayDoubleClick}
             showTooltip={showTooltip}
             todos={todos}
+            onDrop={onDrop}
           />
         </div>
       ))}

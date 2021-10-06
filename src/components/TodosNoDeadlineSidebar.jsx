@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import styled from "styled-components";
 
 const StyledTodosNoDeadlineSidebar = styled.ul`
@@ -27,36 +26,7 @@ const StyledTodosNoDeadlineSidebar = styled.ul`
   }
 `;
 
-const TodosNoDeadlineSidebar = ({
-  todos,
-  todoToCopy,
-  mouseLocation,
-  isDragging,
-}) => {
-  const getMouseLocation = (e) => {
-    mouseLocation({ y: e.clientY, x: e.clientX });
-  };
-
-  const handleMouseDown = (e, id) => {
-    todoToCopy(id);
-    isDragging(true);
-    window.addEventListener("mousemove", getMouseLocation);
-    window.addEventListener("mouseup", handleMouseUp);
-  };
-
-  const handleMouseUp = () => {
-    isDragging(false);
-    window.removeEventListener("mousemove", getMouseLocation);
-    window.removeEventListener("mouseup", handleMouseUp);
-  };
-
-  useEffect(() => {
-    return () => {
-      window.removeEventListener("mousemove", getMouseLocation);
-      window.removeEventListener("mouseup", handleMouseUp);
-    }; // eslint-disable-next-line
-  }, []);
-
+const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
   return (
     <StyledTodosNoDeadlineSidebar>
       {todos.map(
@@ -64,7 +34,8 @@ const TodosNoDeadlineSidebar = ({
           todo.deadline.date.length === 0 && (
             <li
               key={todo.id}
-              onMouseDown={(e) => handleMouseDown(e, todo.id)}
+              draggable
+              onDragStart={() => onDragStart(todo.id)}
               className={`priority-${
                 todo.completed ? "completed" : todo.priority
               }`}

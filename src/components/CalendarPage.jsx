@@ -3,7 +3,6 @@ import styled from "styled-components";
 import CalendarInput from "./CalendarInput.jsx";
 import Calendar from "./Calendar.jsx";
 import TodosNoDeadlineSidebar from "./TodosNoDeadlineSidebar.jsx";
-import DraggedTodo from "./DraggedTodo.jsx";
 
 const StyledCalendarPage = styled.div`
   display: grid;
@@ -17,7 +16,7 @@ const StyledCalendarPage = styled.div`
   }
 `;
 
-const CalendarPage = ({ todos }) => {
+const CalendarPage = ({ todos, modifyTodos }) => {
   const [calendarYear, setCalendarYear] = useState(
     `${new Date(Date.now()).getFullYear()}`
   );
@@ -33,7 +32,7 @@ const CalendarPage = ({ todos }) => {
 
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const [showDraggedTodo, setShowDraggedTodo] = useState(false);
+  const [todoIdDragged, setTodoIdDragged] = useState(undefined);
 
   const monthsNames = [
     "January",
@@ -195,7 +194,14 @@ const CalendarPage = ({ todos }) => {
     }`,
   };
 
-  const [mouseDraggingPosition, setMouseDraggingPosition] = useState({});
+  const handleDropTodo = (date) => {
+    let newTodos = todos.map((todo) => {
+      if (todo.id === todoIdDragged)
+        return { ...todo, deadline: { date: date, time: "" } };
+      return todo;
+    });
+    modifyTodos(newTodos);
+  };
 
   useEffect(
     () => {
@@ -227,9 +233,7 @@ const CalendarPage = ({ todos }) => {
 
       <TodosNoDeadlineSidebar
         todos={todos}
-        todoToCopy={(id) => console.log(id)}
-        mouseLocation={(pos) => setMouseDraggingPosition(pos)}
-        isDragging={(e) => setShowDraggedTodo(e)}
+        onDragStart={(todoId) => setTodoIdDragged(todoId)}
       />
 
       <Calendar
@@ -245,9 +249,8 @@ const CalendarPage = ({ todos }) => {
         onDayInMonthDoubleClick={handleChangeDate}
         goToThisDay={handleChangeDate}
         showTooltip={showTooltip}
+        onDrop={handleDropTodo}
       />
-
-      {showDraggedTodo && <DraggedTodo position={mouseDraggingPosition} />}
     </StyledCalendarPage>
   );
 };

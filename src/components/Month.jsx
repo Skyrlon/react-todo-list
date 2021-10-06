@@ -122,6 +122,7 @@ const Month = ({
   onDayDoubleClick,
   showTooltip,
   todos,
+  onDrop,
 }) => {
   const days = function () {
     let daysArray = [];
@@ -167,6 +168,16 @@ const Month = ({
         {days().length > 0 &&
           days().map((day) => (
             <div
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() =>
+                onDrop(
+                  `${year}-${
+                    monthsNames.indexOf(month) + 1 > 10
+                      ? monthsNames.indexOf(month) + 1
+                      : `0${monthsNames.indexOf(month) + 1}`
+                  }-${day.number}`
+                )
+              }
               className={`day${
                 dateSelected ===
                 `${year}-${
