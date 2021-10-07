@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import handleOneDigitNumber from "../utils/handleOneDigitNumber";
 
 const StyledMonth = styled.div`
   display: flex;
@@ -136,7 +137,7 @@ const Month = ({
         name: new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
           new Date(`${j + 1} ${month} ${year}`)
         ),
-        number: j + 1 < 10 ? `0${j + 1}` : j + 1,
+        number: handleOneDigitNumber(j + 1),
       });
     }
 
@@ -171,21 +172,17 @@ const Month = ({
               onDragOver={(e) => e.preventDefault()}
               onDrop={() =>
                 onDrop({
-                  date: `${year}-${
-                    monthsNames.indexOf(month) + 1 > 10
-                      ? monthsNames.indexOf(month) + 1
-                      : `0${monthsNames.indexOf(month) + 1}`
-                  }-${day.number}`,
+                  date: `${year}-${handleOneDigitNumber(
+                    monthsNames.indexOf(month) + 1
+                  )}-${day.number}`,
                   time: "",
                 })
               }
               className={`day${
                 dateSelected ===
-                `${year}-${
-                  monthsNames.indexOf(month) + 1 > 10
-                    ? monthsNames.indexOf(month) + 1
-                    : `0${monthsNames.indexOf(month) + 1}`
-                }-${day.number}`
+                `${year}-${handleOneDigitNumber(
+                  monthsNames.indexOf(month) + 1
+                )}-${day.number}`
                   ? " selected"
                   : ""
               }`}
@@ -193,11 +190,9 @@ const Month = ({
               onClick={(e) => {
                 e.stopPropagation();
                 onDayClick(
-                  `${year}-${
-                    monthsNames.indexOf(month) + 1 > 10
-                      ? monthsNames.indexOf(month) + 1
-                      : `0${monthsNames.indexOf(month) + 1}`
-                  }-${day.number}`
+                  `${year}-${handleOneDigitNumber(
+                    monthsNames.indexOf(month) + 1
+                  )}-${day.number}`
                 );
               }}
               onDoubleClick={(e) => {
@@ -213,20 +208,16 @@ const Month = ({
               <div className="day-number">{day.name ? day.number : ""}</div>
               {showTooltip &&
                 dateSelected ===
-                  `${year}-${
-                    monthsNames.indexOf(month) + 1 > 10
-                      ? monthsNames.indexOf(month) + 1
-                      : `0${monthsNames.indexOf(month) + 1}`
-                  }-${day.number}` && (
+                  `${year}-${handleOneDigitNumber(
+                    monthsNames.indexOf(month) + 1
+                  )}-${day.number}` && (
                   <div className="day-tooltip">
                     {todos.map(
                       (todo) =>
                         todo.deadline.date ===
-                          `${year}-${
-                            monthsNames.indexOf(month) + 1 > 10
-                              ? monthsNames.indexOf(month) + 1
-                              : `0${monthsNames.indexOf(month) + 1}`
-                          }-${day.number}` && (
+                          `${year}-${handleOneDigitNumber(
+                            monthsNames.indexOf(month) + 1
+                          )}-${day.number}` && (
                           <div key={todo.id}>{todo.title}</div>
                         )
                     )}

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CalendarInput from "../components/CalendarInput.jsx";
 import Calendar from "../components/Calendar.jsx";
 import TodosNoDeadlineSidebar from "../components/TodosNoDeadlineSidebar.jsx";
+import handleOneDigitNumber from "../utils/handleOneDigitNumber.jsx";
 
 const StyledCalendarPage = styled.div`
   display: grid;
@@ -50,15 +51,9 @@ const CalendarPage = ({ todos, modifyTodos }) => {
   ];
 
   const [dateSelected, setDateSelected] = useState(
-    `${new Date(Date.now()).getFullYear()}-${
-      new Date(Date.now()).getMonth() + 1 < 10
-        ? `0${new Date(Date.now()).getMonth() + 1}`
-        : new Date(Date.now()).getMonth() + 1
-    }-${
-      new Date(Date.now()).getDate() < 10
-        ? `0${new Date(Date.now()).getDate()}`
-        : new Date(Date.now()).getDate()
-    }`
+    `${new Date(Date.now()).getFullYear()}-${handleOneDigitNumber(
+      new Date(Date.now()).getMonth() + 1
+    )}-${handleOneDigitNumber(new Date(Date.now()).getDate())}`
   );
 
   const [calendarFormat, setCalendarFormat] = useState("year");
@@ -128,36 +123,22 @@ const CalendarPage = ({ todos, modifyTodos }) => {
     setDateAsked(`${newDate.day} ${newDate.month} ${newDate.year}`);
     if (newDate.format === "week") {
       setDateSelected(
-        `${newDate.year}-${
-          monthsNames.indexOf(monthWithFirstLetterCapital) + 1 < 10
-            ? `0${monthsNames.indexOf(monthWithFirstLetterCapital) + 1}`
-            : monthsNames.indexOf(monthWithFirstLetterCapital) + 1
-        }-${
-          parseInt(newDate.day) < 10
-            ? `0${parseInt(newDate.day)}`
-            : parseInt(newDate.day)
-        }`
+        `${newDate.year}-${handleOneDigitNumber(
+          monthsNames.indexOf(monthWithFirstLetterCapital) + 1
+        )}-${handleOneDigitNumber(newDate.day)}`
       );
     }
     if (newDate.format === "day")
       setDateSelected(
-        `${newDate.year}-${
-          monthsNames.indexOf(monthWithFirstLetterCapital) + 1 < 10
-            ? `0${monthsNames.indexOf(monthWithFirstLetterCapital) + 1}`
-            : monthsNames.indexOf(monthWithFirstLetterCapital) + 1
-        }-${
-          parseInt(newDate.day) < 10
-            ? `0${parseInt(newDate.day)}`
-            : parseInt(newDate.day)
-        }`
+        `${newDate.year}-${handleOneDigitNumber(
+          monthsNames.indexOf(monthWithFirstLetterCapital) + 1
+        )}-${handleOneDigitNumber(newDate.day)}`
       );
     if (newDate.format === "month")
       setDateSelected(
-        `${newDate.year}-${
-          monthsNames.indexOf(monthWithFirstLetterCapital) + 1 < 10
-            ? `0${monthsNames.indexOf(monthWithFirstLetterCapital) + 1}`
-            : monthsNames.indexOf(monthWithFirstLetterCapital) + 1
-        }-${dateSelected.split("-")[2]}`
+        `${newDate.year}-${handleOneDigitNumber(
+          monthsNames.indexOf(monthWithFirstLetterCapital) + 1
+        )}-${dateSelected.split("-")[2]}`
       );
     if (newDate.format === "year")
       setDateSelected(
@@ -174,24 +155,12 @@ const CalendarPage = ({ todos, modifyTodos }) => {
   };
 
   const currentDate = {
-    date: `${new Date(Date.now()).getFullYear()}-${
-      new Date(Date.now()).getMonth() + 1 < 10
-        ? `0${new Date(Date.now()).getMonth() + 1}`
-        : new Date(Date.now()).getMonth() + 1
-    }-${
-      new Date(Date.now()).getDate() < 10
-        ? `0${new Date(Date.now()).getDate()}`
-        : new Date(Date.now()).getDate()
-    }`,
-    time: `${
-      new Date(Date.now()).getHours() < 10
-        ? `0${new Date(Date.now()).getHours()}`
-        : new Date(Date.now()).getHours()
-    }:${
-      new Date(Date.now()).getMinutes() < 10
-        ? `0${new Date(Date.now()).getMinutes()}`
-        : new Date(Date.now()).getMinutes()
-    }`,
+    date: `${new Date(Date.now()).getFullYear()}-${handleOneDigitNumber(
+      new Date(Date.now()).getMonth() + 1
+    )}-${handleOneDigitNumber(new Date(Date.now()).getDate())}`,
+    time: `${handleOneDigitNumber(
+      new Date(Date.now()).getHours()
+    )}:${handleOneDigitNumber(new Date(Date.now()).getMinutes())}`,
   };
 
   const handleDropTodo = (newDeadline) => {

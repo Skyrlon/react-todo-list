@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+import handleOneDigitNumber from "../utils/handleOneDigitNumber";
+
 const StyledDay = styled.div`
   display: flex;
   flex-direction: column;
@@ -82,24 +84,12 @@ const monthsNames = [
 ];
 
 const currentDate = {
-  date: `${new Date(Date.now()).getFullYear()}-${
-    new Date(Date.now()).getMonth() + 1 < 10
-      ? `0${new Date(Date.now()).getMonth() + 1}`
-      : new Date(Date.now()).getMonth() + 1
-  }-${
-    new Date(Date.now()).getDate() < 10
-      ? `0${new Date(Date.now()).getDate()}`
-      : new Date(Date.now()).getDate()
-  }`,
-  time: `${
-    new Date(Date.now()).getHours() < 10
-      ? `0${new Date(Date.now()).getHours()}`
-      : new Date(Date.now()).getHours()
-  }:${
-    new Date(Date.now()).getMinutes() < 10
-      ? `0${new Date(Date.now()).getMinutes()}`
-      : new Date(Date.now()).getMinutes()
-  }`,
+  date: `${new Date(Date.now()).getFullYear()}-${handleOneDigitNumber(
+    new Date(Date.now()).getMonth() + 1
+  )}-${handleOneDigitNumber(new Date(Date.now()).getDate())}`,
+  time: `${handleOneDigitNumber(
+    new Date(Date.now()).getHours()
+  )}:${handleOneDigitNumber(new Date(Date.now()).getMinutes())}`,
 };
 
 const Day = ({ year, month, day, todos, showHours, onDrop }) => {
@@ -110,10 +100,10 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
     for (let i = 0; i < numberOfHours; i++) {
       let minutesArray = [];
       for (let j = 0; j < numberOfMinutes; j++) {
-        minutesArray.push({ number: j < 10 ? `0${j}` : `${j}` });
+        minutesArray.push({ number: handleOneDigitNumber(j) });
       }
       hoursArray.push({
-        hour: i < 10 ? `0${i}` : `${i}`,
+        hour: handleOneDigitNumber(i),
         minutes: minutesArray,
       });
     }
@@ -126,11 +116,9 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
         {todos.map(
           (todo) =>
             todo.deadline.date ===
-              `${year}-${
-                monthsNames.indexOf(month) + 1 > 10
-                  ? monthsNames.indexOf(month) + 1
-                  : `0${monthsNames.indexOf(month) + 1}`
-              }-${parseInt(day) > 10 ? day : `0${day}`}` &&
+              `${year}-${handleOneDigitNumber(
+                monthsNames.indexOf(month) + 1
+              )}-${handleOneDigitNumber(day)}` &&
             todo.deadline.time.length === 0 && (
               <div
                 key={todo.id}
@@ -151,11 +139,9 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
               key={minute.number}
               className={`hour-minute${
                 currentDate.date ===
-                  `${year}-${
-                    monthsNames.indexOf(month) + 1 > 10
-                      ? monthsNames.indexOf(month) + 1
-                      : `0${monthsNames.indexOf(month) + 1}`
-                  }-${parseInt(day) > 10 ? day : `0${day}`}` &&
+                  `${year}-${handleOneDigitNumber(
+                    monthsNames.indexOf(month) + 1
+                  )}-${handleOneDigitNumber(day)}` &&
                 currentDate.time === `${time.hour}:${minute.number}`
                   ? " now"
                   : ""
@@ -163,11 +149,9 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
               onDragOver={(e) => e.preventDefault()}
               onDrop={() =>
                 onDrop({
-                  date: `${year}-${
-                    monthsNames.indexOf(month) + 1 > 10
-                      ? monthsNames.indexOf(month) + 1
-                      : `0${monthsNames.indexOf(month) + 1}`
-                  }-${parseInt(day) > 10 ? day : `0${day}`}`,
+                  date: `${year}-${handleOneDigitNumber(
+                    monthsNames.indexOf(month) + 1
+                  )}-${handleOneDigitNumber(day)}`,
                   time: `${time.hour}:${minute.number}`,
                 })
               }
@@ -175,11 +159,9 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
               {todos.map(
                 (todo) =>
                   todo.deadline.date ===
-                    `${year}-${
-                      monthsNames.indexOf(month) + 1 > 10
-                        ? monthsNames.indexOf(month) + 1
-                        : `0${monthsNames.indexOf(month) + 1}`
-                    }-${parseInt(day) > 10 ? day : `0${day}`}` &&
+                    `${year}-${handleOneDigitNumber(
+                      monthsNames.indexOf(month) + 1
+                    )}-${handleOneDigitNumber(day)}` &&
                   todo.deadline.time === `${time.hour}:${minute.number}` && (
                     <div
                       key={todo.id}
