@@ -37,7 +37,7 @@ const monthsNames = [
   "December",
 ];
 
-const WeeklyCalendar = ({ year, month, day, todos }) => {
+const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
   const days = function () {
     const daysArray = [{ year, month, day }];
     const dayName = new Intl.DateTimeFormat("en-US", {
@@ -85,6 +85,7 @@ const WeeklyCalendar = ({ year, month, day, todos }) => {
             day={`${day.day}`}
             todos={todos}
             showHours={index === 0}
+            onDrop={onDrop}
           />
         </div>
       ))}

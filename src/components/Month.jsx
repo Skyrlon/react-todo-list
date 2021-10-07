@@ -170,13 +170,14 @@ const Month = ({
             <div
               onDragOver={(e) => e.preventDefault()}
               onDrop={() =>
-                onDrop(
-                  `${year}-${
+                onDrop({
+                  date: `${year}-${
                     monthsNames.indexOf(month) + 1 > 10
                       ? monthsNames.indexOf(month) + 1
                       : `0${monthsNames.indexOf(month) + 1}`
-                  }-${day.number}`
-                )
+                  }-${day.number}`,
+                  time: "",
+                })
               }
               className={`day${
                 dateSelected ===

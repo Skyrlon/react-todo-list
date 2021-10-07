@@ -102,7 +102,7 @@ const currentDate = {
   }`,
 };
 
-const Day = ({ year, month, day, todos, showHours }) => {
+const Day = ({ year, month, day, todos, showHours, onDrop }) => {
   const time = function () {
     const numberOfHours = 24;
     const numberOfMinutes = 60;
@@ -160,6 +160,17 @@ const Day = ({ year, month, day, todos, showHours }) => {
                   ? " now"
                   : ""
               }`}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() =>
+                onDrop({
+                  date: `${year}-${
+                    monthsNames.indexOf(month) + 1 > 10
+                      ? monthsNames.indexOf(month) + 1
+                      : `0${monthsNames.indexOf(month) + 1}`
+                  }-${parseInt(day) > 10 ? day : `0${day}`}`,
+                  time: `${time.hour}:${minute.number}`,
+                })
+              }
             >
               {todos.map(
                 (todo) =>

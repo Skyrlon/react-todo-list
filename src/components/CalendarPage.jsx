@@ -194,10 +194,13 @@ const CalendarPage = ({ todos, modifyTodos }) => {
     }`,
   };
 
-  const handleDropTodo = (date) => {
+  const handleDropTodo = (newDeadline) => {
     let newTodos = todos.map((todo) => {
       if (todo.id === todoIdDragged)
-        return { ...todo, deadline: { date: date, time: "" } };
+        return {
+          ...todo,
+          deadline: { date: newDeadline.date, time: newDeadline.time },
+        };
       return todo;
     });
     modifyTodos(newTodos);

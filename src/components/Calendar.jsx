@@ -63,6 +63,7 @@ const Calendar = ({
           day={calendarDay}
           todos={todos}
           showHours={true}
+          onDrop={onDrop}
         />
       )}
       {format === "week" && (
@@ -71,6 +72,7 @@ const Calendar = ({
           month={calendarMonth}
           day={calendarDay}
           todos={todos}
+          onDrop={onDrop}
         />
       )}
     </StyledCalendar>
