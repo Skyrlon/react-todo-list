@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import CalendarInput from "./CalendarInput.jsx";
-import Calendar from "./Calendar.jsx";
-import TodosNoDeadlineSidebar from "./TodosNoDeadlineSidebar.jsx";
+import CalendarInput from "../components/CalendarInput.jsx";
+import Calendar from "../components/Calendar.jsx";
+import TodosNoDeadlineSidebar from "../components/TodosNoDeadlineSidebar.jsx";
 
 const StyledCalendarPage = styled.div`
   display: grid;

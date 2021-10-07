@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faBan } from "@fortawesome/free-solid-svg-icons";
 
-import TodoList from "./TodoList.jsx";
-import AddTodo from "./AddTodo.jsx";
+import TodoList from "../components/TodoList.jsx";
+import AddTodo from "../components/AddTodo.jsx";
 
 const StyledTodosPage = styled.div``;
 

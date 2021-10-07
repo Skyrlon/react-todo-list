@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 
-import TodosPage from "./components/TodosPage.jsx";
-import CalendarPage from "./components/CalendarPage.jsx";
+import TodosPage from "./pages/TodosPage.jsx";
+import CalendarPage from "./pages/CalendarPage.jsx";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
