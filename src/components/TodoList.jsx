@@ -1,5 +1,8 @@
+import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 import Todo from "./Todo.jsx";
 
@@ -18,9 +21,20 @@ const TodoList = ({
   editTodo,
   deleteTodo,
   toggleCompleteTodo,
-  display,showCheckBoxes,
+  display,
+  showCheckBoxes,
   selectedToBeDeleted,
 }) => {
+  const [todoListsToCollapse, setTodoListsToCollapse] = useState([]);
+
+  const handleOnChevronClick = (category) => {
+    if (todoListsToCollapse.includes(category)) {
+      setTodoListsToCollapse((prev) => prev.filter((e) => e !== category));
+    } else {
+      setTodoListsToCollapse((prev) => [...prev, category]);
+    }
+  };
+
   return (
     <StyledTodoList>
       {display === "all" && (
@@ -58,28 +72,39 @@ const TodoList = ({
                   .length
               }
               )
+              <FontAwesomeIcon
+                icon={
+                  todoListsToCollapse.includes("not completed")
+                    ? faChevronUp
+                    : faChevronDown
+                }
+                onClick={() => handleOnChevronClick("not completed")}
+              />
             </h2>
-            <div className="todos">
-              {TodoListItems.filter(
-                (element) => element.completed === false
-              ).map((element) => (
-                <Todo
-                  key={element.id}
-                  id={element.id}
-                  title={element.title}
-                  details={element.details}
-                  priority={element.priority}
-                  completed={element.completed}
-                  onEdit={() => editTodo(element)}
-                  onDelete={() => deleteTodo(element.id)}
-                  onComplete={() =>
-                    toggleCompleteTodo(element, element.completed)
-                  }
-                  showCheckBoxes={showCheckBoxes}
-                  selectedToBeDeleted={selectedToBeDeleted}
-                />
-              ))}
-            </div>
+
+            {!todoListsToCollapse.includes("not completed") && (
+              <div className="todos">
+                {TodoListItems.filter(
+                  (element) => element.completed === false
+                ).map((element) => (
+                  <Todo
+                    key={element.id}
+                    id={element.id}
+                    title={element.title}
+                    details={element.details}
+                    priority={element.priority}
+                    completed={element.completed}
+                    onEdit={() => editTodo(element)}
+                    onDelete={() => deleteTodo(element.id)}
+                    onComplete={() =>
+                      toggleCompleteTodo(element, element.completed)
+                    }
+                    showCheckBoxes={showCheckBoxes}
+                    selectedToBeDeleted={selectedToBeDeleted}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="todos-completed">
@@ -90,28 +115,39 @@ const TodoList = ({
                   .length
               }
               )
+              <FontAwesomeIcon
+                icon={
+                  todoListsToCollapse.includes("completed")
+                    ? faChevronUp
+                    : faChevronDown
+                }
+                onClick={() => handleOnChevronClick("completed")}
+              />
             </h2>
-            <div className="todos">
-              {TodoListItems.filter(
-                (element) => element.completed === true
-              ).map((element) => (
-                <Todo
-                  key={element.id}
-                  id={element.id}
-                  title={element.title}
-                  details={element.details}
-                  priority={element.priority}
-                  completed={element.completed}
-                  onEdit={() => editTodo(element)}
-                  onDelete={() => deleteTodo(element.id)}
-                  onComplete={() =>
-                    toggleCompleteTodo(element, element.completed)
-                  }
-                  showCheckBoxes={showCheckBoxes}
-                  selectedToBeDeleted={selectedToBeDeleted}
-                />
-              ))}
-            </div>
+
+            {!todoListsToCollapse.includes("completed") && (
+              <div className="todos">
+                {TodoListItems.filter(
+                  (element) => element.completed === true
+                ).map((element) => (
+                  <Todo
+                    key={element.id}
+                    id={element.id}
+                    title={element.title}
+                    details={element.details}
+                    priority={element.priority}
+                    completed={element.completed}
+                    onEdit={() => editTodo(element)}
+                    onDelete={() => deleteTodo(element.id)}
+                    onComplete={() =>
+                      toggleCompleteTodo(element, element.completed)
+                    }
+                    showCheckBoxes={showCheckBoxes}
+                    selectedToBeDeleted={selectedToBeDeleted}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
