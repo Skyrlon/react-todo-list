@@ -97,7 +97,7 @@ const TodoList = ({
                     onEdit={() => editTodo(element)}
                     onDelete={() => deleteTodo(element.id)}
                     onComplete={() =>
-                      toggleCompleteTodo(element, element.completed)
+                      toggleCompleteTodo(element)
                     }
                     showCheckBoxes={showCheckBoxes}
                     selectedToBeDeleted={selectedToBeDeleted}

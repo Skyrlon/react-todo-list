@@ -57,34 +57,28 @@ const TodosPage = ({ todos, modifyTodos }) => {
       default:
         alert("an error as occured");
     }
-    setSortedTodos([...newSortedTodos]);
+    setSortedTodos(newSortedTodos);
   };
 
   const addTodo = (todo) => {
     setShowForm(false);
     const newTodo = {
+      ...todo,
       id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 0,
-      title: todo.title,
-      details: todo.details,
-      priority: todo.priority,
       completed: false,
-      deadline: todo.deadline,
     };
-    let newTodoList = [...todos, newTodo];
-    modifyTodos([...todos, newTodo]);
+    const newTodoList = [...todos, newTodo];
+    modifyTodos(newTodoList);
     sortingTodos(sortBy, newTodoList);
   };
 
   const handleEditTodo = (todoToEdit) => {
     setShowForm(false);
     setEditingTodo(false);
-    const indexOfTodoToEdit = todos
-      .map(function (x) {
-        return x.id;
-      })
-      .indexOf(todoToEdit.id);
-    let newTodoList = todos;
-    newTodoList.splice(indexOfTodoToEdit, 1, todoToEdit);
+    const newTodoList = todos.map((todo) => {
+      if (todo.id === todoToEdit.id) return todoToEdit;
+      return todo;
+    });
     modifyTodos(newTodoList);
     sortingTodos(sortBy, newTodoList);
   };
@@ -94,26 +88,17 @@ const TodosPage = ({ todos, modifyTodos }) => {
     modifyTodos(newTodoList);
   };
 
-  const handleToggleCompleteTodo = (todo, completedValue) => {
-    const indexOfTodoToToggleComplete = todos
-      .map(function (x) {
-        return x.id;
-      })
-      .indexOf(todo.id);
-    let newTodoList = todos;
-    newTodoList.splice(indexOfTodoToToggleComplete, 1, {
-      id: todo.id,
-      title: todo.title,
-      details: todo.details,
-      priority: todo.priority,
-      completed: !completedValue,
-      deadline: todo.deadline,
+  const handleToggleCompleteTodo = (todoToModify) => {
+    const newTodoList = todos.map((todo) => {
+      if (todo.id === todoToModify.id)
+        return { ...todo, completed: !todo.completed };
+      return todo;
     });
-    modifyTodos([...newTodoList]);
+    modifyTodos(newTodoList);
   };
 
   const handleFilterChange = (e) => {
-    let filteredTodos = todos.filter(
+    const filteredTodos = todos.filter(
       (element) =>
         element.title.toLowerCase().startsWith(e.target.value.toLowerCase()) ||
         element.details.toLowerCase().startsWith(e.target.value.toLowerCase())
@@ -122,20 +107,18 @@ const TodosPage = ({ todos, modifyTodos }) => {
   };
 
   const handleSelectedToBeDeleted = (selected, id) => {
-    let ids = todosIdsGoingToBeDeleted;
     if (selected) {
-      setTodosIdsGoingToBeDeleted([...todosIdsGoingToBeDeleted, id]);
+      setTodosIdsGoingToBeDeleted((prev) => [...prev, id]);
     } else {
-      ids.splice(ids.indexOf(id), 1);
-      setTodosIdsGoingToBeDeleted([...ids]);
+      setTodosIdsGoingToBeDeleted((prev) => prev.filter((x) => x !== id));
     }
   };
 
   const deleteAllTodosSelected = () => {
-    let allTodos = todos;
-    modifyTodos(
-      allTodos.filter((todo) => !todosIdsGoingToBeDeleted.includes(todo.id))
+    const newTodoList = todos.filter(
+      (todo) => !todosIdsGoingToBeDeleted.includes(todo.id)
     );
+    modifyTodos(newTodoList);
     setShowCheckBoxes(false);
   };
 
@@ -148,6 +131,7 @@ const TodosPage = ({ todos, modifyTodos }) => {
     sortingTodos(sortBy, todos);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todos]);
+
   return (
     <StyledTodosPage>
       <div className="add-button" onClick={() => setShowForm(true)}>
