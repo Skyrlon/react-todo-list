@@ -26,6 +26,14 @@ const CalendarInput = ({
   const [inputError, setInputError] = useState([]);
   const [showInputs, setShowInputs] = useState(false);
 
+  const [daysInMonth, setDaysInMonth] = useState([]);
+
+  const [daySelected, setDaySelected] = useState("empty");
+
+  const [monthSelected, setMonthSelected] = useState("empty");
+
+  const [yearSelected, setYearSelected] = useState(yearGoingToSubmit);
+
   const monthsNames = [
     "January",
     "February",
@@ -40,6 +48,19 @@ const CalendarInput = ({
     "November",
     "December",
   ];
+
+  const onMonthChange = (monthNumber) => {
+    setMonthSelected(monthNumber);
+    if (!yearSelected) {
+      return setDaysInMonth([]);
+    }
+    const numberOfDays = new Date(
+      yearSelected,
+      parseInt(monthNumber) + 1,
+      0
+    ).getDate();
+    setDaysInMonth([...Array(numberOfDays).keys()].map((x) => x + 1));
+  };
 
   const handleNewDate = (e, type) => {
     e.preventDefault();
@@ -113,23 +134,24 @@ const CalendarInput = ({
     }
   };
 
-  const handleDateSubmit = () => {
+  const handleDateSubmit = (e) => {
+    e.preventDefault();
     let newFormat, newYear, newMonth, newDay;
-    if (dayGoingToSubmit.toString().length > 0) {
+    if (daySelected !== "empty") {
       newFormat = "day";
-      newYear = yearGoingToSubmit;
-      newMonth = monthGoingToSubmit;
-      newDay = dayGoingToSubmit;
-    } else if (monthGoingToSubmit.length > 0) {
+      newYear = yearSelected;
+      newMonth = monthsNames[parseInt(monthSelected)];
+      newDay = daySelected;
+    } else if (monthSelected !== "empty") {
       newFormat = "month";
-      newYear = yearGoingToSubmit;
-      newMonth = monthGoingToSubmit;
-      newDay = dayGoingToSubmit;
+      newYear = yearSelected;
+      newMonth = monthsNames[parseInt(monthSelected)];
+      newDay = "";
     } else {
       newFormat = "year";
-      newYear = `${yearGoingToSubmit}`;
-      newMonth = monthGoingToSubmit;
-      newDay = dayGoingToSubmit;
+      newYear = yearSelected;
+      newMonth = "";
+      newDay = "";
     }
     changeDate({
       format: newFormat,
@@ -308,34 +330,43 @@ const CalendarInput = ({
       )}
 
       {showInputs && (
-        <form onSubmit={(e) => handleNewDate(e, "submit")}>
-          <input
+        <form onSubmit={handleDateSubmit}>
+          <select
             name="day-input"
-            type="text"
-            value={dayGoingToSubmit}
-            onChange={(e) => onInputChange(e.target.value, "day")}
-          />
-          {inputError.includes("day") && (
-            <div className="day-input_error">Put a valid day</div>
-          )}
-          <input
+            value={daySelected}
+            onChange={(e) => setDaySelected(e.target.value)}
+          >
+            <option value="empty"></option>
+            {daysInMonth.map((dayNumber) => (
+              <option key={dayNumber} value={dayNumber}>
+                {dayNumber}
+              </option>
+            ))}
+          </select>
+          <select
             name="month-input"
-            type="text"
-            value={monthGoingToSubmit}
-            onChange={(e) => onInputChange(e.target.value, "month")}
-          />
-          {inputError.includes("month") && (
-            <div className="month-input_error">Put a valid month</div>
-          )}
+            value={monthSelected}
+            onChange={(e) => onMonthChange(e.target.value)}
+          >
+            <option value="empty"></option>
+            {monthsNames.map((month, index) => (
+              <option key={month} value={index}>
+                {month}
+              </option>
+            ))}
+          </select>
+
           <input
             name="year-input"
-            type="text"
-            value={yearGoingToSubmit}
-            onChange={(e) => onInputChange(e.target.value, "year")}
+            type="number"
+            value={yearSelected}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") e.preventDefault();
+            }}
+            min={1000}
+            max={9999}
+            onChange={(e) => setYearSelected(e.target.selected)}
           />
-          {inputError.includes("year") && (
-            <div className="year-input_error">Put a valid year</div>
-          )}
           <input type="submit" />
         </form>
       )}
