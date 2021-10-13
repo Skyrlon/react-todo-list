@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import CalendarDate from "../components/CalendarDate.jsx";
 import CalendarInput from "../components/CalendarInput.jsx";
 import Calendar from "../components/Calendar.jsx";
 import TodosNoDeadlineSidebar from "../components/TodosNoDeadlineSidebar.jsx";
@@ -21,6 +22,9 @@ const CalendarPage = ({ todos, modifyTodos }) => {
   const [calendarYear, setCalendarYear] = useState(
     `${new Date(Date.now()).getFullYear()}`
   );
+
+  const [showInputs, setShowInputs] = useState(false);
+
   const [calendarMonth, setCalendarMonth] = useState("");
 
   const [calendarDay, setCalendarDay] = useState("");
@@ -148,12 +152,6 @@ const CalendarPage = ({ todos, modifyTodos }) => {
       );
   };
 
-  const onInputChange = (value, input) => {
-    if (input === "year") setInputYear(value.toString());
-    if (input === "month") setInputMonth(value.toString());
-    if (input === "day") setInputDay(value.toString());
-  };
-
   const currentDate = {
     date: `${new Date(Date.now()).getFullYear()}-${handleOneDigitNumber(
       new Date(Date.now()).getMonth() + 1
@@ -184,14 +182,29 @@ const CalendarPage = ({ todos, modifyTodos }) => {
 
   return (
     <StyledCalendarPage>
-      <CalendarInput
-        changeDate={handleChangeDate}
-        yearGoingToSubmit={inputYear}
-        monthGoingToSubmit={inputMonth}
-        dayGoingToSubmit={inputDay}
-        onInputChange={onInputChange}
-        calendarFormat={calendarFormat}
-      />
+      {!showInputs && (
+        <CalendarDate
+          calendarFormat={calendarFormat}
+          dayGoingToSubmit={calendarDay}
+          monthGoingToSubmit={calendarMonth}
+          yearGoingToSubmit={calendarYear}
+          changeDate={handleChangeDate}
+          onDateClick={() => setShowInputs(true)}
+        />
+      )}
+
+      {showInputs && (
+        <CalendarInput
+          changeDate={(newDate) => {
+            handleChangeDate(newDate);
+            setShowInputs(false);
+          }}
+          yearGoingToSubmit={inputYear}
+          monthGoingToSubmit={inputMonth}
+          dayGoingToSubmit={inputDay}
+          calendarFormat={calendarFormat}
+        />
+      )}
 
       <div className="view">
         <label htmlFor="view">View by : </label>
