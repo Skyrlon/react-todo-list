@@ -203,6 +203,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
           monthGoingToSubmit={inputMonth}
           dayGoingToSubmit={inputDay}
           calendarFormat={calendarFormat}
+          onCancel={() => setShowInputs(false)}
         />
       )}
 

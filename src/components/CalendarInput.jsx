@@ -35,6 +35,7 @@ const CalendarInput = ({
   dayGoingToSubmit,
   monthGoingToSubmit,
   yearGoingToSubmit,
+  onCancel,
 }) => {
   const [daysInMonth, setDaysInMonth] = useState([]);
 
@@ -131,6 +132,7 @@ const CalendarInput = ({
             onChange={(e) => setYearSelected(e.target.value)}
           />
           <input type="submit" />
+          <button onClick={onCancel}>Cancel</button>
         </form>
       }
     </StyledCalendarInput>
