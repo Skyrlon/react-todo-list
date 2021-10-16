@@ -127,15 +127,11 @@ const Month = ({
 }) => {
   const days = function () {
     let daysArray = [];
-    const numberOfDays = new Date(
-      year,
-      monthsNames.indexOf(month) + 1,
-      0
-    ).getDate();
+    const numberOfDays = new Date(year, month + 1, 0).getDate();
     for (let j = 0; j < numberOfDays; j++) {
       daysArray.push({
         name: new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
-          new Date(`${j + 1} ${month} ${year}`)
+          new Date(`${j + 1} ${monthsNames[month]} ${year}`)
         ),
         number: handleOneDigitNumber(j + 1),
       });
@@ -172,17 +168,16 @@ const Month = ({
               onDragOver={(e) => e.preventDefault()}
               onDrop={() =>
                 onDrop({
-                  date: `${year}-${handleOneDigitNumber(
-                    monthsNames.indexOf(month) + 1
-                  )}-${day.number}`,
+                  date: `${year}-${handleOneDigitNumber(month + 1)}-${
+                    day.number
+                  }`,
                   time: "",
                 })
               }
               className={`day${
-                dateSelected ===
-                `${year}-${handleOneDigitNumber(
-                  monthsNames.indexOf(month) + 1
-                )}-${day.number}`
+                dateSelected.year === year &&
+                dateSelected.month === month &&
+                dateSelected.day === day.number
                   ? " selected"
                   : ""
               }`}
@@ -190,9 +185,7 @@ const Month = ({
               onClick={(e) => {
                 e.stopPropagation();
                 onDayClick(
-                  `${year}-${handleOneDigitNumber(
-                    monthsNames.indexOf(month) + 1
-                  )}-${day.number}`
+                  `${year}-${handleOneDigitNumber(month + 1)}-${day.number}`
                 );
               }}
               onDoubleClick={(e) => {
@@ -207,19 +200,16 @@ const Month = ({
             >
               <div className="day-number">{day.name ? day.number : ""}</div>
               {showTooltip &&
-                dateSelected ===
-                  `${year}-${handleOneDigitNumber(
-                    monthsNames.indexOf(month) + 1
-                  )}-${day.number}` && (
+                dateSelected.year === year &&
+                dateSelected.month === month &&
+                dateSelected.day === day.number && (
                   <div className="day-tooltip">
                     {todos.map(
                       (todo) =>
                         todo.deadline.date ===
-                          `${year}-${handleOneDigitNumber(
-                            monthsNames.indexOf(month) + 1
-                          )}-${day.number}` && (
-                          <div key={todo.id}>{todo.title}</div>
-                        )
+                          `${year}-${handleOneDigitNumber(month + 1)}-${
+                            day.number
+                          }` && <div key={todo.id}>{todo.title}</div>
                     )}
                   </div>
                 )}
@@ -232,8 +222,8 @@ const Month = ({
 export default Month;
 
 Month.propTypes = {
-  month: PropTypes.string,
-  year: PropTypes.string,
+  month: PropTypes.number,
+  year: PropTypes.number,
   dateSelected: PropTypes.string,
   onDayInMonthClick: PropTypes.func,
   onDayDoubleClick: PropTypes.func,

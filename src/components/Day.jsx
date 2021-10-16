@@ -68,21 +68,6 @@ const StyledDay = styled.div`
   }
 `;
 
-const monthsNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
 const currentDate = {
   date: `${new Date(Date.now()).getFullYear()}-${handleOneDigitNumber(
     new Date(Date.now()).getMonth() + 1
@@ -117,7 +102,7 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
           (todo) =>
             todo.deadline.date ===
               `${year}-${handleOneDigitNumber(
-                monthsNames.indexOf(month) + 1
+                month + 1
               )}-${handleOneDigitNumber(day)}` &&
             todo.deadline.time.length === 0 && (
               <div
@@ -140,7 +125,7 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
               className={`hour-minute${
                 currentDate.date ===
                   `${year}-${handleOneDigitNumber(
-                    monthsNames.indexOf(month) + 1
+                    month + 1
                   )}-${handleOneDigitNumber(day)}` &&
                 currentDate.time === `${time.hour}:${minute.number}`
                   ? " now"
@@ -150,7 +135,7 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
               onDrop={() =>
                 onDrop({
                   date: `${year}-${handleOneDigitNumber(
-                    monthsNames.indexOf(month) + 1
+                    month + 1
                   )}-${handleOneDigitNumber(day)}`,
                   time: `${time.hour}:${minute.number}`,
                 })
@@ -160,7 +145,7 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
                 (todo) =>
                   todo.deadline.date ===
                     `${year}-${handleOneDigitNumber(
-                      monthsNames.indexOf(month) + 1
+                      month + 1
                     )}-${handleOneDigitNumber(day)}` &&
                   todo.deadline.time === `${time.hour}:${minute.number}` && (
                     <div

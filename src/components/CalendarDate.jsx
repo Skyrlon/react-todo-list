@@ -35,9 +35,9 @@ const monthsNames = [
 
 const CalendarDate = ({
   calendarFormat,
-  dayGoingToSubmit,
-  monthGoingToSubmit,
-  yearGoingToSubmit,
+  calendarYear,
+  calendarMonth,
+  calendarDay,
   changeDate,
   onDateClick,
 }) => {
@@ -45,35 +45,31 @@ const CalendarDate = ({
     let newDate, newYear, newMonth, newDay;
     if (calendarFormat === "week") {
       newDate = new Date(
-        yearGoingToSubmit,
-        monthsNames.indexOf(monthGoingToSubmit),
-        parseInt(dayGoingToSubmit) - 7
+        calendarYear,
+        calendarMonth,
+        parseInt(calendarDay) - 7
       );
       newYear = newDate.getFullYear();
-      newMonth = monthsNames[newDate.getMonth()];
+      newMonth = newDate.getMonth();
       newDay = newDate.getDate();
     } else if (calendarFormat === "day") {
       newDate = new Date(
-        yearGoingToSubmit,
-        monthsNames.indexOf(monthGoingToSubmit),
-        parseInt(dayGoingToSubmit) - 1
+        calendarYear,
+        calendarMonth,
+        parseInt(calendarDay) - 1
       );
       newYear = newDate.getFullYear();
-      newMonth = monthsNames[newDate.getMonth()];
+      newMonth = newDate.getMonth();
       newDay = newDate.getDate();
     } else if (calendarFormat === "month") {
-      newDate = new Date(
-        yearGoingToSubmit,
-        monthsNames.indexOf(monthGoingToSubmit),
-        0
-      );
+      newDate = new Date(calendarYear, calendarMonth, 0);
       newYear = newDate.getFullYear();
-      newMonth = monthsNames[newDate.getMonth()];
-      newDay = dayGoingToSubmit;
+      newMonth = newDate.getMonth();
+      newDay = calendarDay;
     } else if (calendarFormat === "year") {
-      newYear = parseInt(yearGoingToSubmit) - 1;
-      newMonth = monthGoingToSubmit;
-      newDay = dayGoingToSubmit;
+      newYear = parseInt(calendarYear) - 1;
+      newMonth = calendarMonth;
+      newDay = calendarDay;
     }
     changeDate({
       format: calendarFormat,
@@ -87,39 +83,35 @@ const CalendarDate = ({
     let newDate, newYear, newMonth, newDay;
     if (calendarFormat === "week") {
       newDate = new Date(
-        yearGoingToSubmit,
-        monthsNames.indexOf(monthGoingToSubmit),
-        parseInt(dayGoingToSubmit) + 7
+        calendarYear,
+        calendarMonth,
+        parseInt(calendarDay) + 7
       );
       newYear = newDate.getFullYear();
-      newMonth = monthsNames[newDate.getMonth()];
+      newMonth = newDate.getMonth();
       newDay = newDate.getDate();
     } else if (calendarFormat === "day") {
       newDate = new Date(
-        yearGoingToSubmit,
-        monthsNames.indexOf(monthGoingToSubmit),
-        parseInt(dayGoingToSubmit) + 1
+        calendarYear,
+        calendarMonth,
+        parseInt(calendarDay) + 1
       );
       newYear = newDate.getFullYear();
-      newMonth = monthsNames[newDate.getMonth()];
+      newMonth = newDate.getMonth();
       newDay = newDate.getDate();
     } else if (calendarFormat === "month") {
       newDate = new Date(
-        yearGoingToSubmit,
-        monthsNames.indexOf(monthGoingToSubmit),
-        new Date(
-          yearGoingToSubmit,
-          monthsNames.indexOf(monthGoingToSubmit) + 1,
-          0
-        ).getDate() + 1
+        calendarYear,
+        calendarMonth,
+        new Date(calendarYear, calendarMonth + 1, 0).getDate() + 1
       );
       newYear = newDate.getFullYear();
-      newMonth = monthsNames[newDate.getMonth()];
-      newDay = dayGoingToSubmit;
+      newMonth = newDate.getMonth();
+      newDay = calendarDay;
     } else if (calendarFormat === "year") {
-      newYear = parseInt(yearGoingToSubmit) + 1;
-      newMonth = monthGoingToSubmit;
-      newDay = dayGoingToSubmit;
+      newYear = parseInt(calendarYear) + 1;
+      newMonth = calendarMonth;
+      newDay = calendarDay;
     }
     changeDate({
       format: calendarFormat,
@@ -134,60 +126,54 @@ const CalendarDate = ({
     if (type === "decrement") {
       if (calendarFormat === "year") {
         outLimit =
-          new Date(parseInt(yearGoingToSubmit) - 1, 1, 1).getFullYear() < 1000;
+          new Date(parseInt(calendarYear) - 1, 1, 1).getFullYear() < 1000;
       }
       if (calendarFormat === "month") {
         outLimit =
-          new Date(
-            parseInt(yearGoingToSubmit),
-            monthsNames.indexOf(monthGoingToSubmit) - 1,
-            1
-          ).getFullYear() < 1000;
+          new Date(parseInt(calendarYear), calendarMonth - 1, 1).getFullYear() <
+          1000;
       }
       if (calendarFormat === "week") {
         outLimit =
           new Date(
-            parseInt(yearGoingToSubmit),
-            monthsNames.indexOf(monthGoingToSubmit),
-            parseInt(dayGoingToSubmit) - 7
+            parseInt(calendarYear),
+            calendarMonth,
+            parseInt(calendarDay) - 7
           ).getFullYear() < 1000;
       }
       if (calendarFormat === "day") {
         outLimit =
           new Date(
-            parseInt(yearGoingToSubmit),
-            monthsNames.indexOf(monthGoingToSubmit),
-            parseInt(dayGoingToSubmit) - 1
+            parseInt(calendarYear),
+            calendarMonth,
+            parseInt(calendarDay) - 1
           ).getFullYear() < 1000;
       }
     }
     if (type === "increment") {
       if (calendarFormat === "year") {
         outLimit =
-          new Date(parseInt(yearGoingToSubmit) + 1, 1, 1).getFullYear() > 9999;
+          new Date(parseInt(calendarYear) + 1, 1, 1).getFullYear() > 9999;
       }
       if (calendarFormat === "month") {
         outLimit =
-          new Date(
-            parseInt(yearGoingToSubmit),
-            monthsNames.indexOf(monthGoingToSubmit) + 1,
-            1
-          ).getFullYear() > 9999;
+          new Date(parseInt(calendarYear), calendarMonth + 1, 1).getFullYear() >
+          9999;
       }
       if (calendarFormat === "week") {
         outLimit =
           new Date(
-            parseInt(yearGoingToSubmit),
-            monthsNames.indexOf(monthGoingToSubmit),
-            parseInt(dayGoingToSubmit) + 7
+            parseInt(calendarYear),
+            calendarMonth,
+            parseInt(calendarDay) + 7
           ).getFullYear() > 9999;
       }
       if (calendarFormat === "day") {
         outLimit =
           new Date(
-            parseInt(yearGoingToSubmit),
-            monthsNames.indexOf(monthGoingToSubmit),
-            parseInt(dayGoingToSubmit) + 1
+            parseInt(calendarYear),
+            calendarMonth,
+            parseInt(calendarDay) + 1
           ).getFullYear() > 9999;
       }
     }
@@ -203,7 +189,11 @@ const CalendarDate = ({
       )}
       {
         <div onClick={onDateClick}>
-          {dayGoingToSubmit} {monthGoingToSubmit} {yearGoingToSubmit}
+          {typeof calendarDay === "number" ? `${calendarDay} ` : ""}
+          {typeof calendarMonth === "number"
+            ? `${monthsNames[calendarMonth]} `
+            : ""}
+          {typeof calendarYear === "number" ? `${calendarYear}` : ""}
         </div>
       }
       {!dateGoingOutLimit("increment") && (

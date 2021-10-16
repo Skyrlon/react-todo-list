@@ -32,24 +32,24 @@ const monthsNames = [
 
 const CalendarInput = ({
   changeDate,
-  dayGoingToSubmit,
-  monthGoingToSubmit,
-  yearGoingToSubmit,
+  calendarYear,
+  calendarMonth,
+  calendarDay,
   onCancel,
 }) => {
   const [daysInMonth, setDaysInMonth] = useState([]);
 
   const [daySelected, setDaySelected] = useState(
-    dayGoingToSubmit.length > 0 ? dayGoingToSubmit : "empty"
+    typeof calendarDay === "number" ? calendarDay : "empty"
   );
 
   const [monthSelected, setMonthSelected] = useState(
-    monthGoingToSubmit.length > 0
-      ? monthsNames.indexOf(monthGoingToSubmit)
+    typeof calendarMonth === "number"
+      ? monthsNames.indexOf(calendarMonth)
       : "empty"
   );
 
-  const [yearSelected, setYearSelected] = useState(yearGoingToSubmit);
+  const [yearSelected, setYearSelected] = useState(calendarYear);
 
   const onMonthChange = (monthNumber) => {
     setMonthSelected(monthNumber);
@@ -70,18 +70,18 @@ const CalendarInput = ({
     if (daySelected !== "empty") {
       newFormat = "day";
       newYear = yearSelected;
-      newMonth = monthsNames[parseInt(monthSelected)];
-      newDay = daySelected;
+      newMonth = parseInt(monthSelected);
+      newDay = parseInt(daySelected);
     } else if (monthSelected !== "empty") {
       newFormat = "month";
       newYear = yearSelected;
-      newMonth = monthsNames[parseInt(monthSelected)];
-      newDay = "";
+      newMonth = parseInt(monthSelected);
+      newDay = null;
     } else {
       newFormat = "year";
       newYear = yearSelected;
-      newMonth = "";
-      newDay = "";
+      newMonth = null;
+      newDay = null;
     }
     changeDate({
       format: newFormat,
@@ -141,9 +141,9 @@ const CalendarInput = ({
 
 CalendarInput.propTypes = {
   changeDate: PropTypes.func,
-  dayGoingToSubmit: PropTypes.string,
-  monthGoingToSubmit: PropTypes.string,
-  yearGoingToSubmit: PropTypes.string,
+  calendarDay: PropTypes.number,
+  calendarMonth: PropTypes.number,
+  calendarYear: PropTypes.number,
   onInputChange: PropTypes.func,
   calendarFormat: PropTypes.string,
 };

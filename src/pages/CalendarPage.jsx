@@ -9,7 +9,11 @@ import handleOneDigitNumber from "../utils/handleOneDigitNumber.jsx";
 const StyledCalendarPage = styled.div`
   display: grid;
   width: 99vw;
-  grid-template: "sidebar input input" 3vh "sidebar view view" 3vh "sidebar calendar calendar" 40vh "sidebar calendar calendar" 40vh / 10vw auto;
+  grid-template:
+    "sidebar input input" 3vh
+    "sidebar view view" 3vh
+    "sidebar calendar calendar" 40vh
+    "sidebar calendar calendar" 40vh / 10vw auto;
   grid-column-gap: 4rem;
   & .view {
     grid-area: view;
@@ -20,80 +24,54 @@ const StyledCalendarPage = styled.div`
 
 const CalendarPage = ({ todos, modifyTodos }) => {
   const [calendarYear, setCalendarYear] = useState(
-    `${new Date(Date.now()).getFullYear()}`
+    new Date(Date.now()).getFullYear()
   );
 
+  const [calendarMonth, setCalendarMonth] = useState(null);
+
+  const [calendarDay, setCalendarDay] = useState(null);
+
   const [showInputs, setShowInputs] = useState(false);
-
-  const [calendarMonth, setCalendarMonth] = useState("");
-
-  const [calendarDay, setCalendarDay] = useState("");
-
-  const [inputYear, setInputYear] = useState(calendarYear);
-  const [inputMonth, setInputMonth] = useState(calendarMonth);
-  const [inputDay, setInputDay] = useState(calendarDay);
-
-  const [dateAsked, setDateAsked] = useState(calendarYear);
 
   const [showTooltip, setShowTooltip] = useState(false);
 
   const [todoIdDragged, setTodoIdDragged] = useState(undefined);
 
-  const monthsNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const [dateSelected, setDateSelected] = useState(
-    `${new Date(Date.now()).getFullYear()}-${handleOneDigitNumber(
-      new Date(Date.now()).getMonth() + 1
-    )}-${handleOneDigitNumber(new Date(Date.now()).getDate())}`
-  );
+  const [dateSelected, setDateSelected] = useState({
+    year: new Date(Date.now()).getFullYear(),
+    month: new Date(Date.now()).getMonth(),
+    day: new Date(Date.now()).getDate(),
+  });
 
   const [calendarFormat, setCalendarFormat] = useState("year");
 
   const handleChangeView = (e) => {
-    let date = new Date(dateSelected);
-    let newDay, newMonth, newYear, newFormat, newDate;
+    let date = new Date(
+      `${dateSelected.year}-${handleOneDigitNumber(
+        dateSelected.month + 1
+      )}-${handleOneDigitNumber(dateSelected.day)}`
+    );
+    let newDay, newMonth, newYear, newFormat;
     if (e.target.value === "day" || e.target.value === "week") {
       newFormat = e.target.value;
       newDay = date.getDate();
-      newMonth = monthsNames[date.getMonth()];
+      newMonth = date.getMonth();
       newYear = date.getFullYear();
-      newDate = `${date.getDate()} ${
-        monthsNames[date.getMonth()]
-      } ${date.getFullYear()}`;
     } else if (e.target.value === "month") {
       newFormat = e.target.value;
-      newDay = "";
-      newMonth = monthsNames[date.getMonth()];
+      newDay = null;
+      newMonth = date.getMonth();
       newYear = date.getFullYear();
-      newDate = `${monthsNames[date.getMonth()]} ${date.getFullYear()}`;
     } else if (e.target.value === "year") {
       newFormat = e.target.value;
-      newDay = "";
-      newMonth = "";
+      newDay = null;
+      newMonth = null;
       newYear = date.getFullYear();
-      newDate = date.getFullYear();
     }
-    setInputDay(newDay.toString());
-    setInputMonth(newMonth);
-    setInputYear(newYear.toString());
     setCalendarFormat(newFormat);
-    setCalendarDay(newDay.toString());
+    setCalendarDay(newDay);
     setCalendarMonth(newMonth);
-    setCalendarYear(newYear.toString());
-    setDateAsked(newDate);
+    setCalendarYear(newYear);
   };
 
   const handleDayInMonthClick = (date) => {
@@ -106,59 +84,28 @@ const CalendarPage = ({ todos, modifyTodos }) => {
   };
 
   const handleChangeDate = (newDate) => {
-    let monthWithFirstLetterCapital = newDate.month
-      .toLowerCase()
-      .split("")
-      .map((element, index) => {
-        return index === 0 ? element.toUpperCase() : element;
-      })
-      .join("");
-    setInputYear(parseInt(newDate.year).toString());
-    setInputMonth(monthWithFirstLetterCapital);
-    setInputDay(
-      newDate.day.toString().length > 0 ? parseInt(newDate.day).toString() : ""
-    );
-    setCalendarYear(parseInt(newDate.year).toString());
-    setCalendarMonth(monthWithFirstLetterCapital);
-    setCalendarDay(
-      newDate.day.toString().length > 0 ? parseInt(newDate.day).toString() : ""
-    );
+    setCalendarYear(newDate.year);
+    setCalendarMonth(newDate.month);
+    setCalendarDay(newDate.day);
     setCalendarFormat(newDate.format);
-    setDateAsked(`${newDate.day} ${newDate.month} ${newDate.year}`);
-    if (newDate.format === "week") {
-      setDateSelected(
-        `${newDate.year}-${handleOneDigitNumber(
-          monthsNames.indexOf(monthWithFirstLetterCapital) + 1
-        )}-${handleOneDigitNumber(newDate.day)}`
-      );
-    }
     if (newDate.format === "day")
-      setDateSelected(
-        `${newDate.year}-${handleOneDigitNumber(
-          monthsNames.indexOf(monthWithFirstLetterCapital) + 1
-        )}-${handleOneDigitNumber(newDate.day)}`
-      );
+      setDateSelected({
+        year: newDate.year,
+        month: newDate.month,
+        day: newDate.day,
+      });
     if (newDate.format === "month")
-      setDateSelected(
-        `${newDate.year}-${handleOneDigitNumber(
-          monthsNames.indexOf(monthWithFirstLetterCapital) + 1
-        )}-${dateSelected.split("-")[2]}`
-      );
+      setDateSelected({
+        year: newDate.year,
+        month: newDate.month,
+        day: dateSelected.day,
+      });
     if (newDate.format === "year")
-      setDateSelected(
-        `${newDate.year}-${dateSelected.split("-")[1]}-${
-          dateSelected.split("-")[2]
-        }`
-      );
-  };
-
-  const currentDate = {
-    date: `${new Date(Date.now()).getFullYear()}-${handleOneDigitNumber(
-      new Date(Date.now()).getMonth() + 1
-    )}-${handleOneDigitNumber(new Date(Date.now()).getDate())}`,
-    time: `${handleOneDigitNumber(
-      new Date(Date.now()).getHours()
-    )}:${handleOneDigitNumber(new Date(Date.now()).getMinutes())}`,
+      setDateSelected({
+        year: newDate.year,
+        month: dateSelected.month,
+        day: dateSelected.day,
+      });
   };
 
   const handleDropTodo = (newDeadline) => {
@@ -177,7 +124,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
     () => {
       setShowTooltip(false);
     }, // eslint-disable-next-line
-    [dateAsked, calendarFormat]
+    [calendarFormat]
   );
 
   return (
@@ -185,9 +132,9 @@ const CalendarPage = ({ todos, modifyTodos }) => {
       {!showInputs && (
         <CalendarDate
           calendarFormat={calendarFormat}
-          dayGoingToSubmit={calendarDay}
-          monthGoingToSubmit={calendarMonth}
-          yearGoingToSubmit={calendarYear}
+          calendarYear={calendarYear}
+          calendarMonth={calendarMonth}
+          calendarDay={calendarDay}
           changeDate={handleChangeDate}
           onDateClick={() => setShowInputs(true)}
         />
@@ -199,9 +146,9 @@ const CalendarPage = ({ todos, modifyTodos }) => {
             handleChangeDate(newDate);
             setShowInputs(false);
           }}
-          yearGoingToSubmit={inputYear}
-          monthGoingToSubmit={inputMonth}
-          dayGoingToSubmit={inputDay}
+          calendarYear={calendarYear}
+          calendarMonth={calendarMonth}
+          calendarDay={calendarDay}
           calendarFormat={calendarFormat}
           onCancel={() => setShowInputs(false)}
         />
@@ -225,7 +172,6 @@ const CalendarPage = ({ todos, modifyTodos }) => {
       <Calendar
         todos={todos}
         format={calendarFormat}
-        currentDate={currentDate}
         calendarYear={calendarYear}
         calendarMonth={calendarMonth}
         calendarDay={calendarDay}

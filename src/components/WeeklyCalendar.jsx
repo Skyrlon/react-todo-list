@@ -39,32 +39,18 @@ const monthsNames = [
 
 const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
   const days = function () {
-    const daysArray = [{ year, month, day }];
-    const dayName = new Intl.DateTimeFormat("en-US", {
-      weekday: "long",
-    }).format(new Date(`${day} ${month} ${year}`));
-    for (let i = 1; i <= weekDaysNames.indexOf(dayName); i++) {
-      const precendentDayInTheWeek = new Date(
-        year,
-        monthsNames.indexOf(month),
-        parseInt(day) - i
-      );
+    const daysArray = [{ year, month: monthsNames[month], day }];
+    const dayNumber = new Date(year, month, day).getDay() - 1;
+    for (let i = 1; i <= dayNumber; i++) {
+      const precendentDayInTheWeek = new Date(year, month, parseInt(day) - i);
       daysArray.unshift({
         year: precendentDayInTheWeek.getFullYear(),
         month: monthsNames[precendentDayInTheWeek.getMonth()],
         day: precendentDayInTheWeek.getDate(),
       });
     }
-    for (
-      let i = 1;
-      i < weekDaysNames.length - weekDaysNames.indexOf(dayName);
-      i++
-    ) {
-      const nextDayInTheWeek = new Date(
-        year,
-        monthsNames.indexOf(month),
-        parseInt(day) + i
-      );
+    for (let i = 1; i < weekDaysNames.length - dayNumber; i++) {
+      const nextDayInTheWeek = new Date(year, month, parseInt(day) + i);
       daysArray.push({
         year: nextDayInTheWeek.getFullYear(),
         month: monthsNames[nextDayInTheWeek.getMonth()],
@@ -96,8 +82,8 @@ const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
 export default WeeklyCalendar;
 
 WeeklyCalendar.propTypes = {
-  year: PropTypes.string,
-  month: PropTypes.string,
-  day: PropTypes.string,
+  year: PropTypes.number,
+  month: PropTypes.number,
+  day: PropTypes.number,
   todos: PropTypes.array,
 };

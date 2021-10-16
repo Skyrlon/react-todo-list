@@ -48,14 +48,14 @@ const YearlyCalendar = ({
 }) => {
   return (
     <StyledYearlyCalendar>
-      {monthsNames.map((month) => (
+      {monthsNames.map((month, index) => (
         <div key={month} className="month">
           <div
             className="month-name"
             onClick={() =>
               onMonthClick({
                 day: "",
-                month: month,
+                month: index,
                 year: year,
                 format: "month",
               })
@@ -64,7 +64,7 @@ const YearlyCalendar = ({
             {month}
           </div>
           <Month
-            month={month}
+            month={index}
             year={year}
             dateSelected={dateSelected}
             onDayClick={onDayClick}
