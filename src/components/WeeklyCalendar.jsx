@@ -40,17 +40,23 @@ const monthsNames = [
 const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
   const days = function () {
     const daysArray = [{ year, month: month, day }];
-    const dayNumber = new Date(year, month, day).getDay() - 1;
+    //handle getDate which starts with Sunday instead of Monday
+    const dayNumber =
+      new Date(year, month, day).getDay() === 0
+        ? 6
+        : new Date(year, month, day).getDay() - 1;
+    //Put all previous days before dateSelected
     for (let i = 1; i <= dayNumber; i++) {
-      const precendentDayInTheWeek = new Date(year, month, parseInt(day) - i);
+      const precendentDayInTheWeek = new Date(year, month, day - i);
       daysArray.unshift({
         year: precendentDayInTheWeek.getFullYear(),
         month: precendentDayInTheWeek.getMonth(),
         day: precendentDayInTheWeek.getDate(),
       });
     }
+    //Put all next days after dateSelected
     for (let i = 1; i < weekDaysNames.length - dayNumber; i++) {
-      const nextDayInTheWeek = new Date(year, month, parseInt(day) + i);
+      const nextDayInTheWeek = new Date(year, month, day + i);
       daysArray.push({
         year: nextDayInTheWeek.getFullYear(),
         month: nextDayInTheWeek.getMonth(),
