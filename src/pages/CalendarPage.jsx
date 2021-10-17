@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import CalendarDate from "../components/CalendarDate.jsx";
 import CalendarInput from "../components/CalendarInput.jsx";
@@ -185,6 +186,11 @@ const CalendarPage = ({ todos, modifyTodos }) => {
       />
     </StyledCalendarPage>
   );
+};
+
+CalendarPage.propTypes = {
+  todos: PropTypes.array.isRequired,
+  modifyTodos: PropTypes.func.isRequired,
 };
 
 export default CalendarPage;

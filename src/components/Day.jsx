@@ -169,9 +169,10 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
 export default Day;
 
 Day.propTypes = {
-  year: PropTypes.string,
-  month: PropTypes.string,
-  day: PropTypes.string,
-  todos: PropTypes.array,
-  showHours: PropTypes.bool,
+  year: PropTypes.number.isRequired,
+  month: PropTypes.number.isRequired,
+  day: PropTypes.number.isRequired,
+  todos: PropTypes.array.isRequired,
+  showHours: PropTypes.bool.isRequired,
+  onDrop: PropTypes.func.isRequired,
 };

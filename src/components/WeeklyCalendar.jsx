@@ -39,13 +39,13 @@ const monthsNames = [
 
 const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
   const days = function () {
-    const daysArray = [{ year, month: monthsNames[month], day }];
+    const daysArray = [{ year, month: month, day }];
     const dayNumber = new Date(year, month, day).getDay() - 1;
     for (let i = 1; i <= dayNumber; i++) {
       const precendentDayInTheWeek = new Date(year, month, parseInt(day) - i);
       daysArray.unshift({
         year: precendentDayInTheWeek.getFullYear(),
-        month: monthsNames[precendentDayInTheWeek.getMonth()],
+        month: precendentDayInTheWeek.getMonth(),
         day: precendentDayInTheWeek.getDate(),
       });
     }
@@ -53,7 +53,7 @@ const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
       const nextDayInTheWeek = new Date(year, month, parseInt(day) + i);
       daysArray.push({
         year: nextDayInTheWeek.getFullYear(),
-        month: monthsNames[nextDayInTheWeek.getMonth()],
+        month: nextDayInTheWeek.getMonth(),
         day: nextDayInTheWeek.getDate(),
       });
     }
@@ -64,11 +64,13 @@ const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
     <StyledWeeklyCalendar>
       {days().map((day, index) => (
         <div key={`${day.day} ${day.month} ${day.year}`} className="day">
-          <div className="day-date">{`${day.day} ${day.month} ${day.year}`}</div>
+          <div className="day-date">{`${day.day} ${monthsNames[day.month]} ${
+            day.year
+          }`}</div>
           <Day
-            year={`${day.year}`}
+            year={day.year}
             month={day.month}
-            day={`${day.day}`}
+            day={day.day}
             todos={todos}
             showHours={index === 0}
             onDrop={onDrop}
@@ -82,8 +84,9 @@ const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
 export default WeeklyCalendar;
 
 WeeklyCalendar.propTypes = {
-  year: PropTypes.number,
-  month: PropTypes.number,
-  day: PropTypes.number,
-  todos: PropTypes.array,
+  year: PropTypes.number.isRequired,
+  month: PropTypes.number.isRequired,
+  day: PropTypes.number.isRequired,
+  todos: PropTypes.array.isRequired,
+  onDrop: PropTypes.func.isRequired,
 };

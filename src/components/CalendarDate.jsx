@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import {
   faChevronLeft,
   faChevronRight,
@@ -203,6 +204,15 @@ const CalendarDate = ({
       )}
     </StyledCalendarDate>
   );
+};
+
+CalendarDate.propTypes = {
+  calendarFormat: PropTypes.string.isRequired,
+  calendarYear: PropTypes.number.isRequired,
+  calendarMonth: PropTypes.number,
+  calendarDay: PropTypes.number,
+  changeDate: PropTypes.func.isRequired,
+  onDateClick: PropTypes.func.isRequired,
 };
 
 export default CalendarDate;

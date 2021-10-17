@@ -140,12 +140,11 @@ const CalendarInput = ({
 };
 
 CalendarInput.propTypes = {
-  changeDate: PropTypes.func,
-  calendarDay: PropTypes.number,
+  changeDate: PropTypes.func.isRequired,
+  calendarYear: PropTypes.number.isRequired,
   calendarMonth: PropTypes.number,
-  calendarYear: PropTypes.number,
-  onInputChange: PropTypes.func,
-  calendarFormat: PropTypes.string,
+  calendarDay: PropTypes.number,
+  onCancel: PropTypes.func.isRequired,
 };
 
 export default CalendarInput;

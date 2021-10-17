@@ -133,7 +133,7 @@ const Month = ({
         name: new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
           new Date(`${j + 1} ${monthsNames[month]} ${year}`)
         ),
-        number: handleOneDigitNumber(j + 1),
+        number: j + 1,
       });
     }
 
@@ -184,9 +184,7 @@ const Month = ({
               key={day.number}
               onClick={(e) => {
                 e.stopPropagation();
-                onDayClick(
-                  `${year}-${handleOneDigitNumber(month + 1)}-${day.number}`
-                );
+                onDayClick({ year, month, day: day.number });
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation();
@@ -222,11 +220,11 @@ const Month = ({
 export default Month;
 
 Month.propTypes = {
-  month: PropTypes.number,
-  year: PropTypes.number,
-  dateSelected: PropTypes.string,
-  onDayInMonthClick: PropTypes.func,
-  onDayDoubleClick: PropTypes.func,
-  showTooltip: PropTypes.bool,
-  todos: PropTypes.array,
+  month: PropTypes.number.isRequired,
+  year: PropTypes.number.isRequired,
+  dateSelected: PropTypes.object.isRequired,
+  onDayDoubleClick: PropTypes.func.isRequired,
+  showTooltip: PropTypes.bool.isRequired,
+  todos: PropTypes.array.isRequired,
+  onDrop: PropTypes.func.isRequired,
 };

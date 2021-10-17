@@ -82,11 +82,11 @@ const YearlyCalendar = ({
 export default YearlyCalendar;
 
 YearlyCalendar.propTypes = {
-  year: PropTypes.string,
-  onMonthClick: PropTypes.func,
-  dateSelected: PropTypes.string,
-  onDayInMonthClick: PropTypes.func,
-  onDayDoubleClick: PropTypes.func,
-  showTooltip: PropTypes.bool,
-  todos: PropTypes.array,
+  year: PropTypes.number.isRequired,
+  onMonthClick: PropTypes.func.isRequired,
+  dateSelected: PropTypes.object.isRequired,
+  onDayDoubleClick: PropTypes.func.isRequired,
+  showTooltip: PropTypes.bool.isRequired,
+  todos: PropTypes.array.isRequired,
+  onDrop: PropTypes.func.isRequired,
 };

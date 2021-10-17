@@ -80,19 +80,17 @@ const Calendar = ({
 };
 
 Calendar.propTypes = {
-  todos: PropTypes.array,
-  calendarArray: PropTypes.array,
-  format: PropTypes.string,
-  currentDate: PropTypes.object,
-  calendarYear: PropTypes.number,
+  todos: PropTypes.array.isRequired,
+  format: PropTypes.string.isRequired,
+  calendarYear: PropTypes.number.isRequired,
   calendarMonth: PropTypes.number,
   calendarDay: PropTypes.number,
-  onMonthClick: PropTypes.func,
-  dateSelected: PropTypes.string,
-  onDayInMonthClick: PropTypes.func,
-  onDayInMonthDoubleClick: PropTypes.func,
-  goToThisDay: PropTypes.func,
-  showTooltip: PropTypes.bool,
+  onMonthClick: PropTypes.func.isRequired,
+  dateSelected: PropTypes.object.isRequired,
+  onDayInMonthClick: PropTypes.func.isRequired,
+  onDayInMonthDoubleClick: PropTypes.func.isRequired,
+  showTooltip: PropTypes.bool.isRequired,
+  onDrop: PropTypes.func.isRequired,
 };
 
 export default Calendar;
