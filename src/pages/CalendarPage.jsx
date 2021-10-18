@@ -77,7 +77,11 @@ const CalendarPage = ({ todos, modifyTodos }) => {
 
   const handleDayInMonthClick = (date) => {
     setDateSelected(date);
-    if (dateSelected === date) {
+    if (
+      dateSelected.year === date.year &&
+      dateSelected.month === date.month &&
+      dateSelected.day === date.day
+    ) {
       setShowTooltip((prev) => !prev);
     } else {
       setShowTooltip(true);
