@@ -27,6 +27,7 @@ const Calendar = ({
   onDayInMonthDoubleClick,
   showTooltip,
   onDrop,
+  onDragStart,
 }) => {
   return (
     <StyledCalendar>
@@ -40,6 +41,7 @@ const Calendar = ({
           showTooltip={showTooltip}
           todos={todos}
           onDrop={onDrop}
+          onDragStart={onDragStart}
         />
       )}
 
@@ -54,6 +56,7 @@ const Calendar = ({
           showTooltip={showTooltip}
           todos={todos}
           onDrop={onDrop}
+          onDragStart={onDragStart}
         />
       )}
       {format === "day" && (
@@ -64,6 +67,7 @@ const Calendar = ({
           todos={todos}
           showHours={true}
           onDrop={onDrop}
+          onDragStart={onDragStart}
         />
       )}
       {format === "week" && (
@@ -73,6 +77,7 @@ const Calendar = ({
           day={calendarDay}
           todos={todos}
           onDrop={onDrop}
+          onDragStart={onDragStart}
         />
       )}
     </StyledCalendar>
@@ -91,6 +96,7 @@ Calendar.propTypes = {
   onDayInMonthDoubleClick: PropTypes.func.isRequired,
   showTooltip: PropTypes.bool.isRequired,
   onDrop: PropTypes.func.isRequired,
+  onDragStart: PropTypes.func.isRequired,
 };
 
 export default Calendar;

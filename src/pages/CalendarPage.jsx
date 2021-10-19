@@ -187,6 +187,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
         goToThisDay={handleChangeDate}
         showTooltip={showTooltip}
         onDrop={handleDropTodo}
+        onDragStart={(todoId) => setTodoIdDragged(todoId)}
       />
     </StyledCalendarPage>
   );

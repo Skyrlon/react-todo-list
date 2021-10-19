@@ -46,6 +46,11 @@ const StyledDay = styled.div`
       }
     }
   }
+
+  & .todo {
+    user-select: none;
+  }
+
   & .todo-nohour {
     display: flex;
     flex-direction: row;
@@ -77,7 +82,7 @@ const currentDate = {
   )}:${handleOneDigitNumber(new Date(Date.now()).getMinutes())}`,
 };
 
-const Day = ({ year, month, day, todos, showHours, onDrop }) => {
+const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
   const time = function () {
     const numberOfHours = 24;
     const numberOfMinutes = 60;
@@ -150,6 +155,8 @@ const Day = ({ year, month, day, todos, showHours, onDrop }) => {
                   todo.deadline.time === `${time.hour}:${minute.number}` && (
                     <div
                       key={todo.id}
+                      draggable
+                      onDragStart={() => onDragStart(todo.id)}
                       className={`todo priority-${
                         todo.completed ? "completed" : todo.priority
                       }`}
@@ -175,4 +182,5 @@ Day.propTypes = {
   todos: PropTypes.array.isRequired,
   showHours: PropTypes.bool.isRequired,
   onDrop: PropTypes.func.isRequired,
+  onDragStart: PropTypes.func.isRequired,
 };

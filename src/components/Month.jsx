@@ -124,6 +124,7 @@ const Month = ({
   showTooltip,
   todos,
   onDrop,
+  onDragStart,
 }) => {
   const days = function () {
     let daysArray = [];
@@ -207,7 +208,15 @@ const Month = ({
                         todo.deadline.date ===
                           `${year}-${handleOneDigitNumber(month + 1)}-${
                             day.number
-                          }` && <div key={todo.id}>{todo.title}</div>
+                          }` && (
+                          <div
+                            key={todo.id}
+                            draggable
+                            onDragStart={() => onDragStart(todo.id)}
+                          >
+                            {todo.title}
+                          </div>
+                        )
                     )}
                   </div>
                 )}
@@ -227,4 +236,5 @@ Month.propTypes = {
   showTooltip: PropTypes.bool.isRequired,
   todos: PropTypes.array.isRequired,
   onDrop: PropTypes.func.isRequired,
+  onDragStart: PropTypes.func.isRequired,
 };

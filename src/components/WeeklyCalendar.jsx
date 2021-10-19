@@ -37,7 +37,7 @@ const monthsNames = [
   "December",
 ];
 
-const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
+const WeeklyCalendar = ({ year, month, day, todos, onDrop, onDragStart }) => {
   const days = function () {
     const daysArray = [{ year, month: month, day }];
     //handle getDate which starts with Sunday instead of Monday
@@ -80,6 +80,7 @@ const WeeklyCalendar = ({ year, month, day, todos, onDrop }) => {
             todos={todos}
             showHours={index === 0}
             onDrop={onDrop}
+            onDragStart={onDragStart}
           />
         </div>
       ))}
@@ -95,4 +96,5 @@ WeeklyCalendar.propTypes = {
   day: PropTypes.number.isRequired,
   todos: PropTypes.array.isRequired,
   onDrop: PropTypes.func.isRequired,
+  onDragStart: PropTypes.func.isRequired,
 };
