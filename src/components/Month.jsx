@@ -206,9 +206,9 @@ const Month = ({
                     {todos.map(
                       (todo) =>
                         todo.deadline.date ===
-                          `${year}-${handleOneDigitNumber(month + 1)}-${
-                            day.number
-                          }` && (
+                          `${year}-${handleOneDigitNumber(
+                            month + 1
+                          )}-${handleOneDigitNumber(day.number)}` && (
                           <div
                             key={todo.id}
                             draggable

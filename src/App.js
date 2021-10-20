@@ -11,10 +11,11 @@ const App = () => {
     let array = [];
     const completion = [true, false];
     const priorities = ["hight", "medium", "low"];
+    const minutesArray = ["00", "15", "30", "45"];
 
     function randomNumber(min, max) {
       let number = Math.floor(Math.random() * (max - min) + min);
-      return number > 10 ? number : `0${number}`;
+      return number < 10 ? `0${number}` : number;
     }
     for (let i = 0; i < 200; i++) {
       const gotDeadline = randomNumber(0, 2) === "00";
@@ -29,7 +30,9 @@ const App = () => {
             ? `2021-${randomNumber(3, 4)}-${randomNumber(1, 28)}`
             : "",
           time: gotDeadline
-            ? `${randomNumber(0, 23)}:${randomNumber(0, 59)}`
+            ? `${randomNumber(0, 24)}:${
+                minutesArray[parseInt(randomNumber(0, 4))]
+              }`
             : "",
         },
       });

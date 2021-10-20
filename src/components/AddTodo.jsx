@@ -2,6 +2,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
+import handleOneDigitNumber from "../utils/handleOneDigitNumber";
 
 const StyledAddTodo = styled.div`
   & textarea {
@@ -40,8 +41,12 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
     isEditingTodo ? todoToEdit.deadline.date : ""
   );
 
-  const [deadlineTime, setDeadlineTime] = useState(
-    isEditingTodo ? todoToEdit.deadline.time : ""
+  const [deadlineTimeHours, setDeadlineTimeHours] = useState(
+    isEditingTodo ? todoToEdit.deadline.time.slice(0, 2) : ""
+  );
+
+  const [deadlineTimeMinutes, setDeadlineTimeMinutes] = useState(
+    isEditingTodo ? todoToEdit.deadline.time.slice(3) : ""
   );
 
   const [completed, setCompleted] = useState(todoToEdit.completed);
@@ -64,20 +69,27 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
           title,
           details,
           priority,
-          deadline: { date: deadlineDate, time: deadlineTime },
+          deadline: {
+            date: deadlineDate,
+            time: `${deadlineTimeHours}:${deadlineTimeMinutes}`,
+          },
           completed,
         })
       : onAdd({
           title,
           details,
           priority,
-          deadline: { date: deadlineDate, time: deadlineTime },
+          deadline: {
+            date: deadlineDate,
+            time: `${deadlineTimeHours}:${deadlineTimeMinutes}`,
+          },
         });
 
     setTitle("");
     setDetails("");
     setPriority("");
-    setDeadlineTime("");
+    setDeadlineTimeHours("");
+    setDeadlineTimeMinutes("");
     setDeadlineDate("");
   };
 
@@ -118,12 +130,27 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
             value={deadlineDate}
             onChange={(e) => setDeadlineDate(e.target.value)}
           />
-          <input
-            type="time"
-            name="deadline"
-            value={deadlineTime}
-            onChange={(e) => setDeadlineTime(e.target.value)}
-          />
+
+          <select
+            value={deadlineTimeHours}
+            onChange={(e) => setDeadlineTimeHours(e.target.value)}
+          >
+            {[...Array(24).keys()].map((hour) => (
+              <option value={handleOneDigitNumber(hour)}>
+                {handleOneDigitNumber(hour)}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={deadlineTimeMinutes}
+            onChange={(e) => setDeadlineTimeMinutes(e.target.value)}
+          >
+            {["00", "15", "30", "45"].map((minute) => (
+              <option value={minute}>{minute}</option>
+            ))}
+          </select>
+
           {isEditingTodo && (
             <>
               <label htmlFor="completed">Completed</label>

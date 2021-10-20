@@ -32,7 +32,7 @@ const StyledDay = styled.div`
     }
 
     &-minute {
-      height: 10px;
+      height: 20px;
       &.now {
         border-top: 1px solid red;
         position: relative;
@@ -49,6 +49,8 @@ const StyledDay = styled.div`
 
   & .todo {
     user-select: none;
+    height: 20px;
+    font-size: 15px;
   }
 
   & .todo-nohour {
@@ -85,13 +87,9 @@ const currentDate = {
 const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
   const time = function () {
     const numberOfHours = 24;
-    const numberOfMinutes = 60;
+    const minutesArray = ["00", "15", "30", "45"];
     let hoursArray = [];
     for (let i = 0; i < numberOfHours; i++) {
-      let minutesArray = [];
-      for (let j = 0; j < numberOfMinutes; j++) {
-        minutesArray.push({ number: handleOneDigitNumber(j) });
-      }
       hoursArray.push({
         hour: handleOneDigitNumber(i),
         minutes: minutesArray,
@@ -126,13 +124,13 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
           {showHours && <div className="hour-number">{time.hour}:00</div>}
           {time.minutes.map((minute) => (
             <div
-              key={minute.number}
+              key={minute}
               className={`hour-minute${
                 currentDate.date ===
                   `${year}-${handleOneDigitNumber(
                     month + 1
                   )}-${handleOneDigitNumber(day)}` &&
-                currentDate.time === `${time.hour}:${minute.number}`
+                currentDate.time === `${time.hour}:${minute}`
                   ? " now"
                   : ""
               }`}
@@ -142,7 +140,7 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
                   date: `${year}-${handleOneDigitNumber(
                     month + 1
                   )}-${handleOneDigitNumber(day)}`,
-                  time: `${time.hour}:${minute.number}`,
+                  time: `${time.hour}:${minute}`,
                 })
               }
             >
@@ -152,7 +150,7 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
                     `${year}-${handleOneDigitNumber(
                       month + 1
                     )}-${handleOneDigitNumber(day)}` &&
-                  todo.deadline.time === `${time.hour}:${minute.number}` && (
+                  todo.deadline.time === `${time.hour}:${minute}` && (
                     <div
                       key={todo.id}
                       draggable
