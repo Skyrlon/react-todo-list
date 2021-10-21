@@ -45,6 +45,31 @@ const StyledMonth = styled.div`
     &.selected {
       background-color: green;
     }
+    &-patch {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      & > * {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+      }
+      &-completed {
+        background-color: grey;
+      }
+      &-low {
+        background-color: green;
+      }
+      &-medium {
+        background-color: yellow;
+      }
+      &-hight {
+        background-color: red;
+      }
+    }
     &-tooltip {
       position: absolute;
       top: 3em;
@@ -198,6 +223,43 @@ const Month = ({
               }}
             >
               <div className="day-number">{day.name ? day.number : ""}</div>
+              <div className="day-patch">
+                {todos.filter(
+                  (todo) =>
+                    todo.deadline.date ===
+                      `${year}-${handleOneDigitNumber(
+                        month + 1
+                      )}-${handleOneDigitNumber(day.number)}` &&
+                    !!todo.completed
+                ).length > 0 && <div className="day-patch-completed"></div>}
+                {todos.filter(
+                  (todo) =>
+                    todo.deadline.date ===
+                      `${year}-${handleOneDigitNumber(
+                        month + 1
+                      )}-${handleOneDigitNumber(day.number)}` &&
+                    todo.priority === "low" &&
+                    !todo.completed
+                ).length > 0 && <div className="day-patch-low"></div>}
+                {todos.filter(
+                  (todo) =>
+                    todo.deadline.date ===
+                      `${year}-${handleOneDigitNumber(
+                        month + 1
+                      )}-${handleOneDigitNumber(day.number)}` &&
+                    todo.priority === "medium" &&
+                    !todo.completed
+                ).length > 0 && <div className="day-patch-medium"></div>}
+                {todos.filter(
+                  (todo) =>
+                    todo.deadline.date ===
+                      `${year}-${handleOneDigitNumber(
+                        month + 1
+                      )}-${handleOneDigitNumber(day.number)}` &&
+                    todo.priority === "hight" &&
+                    !todo.completed
+                ).length > 0 && <div className="day-patch-hight"></div>}
+              </div>
               {showTooltip &&
                 dateSelected.year === year &&
                 dateSelected.month === month &&
