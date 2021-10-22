@@ -25,6 +25,11 @@ const StyledAddTodo = styled.div`
     & .add-todo-button {
       border: 1px solid black;
     }
+    & .deadline {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
   }
 `;
 
@@ -71,7 +76,10 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
           priority,
           deadline: {
             date: deadlineDate,
-            time: `${deadlineTimeHours}:${deadlineTimeMinutes}`,
+            time:
+              deadlineTimeHours.length > 0 && deadlineTimeMinutes.length > 0
+                ? `${deadlineTimeHours}:${deadlineTimeMinutes}`
+                : "",
           },
           completed,
         })
@@ -81,7 +89,10 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
           priority,
           deadline: {
             date: deadlineDate,
-            time: `${deadlineTimeHours}:${deadlineTimeMinutes}`,
+            time:
+              deadlineTimeHours.length > 0 && deadlineTimeMinutes.length > 0
+                ? `${deadlineTimeHours}:${deadlineTimeMinutes}`
+                : "",
           },
         });
 
@@ -105,6 +116,7 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
             onChange={(e) => setTitle(e.target.value)}
             value={title}
           />
+
           <label htmlFor="details">Details</label>
           <textarea
             name="details"
@@ -112,6 +124,7 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
             onChange={(e) => setDetails(e.target.value)}
             value={details}
           />
+
           <select
             name="priority"
             value={priority}
@@ -122,34 +135,40 @@ const AddTodo = ({ onAdd, onEdit, isEditingTodo, todoToEdit, clickedAway }) => {
             <option value="medium">Medium</option>
             <option value="low">Low</option>
           </select>
-          <input
-            type="date"
-            name="deadline"
-            min="1000-01-01"
-            max="9999-12-31"
-            value={deadlineDate}
-            onChange={(e) => setDeadlineDate(e.target.value)}
-          />
 
-          <select
-            value={deadlineTimeHours}
-            onChange={(e) => setDeadlineTimeHours(e.target.value)}
-          >
-            {[...Array(24).keys()].map((hour) => (
-              <option value={handleOneDigitNumber(hour)}>
-                {handleOneDigitNumber(hour)}
-              </option>
-            ))}
-          </select>
+          <div className="deadline">
+            <input
+              type="date"
+              name="deadline-date"
+              min="1000-01-01"
+              max="9999-12-31"
+              value={deadlineDate}
+              onChange={(e) => setDeadlineDate(e.target.value)}
+            />
 
-          <select
-            value={deadlineTimeMinutes}
-            onChange={(e) => setDeadlineTimeMinutes(e.target.value)}
-          >
-            {["00", "15", "30", "45"].map((minute) => (
-              <option value={minute}>{minute}</option>
-            ))}
-          </select>
+            <select
+              value={deadlineTimeHours}
+              onChange={(e) => setDeadlineTimeHours(e.target.value)}
+            >
+              <option value=""></option>
+              {[...Array(24).keys()].map((hour) => (
+                <option key={hour} value={handleOneDigitNumber(hour)}>
+                  {handleOneDigitNumber(hour)}
+                </option>
+              ))}
+            </select>
+            <select
+              value={deadlineTimeMinutes}
+              onChange={(e) => setDeadlineTimeMinutes(e.target.value)}
+            >
+              <option value=""></option>
+              {["00", "15", "30", "45"].map((minute) => (
+                <option key={minute} value={minute}>
+                  {minute}
+                </option>
+              ))}
+            </select>
+          </div>
 
           {isEditingTodo && (
             <>

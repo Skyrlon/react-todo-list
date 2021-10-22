@@ -19,6 +19,7 @@ const App = () => {
     }
     for (let i = 0; i < 200; i++) {
       const gotDeadline = randomNumber(0, 2) === "00";
+      const gotDeadlineTime = randomNumber(0, 2) === "00";
       array.push({
         id: i,
         title: `Task ${i + 1}`,
@@ -29,11 +30,12 @@ const App = () => {
           date: gotDeadline
             ? `2021-${randomNumber(3, 4)}-${randomNumber(1, 28)}`
             : "",
-          time: gotDeadline
-            ? `${randomNumber(0, 24)}:${
-                minutesArray[parseInt(randomNumber(0, 4))]
-              }`
-            : "",
+          time:
+            gotDeadline && gotDeadlineTime
+              ? `${randomNumber(0, 24)}:${
+                  minutesArray[parseInt(randomNumber(0, 4))]
+                }`
+              : "",
         },
       });
     }
