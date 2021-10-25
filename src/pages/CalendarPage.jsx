@@ -6,6 +6,7 @@ import CalendarInput from "../components/CalendarInput.jsx";
 import Calendar from "../components/Calendar.jsx";
 import TodosNoDeadlineSidebar from "../components/TodosNoDeadlineSidebar.jsx";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber.jsx";
+import AddTodo from "../components/AddTodo.jsx";
 
 const StyledCalendarPage = styled.div`
   display: grid;
@@ -37,6 +38,10 @@ const CalendarPage = ({ todos, modifyTodos }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const [todoIdDragged, setTodoIdDragged] = useState(undefined);
+
+  const [showTodoForm, setShowTodoForm] = useState(false);
+
+  const [todoToEdit, setTodoToEdit] = useState(undefined);
 
   const [dateSelected, setDateSelected] = useState({
     year: new Date(Date.now()).getFullYear(),
@@ -125,6 +130,33 @@ const CalendarPage = ({ todos, modifyTodos }) => {
     modifyTodos(newTodos);
   };
 
+  const editTodo = (todo) => {
+    setShowTodoForm(true);
+    setTodoToEdit(todo);
+  };
+
+  const handleEditTodo = (todoEdited) => {
+    setShowTodoForm(false);
+    const newTodoList = todos.map((todo) => {
+      if (todo.id === todoEdited.id) return todoEdited;
+      return todo;
+    });
+    modifyTodos(newTodoList);
+  };
+
+  const deleteTodo = (todoToDelete) => {
+    const newTodoList = todos.filter((todo) => todo !== todoToDelete);
+    modifyTodos(newTodoList);
+  };
+
+  const toggleCompleteTodo = (todoToEdit) => {
+    const newTodoList = todos.map((todo) => {
+      if (todo === todoToEdit) return { ...todo, completed: !todo.completed };
+      return todo;
+    });
+    modifyTodos(newTodoList);
+  };
+
   useEffect(
     () => {
       setShowTooltip(false);
@@ -134,6 +166,15 @@ const CalendarPage = ({ todos, modifyTodos }) => {
 
   return (
     <StyledCalendarPage>
+      {showTodoForm && (
+        <AddTodo
+          onEdit={handleEditTodo}
+          isEditingTodo={true}
+          todoToEdit={todoToEdit}
+          clickedAway={() => setShowTodoForm(true)}
+        />
+      )}
+
       {!showInputs && (
         <CalendarDate
           calendarFormat={calendarFormat}
@@ -188,6 +229,9 @@ const CalendarPage = ({ todos, modifyTodos }) => {
         showTooltip={showTooltip}
         onDrop={handleDropTodo}
         onDragStart={(todoId) => setTodoIdDragged(todoId)}
+        onEdit={editTodo}
+        onDelete={deleteTodo}
+        toggleCompleteTodo={toggleCompleteTodo}
       />
     </StyledCalendarPage>
   );

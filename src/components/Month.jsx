@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import styled from "styled-components";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
+import Todo from "./Todo";
 
 const StyledMonth = styled.div`
   display: flex;
@@ -79,38 +81,9 @@ const StyledMonth = styled.div`
     }
     &-todo {
       position: absolute;
-      top: 0%;
-      right: 0.5em;
-      font-size: 0.75em;
-      & .priority {
-        &-hight {
-          color: red;
-        }
-        &-medium {
-          color: #ffcc00;
-        }
-        &-low {
-          color: green;
-        }
-      }
-      &-number {
-        position: relative;
-        & .tooltip {
-          display: none;
-        }
-        &:hover {
-          & .tooltip {
-            position: absolute;
-            display: block;
-            z-index: 1;
-            background-color: white;
-            bottom: 100%;
-            width: 10em;
-            border: 1px solid black;
-            box-sizing: border-box;
-          }
-        }
-      }
+      bottom: 0%;
+      left: 100%;
+      width:100%;
     }
   }
 `;
@@ -150,7 +123,14 @@ const Month = ({
   todos,
   onDrop,
   onDragStart,
+  onEdit,
+  onDelete,
+  toggleCompleteTodo,
 }) => {
+  const [showTodo, setShowTodo] = useState(false);
+
+  const [todoIdToShow, setTodoIdToShow] = useState(null);
+
   const days = function () {
     let daysArray = [];
     const numberOfDays = new Date(year, month + 1, 0).getDate();
@@ -275,8 +255,24 @@ const Month = ({
                             key={todo.id}
                             draggable
                             onDragStart={() => onDragStart(todo.id)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowTodo(true);
+                              setTodoIdToShow(todo.id);
+                            }}
                           >
-                            {todo.title}
+                            <span>{todo.title}</span>
+                            {showTodo && todo.id === todoIdToShow && (
+                              <div className="day-todo">
+                                <Todo
+                                  key={todo.id}
+                                  todo={todo}
+                                  onEdit={() => onEdit(todo)}
+                                  onDelete={() => onDelete(todo)}
+                                  onComplete={() => toggleCompleteTodo(todo)}
+                                />
+                              </div>
+                            )}
                           </div>
                         )
                     )}
@@ -299,4 +295,7 @@ Month.propTypes = {
   todos: PropTypes.array.isRequired,
   onDrop: PropTypes.func.isRequired,
   onDragStart: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  toggleCompleteTodo: PropTypes.func.isRequired,
 };

@@ -14,6 +14,11 @@ const StyledTodoList = styled.div`
     justify-content: flex-start;
     margin-top: 5em;
   }
+  & .todo-container {
+    width: 14.5%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+  }
 `;
 
 const TodoList = ({
@@ -41,22 +46,18 @@ const TodoList = ({
         <div>
           <h2>All ({TodoListItems.length})</h2>
           <div className="todos">
-            {TodoListItems.map((element) => (
-              <Todo
-                key={element.id}
-                id={element.id}
-                title={element.title}
-                details={element.details}
-                priority={element.priority}
-                completed={element.completed}
-                onEdit={() => editTodo(element)}
-                onDelete={() => deleteTodo(element.id)}
-                onComplete={() =>
-                  toggleCompleteTodo(element, element.completed)
-                }
-                showCheckBoxes={showCheckBoxes}
-                selectedToBeDeleted={selectedToBeDeleted}
-              />
+            {TodoListItems.map((todo) => (
+              <div className="todo-container">
+                <Todo
+                  key={todo.id}
+                  todo={todo}
+                  onEdit={() => editTodo(todo)}
+                  onDelete={() => deleteTodo(todo.id)}
+                  onComplete={() => toggleCompleteTodo(todo, todo.completed)}
+                  showCheckBoxes={showCheckBoxes}
+                  selectedToBeDeleted={selectedToBeDeleted}
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -96,9 +97,7 @@ const TodoList = ({
                     completed={element.completed}
                     onEdit={() => editTodo(element)}
                     onDelete={() => deleteTodo(element.id)}
-                    onComplete={() =>
-                      toggleCompleteTodo(element)
-                    }
+                    onComplete={() => toggleCompleteTodo(element)}
                     showCheckBoxes={showCheckBoxes}
                     selectedToBeDeleted={selectedToBeDeleted}
                   />

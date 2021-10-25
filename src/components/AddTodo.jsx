@@ -5,6 +5,7 @@ import ClickAwayListener from "react-click-away-listener";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
 
 const StyledAddTodo = styled.div`
+  z-index: 100;
   & textarea {
     resize: none;
   }
