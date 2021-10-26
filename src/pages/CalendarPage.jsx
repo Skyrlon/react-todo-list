@@ -232,6 +232,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
         onEdit={editTodo}
         onDelete={deleteTodo}
         toggleCompleteTodo={toggleCompleteTodo}
+        closeTooltip={() => setShowTooltip(false)}
       />
     </StyledCalendarPage>
   );

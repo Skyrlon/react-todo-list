@@ -49,6 +49,7 @@ const YearlyCalendar = ({
   onEdit,
   onDelete,
   toggleCompleteTodo,
+  closeTooltip,
 }) => {
   return (
     <StyledYearlyCalendar>
@@ -80,6 +81,7 @@ const YearlyCalendar = ({
             onEdit={onEdit}
             onDelete={onDelete}
             toggleCompleteTodo={toggleCompleteTodo}
+            closeTooltip={closeTooltip}
           />
         </div>
       ))}
@@ -101,4 +103,5 @@ YearlyCalendar.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   toggleCompleteTodo: PropTypes.func.isRequired,
+  closeTooltip: PropTypes.func.isRequired,
 };

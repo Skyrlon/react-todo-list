@@ -31,6 +31,7 @@ const Calendar = ({
   onEdit,
   onDelete,
   toggleCompleteTodo,
+  closeTooltip,
 }) => {
   return (
     <StyledCalendar>
@@ -48,6 +49,7 @@ const Calendar = ({
           onEdit={onEdit}
           onDelete={onDelete}
           toggleCompleteTodo={toggleCompleteTodo}
+          closeTooltip={closeTooltip}
         />
       )}
 
@@ -66,6 +68,7 @@ const Calendar = ({
           onEdit={onEdit}
           onDelete={onDelete}
           toggleCompleteTodo={toggleCompleteTodo}
+          closeTooltip={closeTooltip}
         />
       )}
       {format === "day" && (
@@ -109,6 +112,7 @@ Calendar.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   toggleCompleteTodo: PropTypes.func.isRequired,
+  closeTooltip: PropTypes.func.isRequired,
 };
 
 export default Calendar;

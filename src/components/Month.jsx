@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
+import ClickAwayListener from "react-click-away-listener";
 import styled from "styled-components";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
 import Todo from "./Todo";
@@ -79,11 +80,15 @@ const StyledMonth = styled.div`
       background-color: lightblue;
       min-width: 7em;
     }
+    &-todolist {
+      position: relative;
+      width: 100%;
+    }
     &-todo {
       position: absolute;
       bottom: 0%;
       left: 100%;
-      width:100%;
+      width: 100%;
     }
   }
 `;
@@ -126,6 +131,7 @@ const Month = ({
   onEdit,
   onDelete,
   toggleCompleteTodo,
+  closeTooltip,
 }) => {
   const [showTodo, setShowTodo] = useState(false);
 
@@ -158,6 +164,12 @@ const Month = ({
       });
     }
     return daysArray;
+  };
+
+  const handleClickAwayTooltip = () => {
+    setShowTodo(false);
+    closeTooltip();
+    setTodoIdToShow(null);
   };
 
   return (
@@ -244,39 +256,42 @@ const Month = ({
                 dateSelected.year === year &&
                 dateSelected.month === month &&
                 dateSelected.day === day.number && (
-                  <div className="day-tooltip">
-                    {todos.map(
-                      (todo) =>
-                        todo.deadline.date ===
-                          `${year}-${handleOneDigitNumber(
-                            month + 1
-                          )}-${handleOneDigitNumber(day.number)}` && (
-                          <div
-                            key={todo.id}
-                            draggable
-                            onDragStart={() => onDragStart(todo.id)}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setShowTodo(true);
-                              setTodoIdToShow(todo.id);
-                            }}
-                          >
-                            <span>{todo.title}</span>
-                            {showTodo && todo.id === todoIdToShow && (
-                              <div className="day-todo">
-                                <Todo
-                                  key={todo.id}
-                                  todo={todo}
-                                  onEdit={() => onEdit(todo)}
-                                  onDelete={() => onDelete(todo)}
-                                  onComplete={() => toggleCompleteTodo(todo)}
-                                />
-                              </div>
-                            )}
-                          </div>
-                        )
-                    )}
-                  </div>
+                  <ClickAwayListener onClickAway={handleClickAwayTooltip}>
+                    <div className="day-tooltip">
+                      {todos.map(
+                        (todo) =>
+                          todo.deadline.date ===
+                            `${year}-${handleOneDigitNumber(
+                              month + 1
+                            )}-${handleOneDigitNumber(day.number)}` && (
+                            <div
+                              key={todo.id}
+                              className="day-todolist"
+                              draggable
+                              onDragStart={() => onDragStart(todo.id)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setShowTodo(true);
+                                setTodoIdToShow(todo.id);
+                              }}
+                            >
+                              <span>{todo.title}</span>
+                              {showTodo && todo.id === todoIdToShow && (
+                                <div className="day-todo">
+                                  <Todo
+                                    key={todo.id}
+                                    todo={todo}
+                                    onEdit={() => onEdit(todo)}
+                                    onDelete={() => onDelete(todo)}
+                                    onComplete={() => toggleCompleteTodo(todo)}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          )
+                      )}
+                    </div>
+                  </ClickAwayListener>
                 )}
             </div>
           ))}
@@ -298,4 +313,5 @@ Month.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   toggleCompleteTodo: PropTypes.func.isRequired,
+  closeTooltip: PropTypes.func.isRequired,
 };
