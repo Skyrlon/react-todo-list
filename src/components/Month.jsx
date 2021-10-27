@@ -172,6 +172,13 @@ const Month = ({
     setTodoIdToShow(null);
   };
 
+  const handleOnEdit = (todo) => {
+    setShowTodo(false);
+    closeTooltip();
+    setTodoIdToShow(null);
+    onEdit(todo);
+  };
+
   return (
     <StyledMonth>
       <div className="weekdays">
@@ -200,21 +207,25 @@ const Month = ({
                   : ""
               }`}
               key={day.number}
-              onClick={(e) => {
-                e.stopPropagation();
-                onDayClick({ year, month, day: day.number });
-              }}
-              onDoubleClick={(e) => {
-                e.stopPropagation();
-                onDayDoubleClick({
-                  day: day.number,
-                  month: month,
-                  year: year,
-                  format: "day",
-                });
-              }}
             >
-              <div className="day-number">{day.name ? day.number : ""}</div>
+              <div
+                className="day-number"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDayClick({ year, month, day: day.number });
+                }}
+                onDoubleClick={(e) => {
+                  e.stopPropagation();
+                  onDayDoubleClick({
+                    day: day.number,
+                    month: month,
+                    year: year,
+                    format: "day",
+                  });
+                }}
+              >
+                {day.name ? day.number : ""}
+              </div>
               <div className="day-patch">
                 {todos.filter(
                   (todo) =>
@@ -269,19 +280,22 @@ const Month = ({
                               className="day-todolist"
                               draggable
                               onDragStart={() => onDragStart(todo.id)}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setShowTodo(true);
-                                setTodoIdToShow(todo.id);
-                              }}
                             >
-                              <span>{todo.title}</span>
+                              <span
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setShowTodo(true);
+                                  setTodoIdToShow(todo.id);
+                                }}
+                              >
+                                {todo.title}
+                              </span>
                               {showTodo && todo.id === todoIdToShow && (
                                 <div className="day-todo">
                                   <Todo
                                     key={todo.id}
                                     todo={todo}
-                                    onEdit={() => onEdit(todo)}
+                                    onEdit={() => handleOnEdit(todo)}
                                     onDelete={() => onDelete(todo)}
                                     onComplete={() => toggleCompleteTodo(todo)}
                                   />
