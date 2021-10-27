@@ -45,8 +45,16 @@ const StyledMonth = styled.div`
     height: 3em;
     border: 1px solid black;
     box-sizing: border-box;
+
     &.selected {
       background-color: green;
+    }
+    &-number {
+      width: 100%;
+      height: 100%;
+      &.over {
+        background: blue;
+      }
     }
     &-patch {
       position: absolute;
@@ -190,15 +198,6 @@ const Month = ({
         {days().length > 0 &&
           days().map((day) => (
             <div
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={() =>
-                onDrop({
-                  date: `${year}-${handleOneDigitNumber(month + 1)}-${
-                    day.number
-                  }`,
-                  time: "",
-                })
-              }
               className={`day${
                 dateSelected.year === year &&
                 dateSelected.month === month &&
@@ -210,6 +209,23 @@ const Month = ({
             >
               <div
                 className="day-number"
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.target.classList.add("over");
+                }}
+                onDragLeave={(e) => {
+                  e.preventDefault();
+                  e.target.classList.remove("over");
+                }}
+                onDrop={(e) => {
+                  onDrop({
+                    date: `${year}-${handleOneDigitNumber(month + 1)}-${
+                      day.number
+                    }`,
+                    time: "",
+                  });
+                  e.target.classList.remove("over");
+                }}
                 onClick={(e) => {
                   e.stopPropagation();
                   onDayClick({ year, month, day: day.number });
