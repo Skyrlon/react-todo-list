@@ -30,25 +30,11 @@ const StyledDay = styled.div`
         width: 1em;
       }
     }
-
-    &-minute {
-      height: 20px;
-      &.now {
-        border-top: 1px solid red;
-        position: relative;
-        &::before {
-          content: "Now";
-          color: red;
-          position: absolute;
-          left: -2.5em;
-          top: -0.8em;
-        }
-      }
-    }
   }
 
   & .todo {
     user-select: none;
+    width: 20%;
     height: 20px;
     font-size: 15px;
   }
@@ -58,6 +44,9 @@ const StyledDay = styled.div`
     flex-direction: row;
     justify-content: space-around;
     height: 3em;
+    &.over {
+      background-color: blue;
+    }
   }
   & .priority {
     &-hight {
@@ -71,6 +60,37 @@ const StyledDay = styled.div`
     }
     &-completed {
       background-color: grey;
+    }
+  }
+`;
+
+const StyledMinute = styled.div`
+  position: relative;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  &.now {
+    border-top: 1px solid red;
+    position: relative;
+    &::before {
+      content: "Now";
+      color: red;
+      position: absolute;
+      left: -2.5em;
+      top: -0.8em;
+    }
+  }
+  & .time-toolitp {
+    display: none;
+    background-color: green;
+  }
+  &.over {
+    background-color: blue;
+    & .time-toolitp {
+      display: block;
+      position: absolute;
+      left: -2.5rem;
+      background-color: green;
     }
   }
 `;
@@ -102,15 +122,23 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
     <StyledDay>
       <div
         className="todo-no-time"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={() =>
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.target.classList.add("over");
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault();
+          e.target.classList.remove("over");
+        }}
+        onDrop={(e) => {
+          e.target.classList.remove("over");
           onDrop({
             date: `${year}-${handleOneDigitNumber(
               month + 1
             )}-${handleOneDigitNumber(day)}`,
             time: "",
-          })
-        }
+          });
+        }}
       >
         {todos.map(
           (todo) =>
@@ -134,7 +162,7 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
         <div key={time.hour} className="hour">
           {showHours && <div className="hour-number">{time.hour}:00</div>}
           {time.minutes.map((minute) => (
-            <div
+            <StyledMinute
               key={minute}
               className={`hour-minute${
                 currentDate.date ===
@@ -145,16 +173,25 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
                   ? " now"
                   : ""
               }`}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={() =>
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.target.classList.add("over");
+              }}
+              onDragLeave={(e) => {
+                e.preventDefault();
+                e.target.classList.remove("over");
+              }}
+              onDrop={(e) => {
+                e.target.classList.remove("over");
                 onDrop({
                   date: `${year}-${handleOneDigitNumber(
                     month + 1
                   )}-${handleOneDigitNumber(day)}`,
                   time: `${time.hour}:${minute}`,
-                })
-              }
+                });
+              }}
             >
+              <div className="time-toolitp">{`${time.hour}:${minute}`}</div>
               {todos.map(
                 (todo) =>
                   todo.deadline.date ===
@@ -174,7 +211,7 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
                     </div>
                   )
               )}
-            </div>
+            </StyledMinute>
           ))}
         </div>
       ))}
