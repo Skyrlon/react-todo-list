@@ -53,7 +53,7 @@ const StyledDay = styled.div`
     font-size: 15px;
   }
 
-  & .todo-nohour {
+  & .todo-no-time {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -100,7 +100,18 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
 
   return (
     <StyledDay>
-      <div className="todo-nohour">
+      <div
+        className="todo-no-time"
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={() =>
+          onDrop({
+            date: `${year}-${handleOneDigitNumber(
+              month + 1
+            )}-${handleOneDigitNumber(day)}`,
+            time: "",
+          })
+        }
+      >
         {todos.map(
           (todo) =>
             todo.deadline.date ===
