@@ -152,6 +152,15 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
                 className={`priority-${
                   todo.completed ? "completed" : todo.priority
                 }`}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.target.parentNode.classList.add("over");
+                }}
+                onDragLeave={(e) => {
+                  e.preventDefault();
+                  e.target.parentNode.classList.remove("over");
+                }}
+                onDrop={(e) => e.target.parentNode.classList.remove("over")}
               >
                 {todo.title}
               </div>
@@ -201,6 +210,17 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
                   todo.deadline.time === `${time.hour}:${minute}` && (
                     <div
                       key={todo.id}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        e.target.parentNode.classList.add("over");
+                      }}
+                      onDragLeave={(e) => {
+                        e.preventDefault();
+                        e.target.parentNode.classList.remove("over");
+                      }}
+                      onDrop={(e) =>
+                        e.target.parentNode.classList.remove("over")
+                      }
                       draggable
                       onDragStart={() => onDragStart(todo.id)}
                       className={`todo priority-${
