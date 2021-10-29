@@ -157,6 +157,11 @@ const CalendarPage = ({ todos, modifyTodos }) => {
     modifyTodos(newTodoList);
   };
 
+  const closeForm = () => {
+    setShowTodoForm(false);
+    setTodoToEdit(false);
+  };
+
   useEffect(
     () => {
       setShowTooltip(false);
@@ -171,7 +176,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
           onEdit={handleEditTodo}
           isEditingTodo={true}
           todoToEdit={todoToEdit}
-          clickedAway={() => setShowTodoForm(true)}
+          clickedAway={closeForm}
         />
       )}
 
