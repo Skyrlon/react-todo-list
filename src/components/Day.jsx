@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import styled from "styled-components";
+import ClickAwayListener from "react-click-away-listener";
 
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
+import Todo from "./Todo";
 
 const StyledDay = styled.div`
   display: flex;
@@ -33,10 +36,18 @@ const StyledDay = styled.div`
   }
 
   & .todo {
+    position: relative;
     user-select: none;
     width: 20%;
     height: 20px;
     font-size: 15px;
+    &-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 100%;
+      width: 100px;
+      height: 100px;
+    }
   }
 
   & .todo-no-time {
@@ -50,15 +61,19 @@ const StyledDay = styled.div`
   }
   & .priority {
     &-hight {
+      position: relative;
       background-color: red;
     }
     &-medium {
+      position: relative;
       background-color: #ffcc00;
     }
     &-low {
+      position: relative;
       background-color: green;
     }
     &-completed {
+      position: relative;
       background-color: grey;
     }
   }
@@ -104,7 +119,22 @@ const currentDate = {
   )}:${handleOneDigitNumber(new Date(Date.now()).getMinutes())}`,
 };
 
-const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
+const Day = ({
+  year,
+  month,
+  day,
+  todos,
+  showHours,
+  onDrop,
+  onDragStart,
+  onEdit,
+  onDelete,
+  toggleCompleteTodo,
+}) => {
+  const [showTodo, setShowTodo] = useState(false);
+
+  const [todoIdToShow, setTodoIdToShow] = useState(null);
+
   const time = function () {
     const numberOfHours = 24;
     const minutesArray = ["00", "15", "30", "45"];
@@ -116,6 +146,17 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
       });
     }
     return hoursArray;
+  };
+
+  const handleOnEdit = (todo) => {
+    setShowTodo(false);
+    setTodoIdToShow(null);
+    onEdit(todo);
+  };
+
+  const handleClickAwayTodo = () => {
+    setShowTodo(false);
+    setTodoIdToShow(null);
   };
 
   return (
@@ -147,23 +188,43 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
                 month + 1
               )}-${handleOneDigitNumber(day)}` &&
             todo.deadline.time.length === 0 && (
-              <div
+              <ClickAwayListener
+                onClickAway={handleClickAwayTodo}
                 key={todo.id}
-                className={`priority-${
-                  todo.completed ? "completed" : todo.priority
-                }`}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  e.target.parentNode.classList.add("over");
-                }}
-                onDragLeave={(e) => {
-                  e.preventDefault();
-                  e.target.parentNode.classList.remove("over");
-                }}
-                onDrop={(e) => e.target.parentNode.classList.remove("over")}
               >
-                {todo.title}
-              </div>
+                <div
+                  className={`priority-${
+                    todo.completed ? "completed" : todo.priority
+                  }`}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.target.parentNode.classList.add("over");
+                  }}
+                  onDragLeave={(e) => {
+                    e.preventDefault();
+                    e.target.parentNode.classList.remove("over");
+                  }}
+                  onDrop={(e) => e.target.parentNode.classList.remove("over")}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowTodo(true);
+                    setTodoIdToShow(todo.id);
+                  }}
+                >
+                  <span>{todo.title}</span>
+                  {showTodo && todo.id === todoIdToShow && (
+                    <div className="todo-tooltip">
+                      <Todo
+                        key={todo.id}
+                        todo={todo}
+                        onEdit={() => handleOnEdit(todo)}
+                        onDelete={() => onDelete(todo)}
+                        onComplete={() => toggleCompleteTodo(todo)}
+                      />
+                    </div>
+                  )}
+                </div>
+              </ClickAwayListener>
             )
         )}
       </div>
@@ -226,8 +287,24 @@ const Day = ({ year, month, day, todos, showHours, onDrop, onDragStart }) => {
                       className={`todo priority-${
                         todo.completed ? "completed" : todo.priority
                       }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowTodo(true);
+                        setTodoIdToShow(todo.id);
+                      }}
                     >
-                      {todo.title}
+                      <span>{todo.title}</span>
+                      {showTodo && todo.id === todoIdToShow && (
+                        <div className="todo-tooltip">
+                          <Todo
+                            key={todo.id}
+                            todo={todo}
+                            onEdit={() => handleOnEdit(todo)}
+                            onDelete={() => onDelete(todo)}
+                            onComplete={() => toggleCompleteTodo(todo)}
+                          />
+                        </div>
+                      )}
                     </div>
                   )
               )}
@@ -249,4 +326,7 @@ Day.propTypes = {
   showHours: PropTypes.bool.isRequired,
   onDrop: PropTypes.func.isRequired,
   onDragStart: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  toggleCompleteTodo: PropTypes.func.isRequired,
 };

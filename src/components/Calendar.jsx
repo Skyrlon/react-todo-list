@@ -80,6 +80,9 @@ const Calendar = ({
           showHours={true}
           onDrop={onDrop}
           onDragStart={onDragStart}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          toggleCompleteTodo={toggleCompleteTodo}
         />
       )}
       {format === "week" && (
@@ -90,6 +93,9 @@ const Calendar = ({
           todos={todos}
           onDrop={onDrop}
           onDragStart={onDragStart}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          toggleCompleteTodo={toggleCompleteTodo}
         />
       )}
     </StyledCalendar>

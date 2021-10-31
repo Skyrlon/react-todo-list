@@ -6,18 +6,12 @@ import styled from "styled-components";
 const StyledTodo = styled.div`
   border: 1px solid black;
   width: 100%;
+  height: 100%;
   overflow-wrap: break-word;
-  &.priority {
-    &-hight {
-      background-color: red;
-    }
-    &-medium {
-      background-color: yellow;
-    }
-    &-low {
-      background-color: green;
-    }
-  }
+  background-color: ${(props) =>
+    (props.priority === "hight" && "red") ||
+    (props.priority === "medium" && "yellow") ||
+    (props.priority === "low" && "green")};
   &.done {
     background-color: grey;
   }
@@ -33,9 +27,8 @@ const Todo = ({
 }) => {
   return (
     <StyledTodo
-      className={`todo priority-${todo.priority} ${
-        todo.completed ? "done" : ""
-      }`}
+      priority={todo.priority}
+      className={todo.completed ? " done" : ""}
     >
       {showCheckBoxes && (
         <input
@@ -45,9 +38,27 @@ const Todo = ({
       )}
       <h3>{todo.title}</h3>
       <div>{todo.details}</div>
-      <FontAwesomeIcon icon={faEdit} onClick={() => onEdit()} />
-      <FontAwesomeIcon icon={faTrash} onClick={() => onDelete()} />
-      <FontAwesomeIcon icon={faCheck} onClick={() => onComplete()} />
+      <FontAwesomeIcon
+        icon={faEdit}
+        onClick={(e) => {
+          e.stopPropagation();
+          onEdit();
+        }}
+      />
+      <FontAwesomeIcon
+        icon={faTrash}
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete();
+        }}
+      />
+      <FontAwesomeIcon
+        icon={faCheck}
+        onClick={(e) => {
+          e.stopPropagation();
+          onComplete();
+        }}
+      />
     </StyledTodo>
   );
 };
