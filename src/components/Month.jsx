@@ -3,7 +3,7 @@ import { useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 import styled from "styled-components";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
-import Todo from "./Todo";
+import TodoInCalendar from "./TodoInCalendar";
 
 const StyledMonth = styled.div`
   display: flex;
@@ -90,12 +90,6 @@ const StyledMonth = styled.div`
     }
     &-todolist {
       position: relative;
-      width: 100%;
-    }
-    &-todo {
-      position: absolute;
-      bottom: 0%;
-      left: 100%;
       width: 100%;
     }
   }
@@ -185,6 +179,11 @@ const Month = ({
     closeTooltip();
     setTodoIdToShow(null);
     onEdit(todo);
+  };
+
+  const handleClickTodo = (todoId) => {
+    setShowTodo(true);
+    setTodoIdToShow(todoId);
   };
 
   return (
@@ -291,32 +290,17 @@ const Month = ({
                             `${year}-${handleOneDigitNumber(
                               month + 1
                             )}-${handleOneDigitNumber(day.number)}` && (
-                            <div
-                              key={todo.id}
-                              className="day-todolist"
-                              draggable
-                              onDragStart={() => onDragStart(todo.id)}
-                            >
-                              <span
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setShowTodo(true);
-                                  setTodoIdToShow(todo.id);
-                                }}
-                              >
-                                {todo.title}
-                              </span>
-                              {showTodo && todo.id === todoIdToShow && (
-                                <div className="day-todo">
-                                  <Todo
-                                    key={todo.id}
-                                    todo={todo}
-                                    onEdit={() => handleOnEdit(todo)}
-                                    onDelete={() => onDelete(todo)}
-                                    onComplete={() => toggleCompleteTodo(todo)}
-                                  />
-                                </div>
-                              )}
+                            <div className="todo-container" key={todo.id}>
+                              <TodoInCalendar
+                                todo={todo}
+                                showTodo={showTodo}
+                                todoIdToShow={todoIdToShow}
+                                onDragStart={onDragStart}
+                                handleOnEdit={handleOnEdit}
+                                onDelete={onDelete}
+                                onClickTodo={handleClickTodo}
+                                toggleCompleteTodo={toggleCompleteTodo}
+                              />
                             </div>
                           )
                       )}

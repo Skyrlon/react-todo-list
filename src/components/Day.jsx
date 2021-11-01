@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ClickAwayListener from "react-click-away-listener";
 
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
-import Todo from "./Todo";
+import TodoInCalendar from "./TodoInCalendar";
 
 const StyledDay = styled.div`
   display: flex;
@@ -35,19 +35,12 @@ const StyledDay = styled.div`
     }
   }
 
-  & .todo {
+  & .todo-container {
     position: relative;
     user-select: none;
     width: 20%;
     height: 20px;
     font-size: 15px;
-    &-tooltip {
-      position: absolute;
-      bottom: 100%;
-      left: 100%;
-      width: 100px;
-      height: 100px;
-    }
   }
 
   & .todo-no-time {
@@ -159,6 +152,11 @@ const Day = ({
     setTodoIdToShow(null);
   };
 
+  const handleClickTodo = (todoId) => {
+    setShowTodo(true);
+    setTodoIdToShow(todoId);
+  };
+
   return (
     <StyledDay>
       <div
@@ -193,9 +191,8 @@ const Day = ({
                 key={todo.id}
               >
                 <div
-                  className={`priority-${
-                    todo.completed ? "completed" : todo.priority
-                  }`}
+                  className="todo-container"
+                  key={todo.id}
                   onDragOver={(e) => {
                     e.preventDefault();
                     e.target.parentNode.classList.add("over");
@@ -205,24 +202,17 @@ const Day = ({
                     e.target.parentNode.classList.remove("over");
                   }}
                   onDrop={(e) => e.target.parentNode.classList.remove("over")}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowTodo(true);
-                    setTodoIdToShow(todo.id);
-                  }}
                 >
-                  <span>{todo.title}</span>
-                  {showTodo && todo.id === todoIdToShow && (
-                    <div className="todo-tooltip">
-                      <Todo
-                        key={todo.id}
-                        todo={todo}
-                        onEdit={() => handleOnEdit(todo)}
-                        onDelete={() => onDelete(todo)}
-                        onComplete={() => toggleCompleteTodo(todo)}
-                      />
-                    </div>
-                  )}
+                  <TodoInCalendar
+                    todo={todo}
+                    showTodo={showTodo}
+                    todoIdToShow={todoIdToShow}
+                    onDragStart={onDragStart}
+                    handleOnEdit={handleOnEdit}
+                    onDelete={onDelete}
+                    onClickTodo={handleClickTodo}
+                    toggleCompleteTodo={toggleCompleteTodo}
+                  />
                 </div>
               </ClickAwayListener>
             )
@@ -270,6 +260,7 @@ const Day = ({
                     )}-${handleOneDigitNumber(day)}` &&
                   todo.deadline.time === `${time.hour}:${minute}` && (
                     <div
+                      className="todo-container"
                       key={todo.id}
                       onDragOver={(e) => {
                         e.preventDefault();
@@ -282,29 +273,17 @@ const Day = ({
                       onDrop={(e) =>
                         e.target.parentNode.classList.remove("over")
                       }
-                      draggable
-                      onDragStart={() => onDragStart(todo.id)}
-                      className={`todo priority-${
-                        todo.completed ? "completed" : todo.priority
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowTodo(true);
-                        setTodoIdToShow(todo.id);
-                      }}
                     >
-                      <span>{todo.title}</span>
-                      {showTodo && todo.id === todoIdToShow && (
-                        <div className="todo-tooltip">
-                          <Todo
-                            key={todo.id}
-                            todo={todo}
-                            onEdit={() => handleOnEdit(todo)}
-                            onDelete={() => onDelete(todo)}
-                            onComplete={() => toggleCompleteTodo(todo)}
-                          />
-                        </div>
-                      )}
+                      <TodoInCalendar
+                        todo={todo}
+                        showTodo={showTodo}
+                        todoIdToShow={todoIdToShow}
+                        onDragStart={onDragStart}
+                        handleOnEdit={handleOnEdit}
+                        onDelete={onDelete}
+                        onClickTodo={handleClickTodo}
+                        toggleCompleteTodo={toggleCompleteTodo}
+                      />
                     </div>
                   )
               )}
