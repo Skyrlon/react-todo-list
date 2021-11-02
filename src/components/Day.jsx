@@ -190,19 +190,7 @@ const Day = ({
                 onClickAway={handleClickAwayTodo}
                 key={todo.id}
               >
-                <div
-                  className="todo-container"
-                  key={todo.id}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    e.target.parentNode.classList.add("over");
-                  }}
-                  onDragLeave={(e) => {
-                    e.preventDefault();
-                    e.target.parentNode.classList.remove("over");
-                  }}
-                  onDrop={(e) => e.target.parentNode.classList.remove("over")}
-                >
+                <div className="todo-container" key={todo.id}>
                   <TodoInCalendar
                     todo={todo}
                     showTodo={showTodo}
@@ -259,21 +247,7 @@ const Day = ({
                       month + 1
                     )}-${handleOneDigitNumber(day)}` &&
                   todo.deadline.time === `${time.hour}:${minute}` && (
-                    <div
-                      className="todo-container"
-                      key={todo.id}
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        e.target.parentNode.classList.add("over");
-                      }}
-                      onDragLeave={(e) => {
-                        e.preventDefault();
-                        e.target.parentNode.classList.remove("over");
-                      }}
-                      onDrop={(e) =>
-                        e.target.parentNode.classList.remove("over")
-                      }
-                    >
+                    <div className="todo-container" key={todo.id}>
                       <TodoInCalendar
                         todo={todo}
                         showTodo={showTodo}

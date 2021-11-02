@@ -44,9 +44,18 @@ const TodoInCalendar = ({
       key={todo.id}
       draggable
       onDragStart={() => onDragStart(todo.id)}
+      onDragOver={(e) => {
+        e.preventDefault();
+        e.target.parentNode.parentNode.classList.add("over");
+      }}
+      onDragLeave={(e) => {
+        e.preventDefault();
+        e.target.parentNode.parentNode.classList.remove("over");
+      }}
+      onDrop={(e) => e.target.parentNode.parentNode.classList.remove("over")}
       onClick={onClick}
     >
-      <span>{todo.title}</span>
+      {todo.title}
       {showTodo && todo.id === todoIdToShow && (
         <div className="todo-tooltip">
           <Todo
