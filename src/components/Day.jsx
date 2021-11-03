@@ -77,17 +77,6 @@ const StyledMinute = styled.div`
   height: 20px;
   display: flex;
   flex-direction: row;
-  &.now {
-    border-top: 1px solid red;
-    position: relative;
-    &::before {
-      content: "Now";
-      color: red;
-      position: absolute;
-      left: -2.5em;
-      top: -0.8em;
-    }
-  }
   & .time-toolitp {
     display: none;
     background-color: green;
@@ -103,13 +92,31 @@ const StyledMinute = styled.div`
   }
 `;
 
+const StyledCurrentTimeBar = styled.div`
+  position: absolute;
+  z-index: 100;
+  border-top: 2px solid red;
+  width: 104%;
+  left: -4%;
+  top: ${(props) => props.position}%;
+
+  &::before {
+    content: "Now";
+    position: absolute;
+    left: -2.5rem;
+    top: -0.75rem;
+    color: red;
+  }
+`;
+
 const currentDate = {
   date: `${new Date(Date.now()).getFullYear()}-${handleOneDigitNumber(
     new Date(Date.now()).getMonth() + 1
   )}-${handleOneDigitNumber(new Date(Date.now()).getDate())}`,
-  time: `${handleOneDigitNumber(
-    new Date(Date.now()).getHours()
-  )}:${handleOneDigitNumber(new Date(Date.now()).getMinutes())}`,
+  time: {
+    hour: `${handleOneDigitNumber(new Date(Date.now()).getHours())}`,
+    minute: `${handleOneDigitNumber(new Date(Date.now()).getMinutes())}`,
+  },
 };
 
 const Day = ({
@@ -208,19 +215,19 @@ const Day = ({
       </div>
       {time().map((time) => (
         <div key={time.hour} className="hour">
+          {`${year}-${handleOneDigitNumber(month + 1)}-${handleOneDigitNumber(
+            day
+          )}` &&
+            currentDate.time.hour === `${time.hour}` && (
+              <StyledCurrentTimeBar
+                position={(parseInt(currentDate.time.minute) / 60) * 100}
+              ></StyledCurrentTimeBar>
+            )}
           {showHours && <div className="hour-number">{time.hour}:00</div>}
           {time.minutes.map((minute) => (
             <StyledMinute
               key={minute}
-              className={`hour-minute${
-                currentDate.date ===
-                  `${year}-${handleOneDigitNumber(
-                    month + 1
-                  )}-${handleOneDigitNumber(day)}` &&
-                currentDate.time === `${time.hour}:${minute}`
-                  ? " now"
-                  : ""
-              }`}
+              className="hour-minute"
               onDragOver={(e) => {
                 e.preventDefault();
                 e.target.classList.add("over");
