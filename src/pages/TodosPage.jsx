@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faBan } from "@fortawesome/free-solid-svg-icons";
 
 import TodoList from "../components/TodoList.jsx";
-import AddTodo from "../components/AddTodo.jsx";
+import TodoForm from "../components/TodoForm.jsx";
 
 const StyledTodosPage = styled.div``;
 
@@ -184,7 +184,7 @@ const TodosPage = ({ todos, modifyTodos }) => {
       <input type="text" name="filter" onChange={handleFilterChange} />
 
       {showForm && (
-        <AddTodo
+        <TodoForm
           onAdd={addTodo}
           onEdit={handleEditTodo}
           isEditingTodo={editingTodo}

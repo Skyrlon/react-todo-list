@@ -6,7 +6,7 @@ import CalendarInput from "../components/CalendarInput.jsx";
 import Calendar from "../components/Calendar.jsx";
 import TodosNoDeadlineSidebar from "../components/TodosNoDeadlineSidebar.jsx";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber.jsx";
-import AddTodo from "../components/AddTodo.jsx";
+import TodoForm from "../components/TodoForm.jsx";
 
 const StyledCalendarPage = styled.div`
   display: grid;
@@ -172,7 +172,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
   return (
     <StyledCalendarPage>
       {showTodoForm && (
-        <AddTodo
+        <TodoForm
           onEdit={handleEditTodo}
           isEditingTodo={true}
           todoToEdit={todoToEdit}
