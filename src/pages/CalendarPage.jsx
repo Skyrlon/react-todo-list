@@ -162,6 +162,9 @@ const CalendarPage = ({ todos, modifyTodos }) => {
     setTodoToEdit(false);
   };
 
+  
+
+  //Close tooltip each time calendar's format change
   useEffect(
     () => {
       setShowTooltip(false);

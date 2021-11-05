@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import {
@@ -180,6 +181,23 @@ const CalendarDate = ({
     }
     return outLimit;
   };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 37) {
+      handleDateBackward();
+    } else if (e.keyCode === 39) {
+      handleDateForward();
+    }
+  };
+
+  //Keyboard left and right arrows increment/decrement calendar date
+  useEffect(
+    () => {
+      document.addEventListener("keyup", handleKeyDown);
+      return () => document.removeEventListener("keyup", handleKeyDown);
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [calendarYear, calendarMonth, calendarDay, calendarFormat]
+  );
 
   return (
     <StyledCalendarDate>
