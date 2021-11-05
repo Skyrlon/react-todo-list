@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import ClickAwayListener from "react-click-away-listener";
 
 const StyledCalendarInput = styled.form`
   grid-area: input;
@@ -36,6 +37,7 @@ const CalendarInput = ({
   calendarMonth,
   calendarDay,
   onCancel,
+  clickAwayCalendarInput,
 }) => {
   const [daysInMonth, setDaysInMonth] = useState([]);
 
@@ -104,46 +106,48 @@ const CalendarInput = ({
   );
 
   return (
-    <StyledCalendarInput onSubmit={handleDateSubmit}>
-      <select
-        name="day-input"
-        value={daySelected}
-        onChange={(e) => setDaySelected(e.target.value)}
-      >
-        <option value="empty"></option>
-        {daysInMonth.map((dayNumber) => (
-          <option key={dayNumber} value={dayNumber}>
-            {dayNumber}
-          </option>
-        ))}
-      </select>
-      <select
-        name="month-input"
-        value={monthSelected}
-        onChange={(e) => onMonthChange(e.target.value)}
-      >
-        <option value="empty"></option>
-        {monthsNames.map((month, index) => (
-          <option key={month} value={index}>
-            {month}
-          </option>
-        ))}
-      </select>
+    <ClickAwayListener onClickAway={clickAwayCalendarInput}>
+      <StyledCalendarInput onSubmit={handleDateSubmit}>
+        <select
+          name="day-input"
+          value={daySelected}
+          onChange={(e) => setDaySelected(e.target.value)}
+        >
+          <option value="empty"></option>
+          {daysInMonth.map((dayNumber) => (
+            <option key={dayNumber} value={dayNumber}>
+              {dayNumber}
+            </option>
+          ))}
+        </select>
+        <select
+          name="month-input"
+          value={monthSelected}
+          onChange={(e) => onMonthChange(e.target.value)}
+        >
+          <option value="empty"></option>
+          {monthsNames.map((month, index) => (
+            <option key={month} value={index}>
+              {month}
+            </option>
+          ))}
+        </select>
 
-      <input
-        name="year-input"
-        type="number"
-        value={yearSelected}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") e.preventDefault();
-        }}
-        min={1000}
-        max={9999}
-        onChange={(e) => setYearSelected(e.target.value)}
-      />
-      <input type="submit" />
-      <button onClick={onCancel}>Cancel</button>
-    </StyledCalendarInput>
+        <input
+          name="year-input"
+          type="number"
+          value={yearSelected}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") e.preventDefault();
+          }}
+          min={1000}
+          max={9999}
+          onChange={(e) => setYearSelected(e.target.value)}
+        />
+        <input type="submit" />
+        <button onClick={onCancel}>Cancel</button>
+      </StyledCalendarInput>
+    </ClickAwayListener>
   );
 };
 
@@ -153,6 +157,7 @@ CalendarInput.propTypes = {
   calendarMonth: PropTypes.number,
   calendarDay: PropTypes.number,
   onCancel: PropTypes.func.isRequired,
+  clickAwayCalendarInput: PropTypes.func.isRequired,
 };
 
 export default CalendarInput;

@@ -77,7 +77,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
     setCalendarFormat(newFormat);
     setCalendarDay(newDay);
     setCalendarMonth(newMonth);
-    setCalendarYear(newYear);
+    setCalendarYear(newYear);setShowInputs(false)
   };
 
   const handleDayInMonthClick = (date) => {
@@ -90,7 +90,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
       setShowTooltip((prev) => !prev);
     } else {
       setShowTooltip(true);
-    }
+    }setShowInputs(false)
   };
 
   const handleChangeDate = (newDate) => {
@@ -162,8 +162,6 @@ const CalendarPage = ({ todos, modifyTodos }) => {
     setTodoToEdit(false);
   };
 
-  
-
   //Close tooltip each time calendar's format change
   useEffect(
     () => {
@@ -205,6 +203,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
           calendarDay={calendarDay}
           calendarFormat={calendarFormat}
           onCancel={() => setShowInputs(false)}
+          clickAwayCalendarInput={() => setShowInputs(false)}
         />
       )}
 
