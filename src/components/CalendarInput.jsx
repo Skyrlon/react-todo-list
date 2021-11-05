@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const StyledCalendarInput = styled.div`
+const StyledCalendarInput = styled.form`
   grid-area: input;
   margin-left: 45%;
   width: 30vw;
@@ -44,16 +44,15 @@ const CalendarInput = ({
   );
 
   const [monthSelected, setMonthSelected] = useState(
-    typeof calendarMonth === "number"
-      ? monthsNames.indexOf(calendarMonth)
-      : "empty"
+    typeof calendarMonth === "number" ? calendarMonth : "empty"
   );
 
   const [yearSelected, setYearSelected] = useState(calendarYear);
 
   const onMonthChange = (monthNumber) => {
     setMonthSelected(monthNumber);
-    if (!yearSelected) {
+    if (!yearSelected || monthNumber === "empty") {
+      setDaySelected("empty");
       return setDaysInMonth([]);
     }
     const numberOfDays = new Date(
@@ -83,6 +82,12 @@ const CalendarInput = ({
       newMonth = null;
       newDay = null;
     }
+    console.log({
+      format: newFormat,
+      year: newYear,
+      month: newMonth,
+      day: newDay,
+    });
     changeDate({
       format: newFormat,
       year: newYear,
@@ -91,50 +96,53 @@ const CalendarInput = ({
     });
   };
 
-  return (
-    <StyledCalendarInput>
-      {
-        <form onSubmit={handleDateSubmit}>
-          <select
-            name="day-input"
-            value={daySelected}
-            onChange={(e) => setDaySelected(e.target.value)}
-          >
-            <option value="empty"></option>
-            {daysInMonth.map((dayNumber) => (
-              <option key={dayNumber} value={dayNumber}>
-                {dayNumber}
-              </option>
-            ))}
-          </select>
-          <select
-            name="month-input"
-            value={monthSelected}
-            onChange={(e) => onMonthChange(e.target.value)}
-          >
-            <option value="empty"></option>
-            {monthsNames.map((month, index) => (
-              <option key={month} value={index}>
-                {month}
-              </option>
-            ))}
-          </select>
+  useEffect(
+    () => {
+      if (monthSelected !== "empty") onMonthChange(monthSelected);
+    }, // eslint-disable-next-line
+    []
+  );
 
-          <input
-            name="year-input"
-            type="number"
-            value={yearSelected}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") e.preventDefault();
-            }}
-            min={1000}
-            max={9999}
-            onChange={(e) => setYearSelected(e.target.value)}
-          />
-          <input type="submit" />
-          <button onClick={onCancel}>Cancel</button>
-        </form>
-      }
+  return (
+    <StyledCalendarInput onSubmit={handleDateSubmit}>
+      <select
+        name="day-input"
+        value={daySelected}
+        onChange={(e) => setDaySelected(e.target.value)}
+      >
+        <option value="empty"></option>
+        {daysInMonth.map((dayNumber) => (
+          <option key={dayNumber} value={dayNumber}>
+            {dayNumber}
+          </option>
+        ))}
+      </select>
+      <select
+        name="month-input"
+        value={monthSelected}
+        onChange={(e) => onMonthChange(e.target.value)}
+      >
+        <option value="empty"></option>
+        {monthsNames.map((month, index) => (
+          <option key={month} value={index}>
+            {month}
+          </option>
+        ))}
+      </select>
+
+      <input
+        name="year-input"
+        type="number"
+        value={yearSelected}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault();
+        }}
+        min={1000}
+        max={9999}
+        onChange={(e) => setYearSelected(e.target.value)}
+      />
+      <input type="submit" />
+      <button onClick={onCancel}>Cancel</button>
     </StyledCalendarInput>
   );
 };

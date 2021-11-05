@@ -59,7 +59,7 @@ const YearlyCalendar = ({
             className="month-name"
             onClick={() =>
               onMonthClick({
-                day: "",
+                day: null,
                 month: index,
                 year: year,
                 format: "month",
