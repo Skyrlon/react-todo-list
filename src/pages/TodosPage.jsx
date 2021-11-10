@@ -54,6 +54,48 @@ const TodosPage = ({ todos, modifyTodos }) => {
             orderHightToLow.indexOf(b.priority)
         );
         break;
+      case "nearest-deadline":
+        newSortedTodos.sort((a, b) => {
+          //Todos with no deadline are moved to last
+          if (a.deadline.date.length === 0) return 1;
+          if (b.deadline.date.length === 0) return -1;
+          const deadlineA = new Date(
+            `${a.deadline.date}${
+              a.deadline.time.length > 0 ? " " + a.deadline.time : ""
+            }`
+          ).valueOf();
+          const deadlineB = new Date(
+            `${b.deadline.date}${
+              b.deadline.time.length > 0 ? " " + b.deadline.time : ""
+            }`
+          ).valueOf();
+          if (deadlineA - deadlineB < 0) return -1;
+          if (deadlineA - deadlineB === 0) return 0;
+          if (deadlineA - deadlineB > 0) return 1;
+          return 0;
+        });
+        break;
+      case "lastest-deadline":
+        newSortedTodos.sort((a, b) => {
+          //Todos with no deadline are moved to last
+          if (a.deadline.date.length === 0) return 1;
+          if (b.deadline.date.length === 0) return -1;
+          const deadlineA = new Date(
+            `${a.deadline.date}${
+              a.deadline.time.length > 0 ? " " + a.deadline.time : ""
+            }`
+          ).valueOf();
+          const deadlineB = new Date(
+            `${b.deadline.date}${
+              b.deadline.time.length > 0 ? " " + b.deadline.time : ""
+            }`
+          ).valueOf();
+          if (deadlineA - deadlineB < 0) return 1;
+          if (deadlineA - deadlineB === 0) return 0;
+          if (deadlineA - deadlineB > 0) return -1;
+          return 0;
+        });
+        break;
       default:
         alert("an error as occured");
     }
@@ -178,6 +220,8 @@ const TodosPage = ({ todos, modifyTodos }) => {
         <option value="first-added">First added</option>
         <option value="hightest-priority">Highest priority</option>
         <option value="lowest-priority">Lowest priority</option>
+        <option value="nearest-deadline">Nearest deadline</option>
+        <option value="lastest-deadline">Lastest deadline</option>
       </select>
 
       <label htmlFor="filter">Filter : </label>
