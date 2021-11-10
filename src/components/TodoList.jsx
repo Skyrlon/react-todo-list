@@ -22,7 +22,7 @@ const StyledTodoList = styled.div`
 `;
 
 const TodoList = ({
-  TodoListItems,
+  todos,
   editTodo,
   deleteTodo,
   toggleCompleteTodo,
@@ -44,9 +44,9 @@ const TodoList = ({
     <StyledTodoList>
       {display === "all" && (
         <div>
-          <h2>All ({TodoListItems.length})</h2>
+          <h2>All ({todos.length})</h2>
           <div className="todos">
-            {TodoListItems.map((todo) => (
+            {todos.map((todo) => (
               <div key={todo.id} className="todo-container">
                 <Todo
                   key={todo.id}
@@ -68,10 +68,7 @@ const TodoList = ({
           <div className="todos-not-completed">
             <h2>
               Not completed (
-              {
-                TodoListItems.filter((element) => element.completed === false)
-                  .length
-              }
+              {todos.filter((todo) => todo.completed === false).length}
               )
               <FontAwesomeIcon
                 icon={
@@ -85,23 +82,20 @@ const TodoList = ({
 
             {!todoListsToCollapse.includes("not completed") && (
               <div className="todos">
-                {TodoListItems.filter(
-                  (element) => element.completed === false
-                ).map((element) => (
-                  <Todo
-                    key={element.id}
-                    id={element.id}
-                    title={element.title}
-                    details={element.details}
-                    priority={element.priority}
-                    completed={element.completed}
-                    onEdit={() => editTodo(element)}
-                    onDelete={() => deleteTodo(element.id)}
-                    onComplete={() => toggleCompleteTodo(element)}
-                    showCheckBoxes={showCheckBoxes}
-                    selectedToBeDeleted={selectedToBeDeleted}
-                  />
-                ))}
+                {todos
+                  .filter((todo) => todo.completed === false)
+                  .map((todo) => (
+                    <div key={todo.id} className="todo-container">
+                      <Todo
+                        todo={todo}
+                        onEdit={() => editTodo(todo)}
+                        onDelete={() => deleteTodo(todo.id)}
+                        onComplete={() => toggleCompleteTodo(todo)}
+                        showCheckBoxes={showCheckBoxes}
+                        selectedToBeDeleted={selectedToBeDeleted}
+                      />
+                    </div>
+                  ))}
               </div>
             )}
           </div>
@@ -109,10 +103,7 @@ const TodoList = ({
           <div className="todos-completed">
             <h2>
               Completed (
-              {
-                TodoListItems.filter((element) => element.completed === true)
-                  .length
-              }
+              {todos.filter((todo) => todo.completed === true).length}
               )
               <FontAwesomeIcon
                 icon={
@@ -126,25 +117,22 @@ const TodoList = ({
 
             {!todoListsToCollapse.includes("completed") && (
               <div className="todos">
-                {TodoListItems.filter(
-                  (element) => element.completed === true
-                ).map((element) => (
-                  <Todo
-                    key={element.id}
-                    id={element.id}
-                    title={element.title}
-                    details={element.details}
-                    priority={element.priority}
-                    completed={element.completed}
-                    onEdit={() => editTodo(element)}
-                    onDelete={() => deleteTodo(element.id)}
-                    onComplete={() =>
-                      toggleCompleteTodo(element, element.completed)
-                    }
-                    showCheckBoxes={showCheckBoxes}
-                    selectedToBeDeleted={selectedToBeDeleted}
-                  />
-                ))}
+                {todos
+                  .filter((todo) => todo.completed === true)
+                  .map((todo) => (
+                    <div key={todo.id} className="todo-container">
+                      <Todo
+                        todo={todo}
+                        onEdit={() => editTodo(todo)}
+                        onDelete={() => deleteTodo(todo.id)}
+                        onComplete={() =>
+                          toggleCompleteTodo(todo, todo.completed)
+                        }
+                        showCheckBoxes={showCheckBoxes}
+                        selectedToBeDeleted={selectedToBeDeleted}
+                      />
+                    </div>
+                  ))}
               </div>
             )}
           </div>
@@ -155,13 +143,13 @@ const TodoList = ({
 };
 
 TodoList.propTypes = {
-  display: PropTypes.string,
-  TodoListItems: PropTypes.array,
-  editTodo: PropTypes.func,
-  deleteTodo: PropTypes.func,
-  toggleCompleteTodo: PropTypes.func,
-  showCheckBoxes: PropTypes.bool,
-  selectedToBeDeleted: PropTypes.func,
+  display: PropTypes.string.isRequired,
+  todos: PropTypes.array.isRequired,
+  editTodo: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  toggleCompleteTodo: PropTypes.func.isRequired,
+  showCheckBoxes: PropTypes.bool.isRequired,
+  selectedToBeDeleted: PropTypes.func.isRequired,
 };
 
 export default TodoList;

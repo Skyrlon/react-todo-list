@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faBan } from "@fortawesome/free-solid-svg-icons";
@@ -239,7 +240,7 @@ const TodosPage = ({ todos, modifyTodos }) => {
 
       <TodoList
         display={todosListDisplay}
-        TodoListItems={sortedTodos}
+        todos={sortedTodos}
         editTodo={(e) => {
           setEditingTodo(true);
           setShowForm(true);
@@ -253,4 +254,10 @@ const TodosPage = ({ todos, modifyTodos }) => {
     </StyledTodosPage>
   );
 };
+
+TodosPage.propTypes = {
+  todos: PropTypes.array.isRequired,
+  modifyTodos: PropTypes.func.isRequired,
+};
+
 export default TodosPage;
