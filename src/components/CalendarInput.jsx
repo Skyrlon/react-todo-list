@@ -84,12 +84,6 @@ const CalendarInput = ({
       newMonth = null;
       newDay = null;
     }
-    console.log({
-      format: newFormat,
-      year: newYear,
-      month: newMonth,
-      day: newDay,
-    });
     changeDate({
       format: newFormat,
       year: newYear,
@@ -137,6 +131,7 @@ const CalendarInput = ({
           name="year-input"
           type="number"
           value={yearSelected}
+          required
           onKeyDown={(e) => {
             if (e.key === "Enter") e.preventDefault();
           }}
