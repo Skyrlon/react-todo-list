@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import ClickAwayListener from "react-click-away-listener";
+import { ClickAwayListener } from "@mui/material";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
 
 const StyledTodoForm = styled.form`

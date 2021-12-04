@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import ClickAwayListener from "react-click-away-listener";
+import { TextField, Button, Select, ClickAwayListener } from "@mui/material";
 
 const StyledCalendarInput = styled.form`
   grid-area: input;
   margin-left: 45%;
   width: 30vw;
+  height: 100%;
   display: flex;
   flex-direction: row;
   & .arrow {
@@ -102,8 +103,9 @@ const CalendarInput = ({
   return (
     <ClickAwayListener onClickAway={clickAwayCalendarInput}>
       <StyledCalendarInput onSubmit={handleDateSubmit}>
-        <select
-          name="day-input"
+        <Select
+          native={true}
+          lalbel="Day"
           value={daySelected}
           onChange={(e) => setDaySelected(e.target.value)}
         >
@@ -113,22 +115,23 @@ const CalendarInput = ({
               {dayNumber}
             </option>
           ))}
-        </select>
-        <select
-          name="month-input"
+        </Select>
+        <Select
+          native={true}
+          label="Month"
           value={monthSelected}
           onChange={(e) => onMonthChange(e.target.value)}
         >
-          <option value="empty"></option>
+          <option value="empty">A</option>
           {monthsNames.map((month, index) => (
             <option key={month} value={index}>
               {month}
             </option>
           ))}
-        </select>
+        </Select>
 
-        <input
-          name="year-input"
+        <TextField
+          label="Year"
           type="number"
           value={yearSelected}
           required
@@ -139,8 +142,8 @@ const CalendarInput = ({
           max={9999}
           onChange={(e) => setYearSelected(e.target.value)}
         />
-        <input type="submit" />
-        <button onClick={onCancel}>Cancel</button>
+        <TextField type="submit" />
+        <Button onClick={onCancel}>Cancel</Button>
       </StyledCalendarInput>
     </ClickAwayListener>
   );

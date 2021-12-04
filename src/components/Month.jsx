@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import ClickAwayListener from "react-click-away-listener";
+import { ClickAwayListener } from "@mui/material";
 import styled from "styled-components";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
 import TodoInCalendar from "./TodoInCalendar";
