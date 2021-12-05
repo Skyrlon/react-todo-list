@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faBan } from "@fortawesome/free-solid-svg-icons";
+import { Select, MenuItem, TextField } from "@mui/material";
 
 import TodoList from "../components/TodoList.jsx";
 import TodoForm from "../components/TodoForm.jsx";
@@ -208,25 +209,23 @@ const TodosPage = ({ todos, modifyTodos }) => {
         <div onClick={() => setTodosListDisplay("separated")}>Separated</div>
       </div>
 
-      <label htmlFor="sorting">Sort by : </label>
-      <select
-        name="sorting"
+      <Select
+        label="Sort by"
         value={sortBy}
         onChange={(e) => {
           setSortBy(e.target.value);
           sortingTodos(e.target.value, sortedTodos);
         }}
       >
-        <option value="last-added">Last added</option>
-        <option value="first-added">First added</option>
-        <option value="hightest-priority">Highest priority</option>
-        <option value="lowest-priority">Lowest priority</option>
-        <option value="nearest-deadline">Nearest deadline</option>
-        <option value="lastest-deadline">Lastest deadline</option>
-      </select>
+        <MenuItem value="last-added">Last added</MenuItem>
+        <MenuItem value="first-added">First added</MenuItem>
+        <MenuItem value="hightest-priority">Highest priority</MenuItem>
+        <MenuItem value="lowest-priority">Lowest priority</MenuItem>
+        <MenuItem value="nearest-deadline">Nearest deadline</MenuItem>
+        <MenuItem value="lastest-deadline">Lastest deadline</MenuItem>
+      </Select>
 
-      <label htmlFor="filter">Filter : </label>
-      <input type="text" name="filter" onChange={handleFilterChange} />
+      <TextField type="text" label="Filter" onChange={handleFilterChange} />
 
       {showForm && (
         <TodoForm
