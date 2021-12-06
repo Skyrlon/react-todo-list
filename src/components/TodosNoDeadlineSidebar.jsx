@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
+import { List, ListItem } from "@mui/material";
 
 const StyledTodosNoDeadlineSidebar = styled.div`
   grid-area: sidebar;
   display: flex;
   flex-direction: row;
-  transform: translateX(-85%);
+  transform: translateX(-32%);
   transition: ease 0.5s;
   &.locked {
     transform: translateX(0);
@@ -17,35 +18,7 @@ const StyledTodosNoDeadlineSidebar = styled.div`
   }
   & .lock {
     position: absolute;
-    right: 5%;
-  }
-  & ul {
-    list-style: none;
-    width: 85%;
-    border: 1px solid black;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    overflow-y: scroll;
-    & li {
-      box-sizing: border-box;
-      user-select: none;
-      border: 1px solid black;
-      &.priority {
-        &-hight {
-          background-color: red;
-        }
-        &-medium {
-          background-color: #ffcc00;
-        }
-        &-low {
-          background-color: green;
-        }
-        &-completed {
-          background-color: grey;
-        }
-      }
-    }
+    left: 50%;
   }
 
   & .title {
@@ -64,6 +37,17 @@ const StyledTodosNoDeadlineSidebar = styled.div`
   }
 `;
 
+const StyledTodosNoDeadline = styled(ListItem)`
+  background-color: ${(props) => {
+    if (props.$completed) return "grey";
+    else {
+      if (props.$priority === "low") return "green";
+      if (props.$priority === "medium") return "#ffcc00";
+      if (props.$priority === "hight") return "red";
+    }
+  }};
+`;
+
 const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
   const [isLocked, setIsLocked] = useState(false);
 
@@ -77,23 +61,22 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
           <FontAwesomeIcon icon={faUnlock} onClick={() => setIsLocked(true)} />
         )}
       </div>
-      <ul>
+      <List>
         {todos.map(
           (todo) =>
             todo.deadline.date.length === 0 && (
-              <li
+              <StyledTodosNoDeadline
+                $priority={todo.priority}
+                $completed={todo.completed}
                 key={todo.id}
                 draggable
                 onDragStart={() => onDragStart(todo.id)}
-                className={`priority-${
-                  todo.completed ? "completed" : todo.priority
-                }`}
               >
                 {todo.title}
-              </li>
+              </StyledTodosNoDeadline>
             )
         )}
-      </ul>
+      </List>
       <div className="title">
         <span>Todos with no deadline</span>
       </div>
