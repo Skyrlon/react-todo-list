@@ -6,19 +6,12 @@ import { List, ListItem } from "@mui/material";
 
 const StyledTodosNoDeadlineSidebar = styled.div`
   grid-area: sidebar;
+  position: relative;
   display: flex;
   flex-direction: row;
-  transform: translateX(-32%);
-  transition: ease 0.5s;
-  &.locked {
-    transform: translateX(0);
-  }
-  &:hover {
-    transform: translateX(0);
-  }
   & .lock {
     position: absolute;
-    left: 50%;
+    left: 40%;
   }
 
   & .title {
@@ -49,10 +42,15 @@ const StyledTodosNoDeadline = styled(ListItem)`
 `;
 
 const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
+  const [showTodos, setShowTodos] = useState(false);
+
   const [isLocked, setIsLocked] = useState(false);
 
   return (
-    <StyledTodosNoDeadlineSidebar className={isLocked ? "locked" : ""}>
+    <StyledTodosNoDeadlineSidebar
+      onMouseEnter={() => setShowTodos(true)}
+      onMouseLeave={() => setShowTodos(false)}
+    >
       <div className="lock">
         {isLocked && (
           <FontAwesomeIcon icon={faLock} onClick={() => setIsLocked(false)} />
@@ -61,22 +59,24 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
           <FontAwesomeIcon icon={faUnlock} onClick={() => setIsLocked(true)} />
         )}
       </div>
-      <List>
-        {todos.map(
-          (todo) =>
-            todo.deadline.date.length === 0 && (
-              <StyledTodosNoDeadline
-                $priority={todo.priority}
-                $completed={todo.completed}
-                key={todo.id}
-                draggable
-                onDragStart={() => onDragStart(todo.id)}
-              >
-                {todo.title}
-              </StyledTodosNoDeadline>
-            )
-        )}
-      </List>
+      {(showTodos || isLocked) && (
+        <List>
+          {todos.map(
+            (todo) =>
+              todo.deadline.date.length === 0 && (
+                <StyledTodosNoDeadline
+                  $priority={todo.priority}
+                  $completed={todo.completed}
+                  key={todo.id}
+                  draggable
+                  onDragStart={() => onDragStart(todo.id)}
+                >
+                  {todo.title}
+                </StyledTodosNoDeadline>
+              )
+          )}
+        </List>
+      )}
       <div className="title">
         <span>Todos with no deadline</span>
       </div>

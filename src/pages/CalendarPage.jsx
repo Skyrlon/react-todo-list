@@ -15,7 +15,7 @@ const StyledCalendarPage = styled.div`
     "sidebar input input" 5vh
     "sidebar view view" 5vh
     "sidebar calendar calendar" 40vh
-    "sidebar calendar calendar" 40vh / 15vw auto;
+    "sidebar calendar calendar" 40vh;
   grid-column-gap: 4rem;
   & .view {
     grid-area: view;
