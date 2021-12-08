@@ -15,8 +15,7 @@ const StyledCalendarPage = styled.div`
     "sidebar input input" 5vh
     "sidebar view view" 5vh
     "sidebar calendar calendar" 40vh
-    "sidebar calendar calendar" 40vh;
-  grid-column-gap: 4rem;
+    "sidebar calendar calendar" 40vh / 10vw auto;
   & .view {
     grid-area: view;
     margin-left: 45%;
@@ -77,7 +76,8 @@ const CalendarPage = ({ todos, modifyTodos }) => {
     setCalendarFormat(newFormat);
     setCalendarDay(newDay);
     setCalendarMonth(newMonth);
-    setCalendarYear(newYear);setShowInputs(false)
+    setCalendarYear(newYear);
+    setShowInputs(false);
   };
 
   const handleDayInMonthClick = (date) => {
@@ -90,7 +90,8 @@ const CalendarPage = ({ todos, modifyTodos }) => {
       setShowTooltip((prev) => !prev);
     } else {
       setShowTooltip(true);
-    }setShowInputs(false)
+    }
+    setShowInputs(false);
   };
 
   const handleChangeDate = (newDate) => {

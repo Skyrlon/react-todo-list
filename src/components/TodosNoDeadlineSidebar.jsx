@@ -2,22 +2,24 @@ import styled from "styled-components";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
-import { List, ListItem } from "@mui/material";
+import { List, ListItem, ListItemText } from "@mui/material";
 
 const StyledTodosNoDeadlineSidebar = styled.div`
   grid-area: sidebar;
   position: relative;
   display: flex;
   flex-direction: row;
-  & .lock {
-    position: absolute;
-    left: 40%;
+  width: 100%;
+
+  & ul {
+    width: 80%;
   }
 
   & .title {
+    position: relative;
     background-color: lightblue;
     display: flex;
-    width: 15%;
+    width: 20%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -27,6 +29,11 @@ const StyledTodosNoDeadlineSidebar = styled.div`
       display: inline-block;
       transform: rotate(90deg);
     }
+  }
+  & .lock {
+    position: absolute;
+    top: 0%;
+    left: 20%;
   }
 `;
 
@@ -51,14 +58,6 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
       onMouseEnter={() => setShowTodos(true)}
       onMouseLeave={() => setShowTodos(false)}
     >
-      <div className="lock">
-        {isLocked && (
-          <FontAwesomeIcon icon={faLock} onClick={() => setIsLocked(false)} />
-        )}
-        {!isLocked && (
-          <FontAwesomeIcon icon={faUnlock} onClick={() => setIsLocked(true)} />
-        )}
-      </div>
       {(showTodos || isLocked) && (
         <List>
           {todos.map(
@@ -71,7 +70,10 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
                   draggable
                   onDragStart={() => onDragStart(todo.id)}
                 >
-                  {todo.title}
+                  <ListItemText
+                    sx={{ textAlign: "center" }}
+                    primary={todo.title}
+                  />
                 </StyledTodosNoDeadline>
               )
           )}
@@ -79,6 +81,17 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
       )}
       <div className="title">
         <span>Todos with no deadline</span>
+        <div className="lock">
+          {isLocked && (
+            <FontAwesomeIcon icon={faLock} onClick={() => setIsLocked(false)} />
+          )}
+          {!isLocked && (
+            <FontAwesomeIcon
+              icon={faUnlock}
+              onClick={() => setIsLocked(true)}
+            />
+          )}
+        </div>
       </div>
     </StyledTodosNoDeadlineSidebar>
   );
