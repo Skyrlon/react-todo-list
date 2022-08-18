@@ -11,13 +11,26 @@ const StyledTodoList = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    margin-top: 5em;
   }
+
   & .todo-container {
-    width: 14.5%;
-    margin-left: 2.5%;
-    margin-right: 2.5%;
+    flex: 0 0 21%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+
+    @media (max-width: 599px) {
+      flex: 0 0 90%;
+    }
+
+    @media (min-width: 600px) and (max-width: 800px) {
+      flex: 0 0 40%;
+      &:not(:nth-child(2n + 1)) {
+        margin-left: calc((100% - (45% * 2)) / 2);
+      }
+      &:nth-child(2n + 1) {
+        margin-left: calc((100% - (45% * 2)) / 2);
+      }
+    }
   }
 `;
 
