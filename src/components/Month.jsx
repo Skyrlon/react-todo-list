@@ -9,7 +9,6 @@ const StyledMonth = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-top: 1%;
