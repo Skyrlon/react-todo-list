@@ -22,6 +22,7 @@ const StyledMonth = styled.div`
     width: 100%;
     & > div {
       width: 13%;
+      font-size: 100%;
       border: 1px solid black;
       box-sizing: border-box;
     }
@@ -41,9 +42,14 @@ const StyledMonth = styled.div`
     flex-direction: row;
     justify-content: space-around;
     width: 13%;
-    height: 3em;
     border: 1px solid black;
     box-sizing: border-box;
+    padding-bottom: 13%;
+    margin-top: 1%;
+
+    &.placeholder {
+      border: none;
+    }
 
     &.selected {
       background-color: green;
@@ -202,7 +208,7 @@ const Month = ({
                 dateSelected.day === day.number
                   ? " selected"
                   : ""
-              }`}
+              }${day.name ? "" : " placeholder"}`}
               key={day.number}
             >
               <div
