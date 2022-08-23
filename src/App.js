@@ -28,7 +28,7 @@ const App = () => {
         completed: completion[parseInt(randomNumber(0, 2))],
         deadline: {
           date: gotDeadline
-            ? `2021-${randomNumber(3, 4)}-${randomNumber(1, 28)}`
+            ? `2022-${randomNumber(3, 4)}-${randomNumber(1, 28)}`
             : "",
           time:
             gotDeadline && gotDeadlineTime

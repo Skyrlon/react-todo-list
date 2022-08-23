@@ -39,12 +39,11 @@ const StyledMonth = styled.div`
   & .day {
     position: relative;
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: space-between;
     width: 13%;
     border: 1px solid black;
     box-sizing: border-box;
-    padding-bottom: 13%;
     margin-top: 1%;
 
     &.placeholder {
@@ -56,15 +55,14 @@ const StyledMonth = styled.div`
     }
     &-number {
       width: 100%;
-      height: 100%;
+      height: 80%;
       &.over {
         background: blue;
       }
     }
     &-patch {
-      position: absolute;
-      bottom: 0;
       width: 100%;
+      height: 20%;
       display: flex;
       flex-direction: row;
       justify-content: space-evenly;
