@@ -221,9 +221,9 @@ const Month = ({
                 }}
                 onDrop={(e) => {
                   onDrop({
-                    date: `${year}-${handleOneDigitNumber(month + 1)}-${
-                      day.number
-                    }`,
+                    date: `${year}-${handleOneDigitNumber(
+                      month + 1
+                    )}-${handleOneDigitNumber(day.number)}`,
                     time: "",
                   });
                   e.target.classList.remove("over");
