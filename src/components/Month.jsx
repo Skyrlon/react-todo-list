@@ -86,7 +86,7 @@ const StyledMonth = styled.div`
     }
     &-tooltip {
       position: absolute;
-      top: 3em;
+      top: 100%;
       z-index: 1;
       background-color: lightblue;
       min-width: 7em;
