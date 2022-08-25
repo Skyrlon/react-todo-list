@@ -185,7 +185,7 @@ const Month = ({
   };
 
   const handleClickTodo = (todoId) => {
-    setShowTodo(true);
+    setShowTodo((v) => !v);
     setTodoIdToShow(todoId);
   };
 
