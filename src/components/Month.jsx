@@ -11,18 +11,17 @@ const StyledMonth = styled.div`
   flex-wrap: wrap;
   align-items: center;
   width: 100%;
-  margin-top: 1%;
-  margin-left: 1%;
-  margin-right: 1%;
+  height: 100%;
 
   & .weekdays {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
+    height: 10%;
     & > div {
       width: 13%;
-      font-size: 100%;
+      height: 100%;
       border: 1px solid black;
       box-sizing: border-box;
     }
@@ -33,7 +32,9 @@ const StyledMonth = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+    align-content: flex-start;
     width: 100%;
+    height: 90%;
   }
 
   & .day {
@@ -42,9 +43,10 @@ const StyledMonth = styled.div`
     flex-direction: column;
     justify-content: space-between;
     width: 13%;
+    height: 16%;
     border: 1px solid black;
     box-sizing: border-box;
-    margin-top: 1%;
+    margin-top: calc((100% - (16% * 6)) / 7);
 
     &.placeholder {
       border: none;
