@@ -12,7 +12,7 @@ const StyledCalendar = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   width: 95%;
-  height: 75%;
+  height: 100%;
 `;
 
 const Calendar = ({

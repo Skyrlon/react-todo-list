@@ -7,17 +7,35 @@ const StyledYearlyCalendar = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  height: 100%;
   justify-content: center;
   & > .month {
     display: flex;
     flex-direction: column;
-    width: 13%;
+    height: 45%;
     margin-top: 1%;
     margin-left: 1%;
     margin-right: 1%;
     box-sizing: border-box;
     border: 1px solid;
     justify-content: flex-start;
+
+    @media (max-width: 799px) {
+      flex: 0 0 90%;
+      margin-left: 5%;
+    }
+
+    @media (min-width: 800px) and (max-width: 999px) {
+      flex: 0 0 40%;
+    }
+
+    @media (min-width: 1000px) and (max-width: 1399px) {
+      flex: 0 0 30%;
+    }
+
+    @media (min-width: 1400px) {
+      flex: 0 0 20%;
+    }
   }
 `;
 
