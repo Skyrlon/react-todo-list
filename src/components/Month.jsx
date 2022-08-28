@@ -191,6 +191,41 @@ const Month = ({
     setTodoIdToShow(todoId);
   };
 
+  const handleDayDragOver = (e) => {
+    e.preventDefault();
+    e.target.classList.add("over");
+  };
+
+  const handleDayDragLeave = (e) => {
+    e.preventDefault();
+    e.target.classList.remove("over");
+  };
+
+  const handleDayDrop = (e, day) => {
+    onDrop({
+      date: `${year}-${handleOneDigitNumber(month + 1)}-${handleOneDigitNumber(
+        day.number
+      )}`,
+      time: "",
+    });
+    e.target.classList.remove("over");
+  };
+
+  const handleDayClick = (e, day) => {
+    e.stopPropagation();
+    onDayClick({ year, month, day: day.number });
+  };
+
+  const handleDayDoubleClick = (e, day) => {
+    e.stopPropagation();
+    onDayDoubleClick({
+      day: day.number,
+      month: month,
+      year: year,
+      format: "day",
+    });
+  };
+
   return (
     <StyledMonth>
       <div className="weekdays">
@@ -213,36 +248,17 @@ const Month = ({
             >
               <div
                 className="day-number"
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  e.target.classList.add("over");
-                }}
-                onDragLeave={(e) => {
-                  e.preventDefault();
-                  e.target.classList.remove("over");
-                }}
-                onDrop={(e) => {
-                  onDrop({
-                    date: `${year}-${handleOneDigitNumber(
-                      month + 1
-                    )}-${handleOneDigitNumber(day.number)}`,
-                    time: "",
-                  });
-                  e.target.classList.remove("over");
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDayClick({ year, month, day: day.number });
-                }}
-                onDoubleClick={(e) => {
-                  e.stopPropagation();
-                  onDayDoubleClick({
-                    day: day.number,
-                    month: month,
-                    year: year,
-                    format: "day",
-                  });
-                }}
+                onDragOver={(e) =>
+                  day.name ? handleDayDragOver(e) : undefined
+                }
+                onDragLeave={(e) =>
+                  day.name ? handleDayDragLeave(e) : undefined
+                }
+                onDrop={(e) => (day.name ? handleDayDrop(e, day) : undefined)}
+                onClick={(e) => (day.name ? handleDayClick(e, day) : undefined)}
+                onDoubleClick={(e) =>
+                  day.name ? handleDayDoubleClick(e, day) : undefined
+                }
               >
                 {day.name ? day.number : ""}
               </div>
