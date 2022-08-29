@@ -32,6 +32,7 @@ const Calendar = ({
   onDelete,
   toggleCompleteTodo,
   closeTooltip,
+  onDayDateInWeekClick,
 }) => {
   return (
     <StyledCalendar>
@@ -96,6 +97,7 @@ const Calendar = ({
           onEdit={onEdit}
           onDelete={onDelete}
           toggleCompleteTodo={toggleCompleteTodo}
+          onDayDateClick={onDayDateInWeekClick}
         />
       )}
     </StyledCalendar>
@@ -119,6 +121,7 @@ Calendar.propTypes = {
   onDelete: PropTypes.func.isRequired,
   toggleCompleteTodo: PropTypes.func.isRequired,
   closeTooltip: PropTypes.func.isRequired,
+  onDayDateInWeekClick: PropTypes.func.isRequired,
 };
 
 export default Calendar;

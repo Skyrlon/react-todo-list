@@ -241,6 +241,7 @@ const CalendarPage = ({ todos, modifyTodos }) => {
         onDelete={deleteTodo}
         toggleCompleteTodo={toggleCompleteTodo}
         closeTooltip={() => setShowTooltip(false)}
+        onDayDateInWeekClick={handleChangeDate}
       />
     </StyledCalendarPage>
   );

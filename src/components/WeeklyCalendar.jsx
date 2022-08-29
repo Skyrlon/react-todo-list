@@ -47,6 +47,7 @@ const WeeklyCalendar = ({
   onEdit,
   onDelete,
   toggleCompleteTodo,
+  onDayDateClick,
 }) => {
   const days = function () {
     const daysArray = [{ year, month: month, day }];
@@ -80,9 +81,17 @@ const WeeklyCalendar = ({
     <StyledWeeklyCalendar>
       {days().map((day, index) => (
         <div key={`${day.day} ${day.month} ${day.year}`} className="day">
-          <div className="day-date">{`${day.day} ${monthsNames[day.month]} ${
-            day.year
-          }`}</div>
+          <div
+            className="day-date"
+            onClick={() =>
+              onDayDateClick({
+                day: day.day,
+                month: day.month,
+                year: day.year,
+                format: "day",
+              })
+            }
+          >{`${day.day} ${monthsNames[day.month]} ${day.year}`}</div>
           <Day
             year={day.year}
             month={day.month}
@@ -113,4 +122,5 @@ WeeklyCalendar.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   toggleCompleteTodo: PropTypes.func.isRequired,
+  onDayDateClick: PropTypes.func.isRequired,
 };
