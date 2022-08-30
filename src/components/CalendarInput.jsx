@@ -122,7 +122,7 @@ const CalendarInput = ({
           value={monthSelected}
           onChange={(e) => onMonthChange(e.target.value)}
         >
-          <option value="empty">A</option>
+          <option value="empty"></option>
           {monthsNames.map((month, index) => (
             <option key={month} value={index}>
               {month}
