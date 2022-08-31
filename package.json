@@ -8,6 +8,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
+    "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.2.2",
     "@mui/styled-engine-sc": "^5.1.0",
     "@testing-library/jest-dom": "^5.11.4",

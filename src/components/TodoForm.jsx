@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { ClickAwayListener } from "@mui/material";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
+import CloseIcon from "@mui/icons-material/Close";
 
 const StyledTodoForm = styled.form`
   z-index: 100;
@@ -18,7 +19,18 @@ const StyledTodoForm = styled.form`
   width: 20%;
   & > * {
     width: 80%;
+    margin-top: 2%;
+    margin-bottom: 2%;
   }
+
+  & .close-icon {
+    position: absolute;
+    margin: 0;
+    top: 1%;
+    right: 1%;
+    width: 1rem;
+  }
+
   & textarea {
     resize: none;
   }
@@ -30,15 +42,16 @@ const StyledTodoForm = styled.form`
     flex-direction: row;
     justify-content: space-evenly;
   }
+
+  & .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 50%;
+  }
 `;
 
-const TodoForm = ({
-  onAdd,
-  onEdit,
-  isEditingTodo,
-  todoToEdit,
-  clickedAway,
-}) => {
+const TodoForm = ({ onAdd, onEdit, isEditingTodo, todoToEdit, closeForm }) => {
   const [title, setTitle] = useState(isEditingTodo ? todoToEdit.title : "");
   const [details, setDetails] = useState(
     isEditingTodo ? todoToEdit.details : ""
@@ -110,8 +123,9 @@ const TodoForm = ({
   };
 
   return (
-    <ClickAwayListener onClickAway={clickedAway}>
+    <ClickAwayListener onClickAway={closeForm}>
       <StyledTodoForm className="add-form" onSubmit={onSubmit}>
+        <CloseIcon className="close-icon" onClick={closeForm} />
         <label htmlFor="title">Title</label>
         <input
           type="text"
@@ -185,10 +199,13 @@ const TodoForm = ({
             />
           </>
         )}
-        <input
-          type="submit"
-          value={isEditingTodo ? "Edit Todo" : "Add to the list"}
-        />
+        <div className="buttons">
+          <input
+            type="submit"
+            value={isEditingTodo ? "Edit Todo" : "Add to the list"}
+          />
+          <button onClick={closeForm}>Cancel</button>
+        </div>
       </StyledTodoForm>
     </ClickAwayListener>
   );
@@ -199,7 +216,7 @@ TodoForm.propTypes = {
   onEdit: PropTypes.func,
   isEditingTodo: PropTypes.bool,
   todoToEdit: PropTypes.object,
-  clickedAway: PropTypes.func,
+  closeForm: PropTypes.func,
 };
 
 export default TodoForm;

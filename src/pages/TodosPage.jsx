@@ -233,7 +233,7 @@ const TodosPage = ({ todos, modifyTodos }) => {
           onEdit={handleEditTodo}
           isEditingTodo={editingTodo}
           todoToEdit={todoToEdit}
-          clickedAway={closeForm}
+          closeForm={closeForm}
         />
       )}
 
