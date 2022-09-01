@@ -3,8 +3,9 @@ import "./App.css";
 
 import TodosPage from "./pages/TodosPage.jsx";
 import CalendarPage from "./pages/CalendarPage.jsx";
+import Nav from "./components/Nav";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
   const [todos, setTodos] = useState(function () {
@@ -44,28 +45,17 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="App-header"> React To Do List </header>
+      <header className="App-header">React To Do List</header>
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/"> Todos </Link>
-              </li>
-              <li>
-                <Link to="/calendar"> Calendar </Link>
-              </li>
-            </ul>
-          </nav>
-          <Switch>
-            <Route path="/calendar">
-              <CalendarPage todos={todos} modifyTodos={(e) => setTodos(e)} />
-            </Route>
-            <Route path="/">
-              <TodosPage todos={todos} modifyTodos={(e) => setTodos(e)} />
-            </Route>
-          </Switch>
-        </div>
+        <Nav />
+        <Switch>
+          <Route path="/calendar">
+            <CalendarPage todos={todos} modifyTodos={(e) => setTodos(e)} />
+          </Route>
+          <Route path="/">
+            <TodosPage todos={todos} modifyTodos={(e) => setTodos(e)} />
+          </Route>
+        </Switch>
       </Router>
     </div>
   );
