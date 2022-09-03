@@ -8,6 +8,7 @@ const StyledNav = styled.ul`
   position: absolute;
   top: 0%;
   left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: row;
 

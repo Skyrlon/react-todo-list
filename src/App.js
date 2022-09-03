@@ -18,7 +18,7 @@ const App = () => {
       let number = Math.floor(Math.random() * (max - min) + min);
       return number < 10 ? `0${number}` : number;
     }
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 30; i++) {
       const gotDeadline = randomNumber(0, 2) === "00";
       const gotDeadlineTime = randomNumber(0, 2) === "00";
       array.push({

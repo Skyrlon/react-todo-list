@@ -10,7 +10,7 @@ import TodoForm from "../components/TodoForm.jsx";
 
 const StyledCalendarPage = styled.div`
   display: grid;
-  width: 99vw;
+  width: 100%;
   grid-template:
     "sidebar input input" 5vh
     "sidebar view view" 5vh
