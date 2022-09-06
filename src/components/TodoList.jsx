@@ -1,8 +1,10 @@
-import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import Todo from "./Todo.jsx";
 
@@ -64,6 +66,15 @@ const StyledTodoList = styled.div`
   }
 `;
 
+const titleStyles = {
+  content: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+};
+
 const TodoList = ({
   todos,
   editTodo,
@@ -73,21 +84,13 @@ const TodoList = ({
   showCheckBoxes,
   selectedToBeDeleted,
 }) => {
-  const [todoListsToCollapse, setTodoListsToCollapse] = useState([]);
-
-  const handleOnChevronClick = (category) => {
-    if (todoListsToCollapse.includes(category)) {
-      setTodoListsToCollapse((prev) => prev.filter((e) => e !== category));
-    } else {
-      setTodoListsToCollapse((prev) => [...prev, category]);
-    }
-  };
-
   return (
     <StyledTodoList>
       {display === "all" && (
         <div>
-          <h2>All ({todos.length})</h2>
+          <Typography variant="h5" className="title">
+            All ({todos.length})
+          </Typography>
           <div className="todos">
             {todos.map((todo) => (
               <div key={todo.id} className="todo-container">
@@ -108,77 +111,68 @@ const TodoList = ({
 
       {display === "separated" && (
         <div>
-          <div className="todos-not-completed">
-            <h2>
-              Not completed (
-              {todos.filter((todo) => todo.completed === false).length}
-              )
-              <FontAwesomeIcon
-                icon={
-                  todoListsToCollapse.includes("not completed")
-                    ? faChevronUp
-                    : faChevronDown
-                }
-                onClick={() => handleOnChevronClick("not completed")}
-              />
-            </h2>
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+              sx={titleStyles}
+            >
+              <Typography variant="h5">
+                Not completed (
+                {todos.filter((todo) => todo.completed === false).length})
+              </Typography>
+            </AccordionSummary>
 
-            {!todoListsToCollapse.includes("not completed") && (
-              <div className="todos">
-                {todos
-                  .filter((todo) => todo.completed === false)
-                  .map((todo) => (
-                    <div key={todo.id} className="todo-container">
-                      <Todo
-                        todo={todo}
-                        onEdit={() => editTodo(todo)}
-                        onDelete={() => deleteTodo(todo.id)}
-                        onComplete={() => toggleCompleteTodo(todo)}
-                        showCheckBoxes={showCheckBoxes}
-                        selectedToBeDeleted={selectedToBeDeleted}
-                      />
-                    </div>
-                  ))}
-              </div>
-            )}
-          </div>
+            <AccordionDetails className="todos">
+              {todos
+                .filter((todo) => todo.completed === false)
+                .map((todo) => (
+                  <div key={todo.id} className="todo-container">
+                    <Todo
+                      todo={todo}
+                      onEdit={() => editTodo(todo)}
+                      onDelete={() => deleteTodo(todo.id)}
+                      onComplete={() => toggleCompleteTodo(todo)}
+                      showCheckBoxes={showCheckBoxes}
+                      selectedToBeDeleted={selectedToBeDeleted}
+                    />
+                  </div>
+                ))}
+            </AccordionDetails>
+          </Accordion>
 
-          <div className="todos-completed">
-            <h2>
-              Completed (
-              {todos.filter((todo) => todo.completed === true).length}
-              )
-              <FontAwesomeIcon
-                icon={
-                  todoListsToCollapse.includes("completed")
-                    ? faChevronUp
-                    : faChevronDown
-                }
-                onClick={() => handleOnChevronClick("completed")}
-              />
-            </h2>
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography variant="h5">
+                Completed (
+                {todos.filter((todo) => todo.completed === true).length})
+              </Typography>
+            </AccordionSummary>
 
-            {!todoListsToCollapse.includes("completed") && (
-              <div className="todos">
-                {todos
-                  .filter((todo) => todo.completed === true)
-                  .map((todo) => (
-                    <div key={todo.id} className="todo-container">
-                      <Todo
-                        todo={todo}
-                        onEdit={() => editTodo(todo)}
-                        onDelete={() => deleteTodo(todo.id)}
-                        onComplete={() =>
-                          toggleCompleteTodo(todo, todo.completed)
-                        }
-                        showCheckBoxes={showCheckBoxes}
-                        selectedToBeDeleted={selectedToBeDeleted}
-                      />
-                    </div>
-                  ))}
-              </div>
-            )}
-          </div>
+            <AccordionDetails className="todos">
+              {todos
+                .filter((todo) => todo.completed === true)
+                .map((todo) => (
+                  <div key={todo.id} className="todo-container">
+                    <Todo
+                      todo={todo}
+                      onEdit={() => editTodo(todo)}
+                      onDelete={() => deleteTodo(todo.id)}
+                      onComplete={() =>
+                        toggleCompleteTodo(todo, todo.completed)
+                      }
+                      showCheckBoxes={showCheckBoxes}
+                      selectedToBeDeleted={selectedToBeDeleted}
+                    />
+                  </div>
+                ))}
+            </AccordionDetails>
+          </Accordion>
         </div>
       )}
     </StyledTodoList>
