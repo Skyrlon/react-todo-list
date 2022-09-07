@@ -66,8 +66,8 @@ const StyledTodoList = styled.div`
   }
 `;
 
-const titleStyles = {
-  content: {
+const accordionTitleStyle = {
+  "& .MuiAccordionSummary-content": {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
@@ -87,11 +87,17 @@ const TodoList = ({
   return (
     <StyledTodoList>
       {display === "all" && (
-        <div>
-          <Typography variant="h5" className="title">
-            All ({todos.length})
-          </Typography>
-          <div className="todos">
+        <Accordion defaultExpanded>
+          <AccordionSummary
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            sx={accordionTitleStyle}
+          >
+            <Typography variant="h5" className="title">
+              All ({todos.length})
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails className="todos">
             {todos.map((todo) => (
               <div key={todo.id} className="todo-container">
                 <Todo
@@ -105,8 +111,8 @@ const TodoList = ({
                 />
               </div>
             ))}
-          </div>
-        </div>
+          </AccordionDetails>
+        </Accordion>
       )}
 
       {display === "separated" && (
@@ -116,7 +122,7 @@ const TodoList = ({
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
-              sx={titleStyles}
+              sx={accordionTitleStyle}
             >
               <Typography variant="h5">
                 Not completed (
