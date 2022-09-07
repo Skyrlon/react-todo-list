@@ -9,6 +9,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Todo from "./Todo.jsx";
 
 const StyledTodoList = styled.div`
+  display: flex;
+  flex-direction: column;
+
   & .todos {
     display: flex;
     flex-direction: row;
@@ -87,7 +90,7 @@ const TodoList = ({
   return (
     <StyledTodoList>
       {display === "all" && (
-        <Accordion defaultExpanded>
+        <Accordion defaultExpanded sx={{ pointerEvents: "none" }}>
           <AccordionSummary
             aria-controls="panel1a-content"
             id="panel1a-header"
@@ -116,7 +119,7 @@ const TodoList = ({
       )}
 
       {display === "separated" && (
-        <div>
+        <>
           <Accordion defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -153,6 +156,7 @@ const TodoList = ({
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
+              sx={accordionTitleStyle}
             >
               <Typography variant="h5">
                 Completed (
@@ -179,7 +183,7 @@ const TodoList = ({
                 ))}
             </AccordionDetails>
           </Accordion>
-        </div>
+        </>
       )}
     </StyledTodoList>
   );
