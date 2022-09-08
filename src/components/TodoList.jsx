@@ -90,11 +90,11 @@ const TodoList = ({
   return (
     <StyledTodoList>
       {display === "all" && (
-        <Accordion defaultExpanded sx={{ pointerEvents: "none" }}>
+        <Accordion defaultExpanded>
           <AccordionSummary
             aria-controls="panel1a-content"
             id="panel1a-header"
-            sx={accordionTitleStyle}
+            sx={{ ...accordionTitleStyle, pointerEvents: "none" }}
           >
             <Typography variant="h5" className="title">
               All ({todos.length})
