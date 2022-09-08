@@ -1,9 +1,16 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Card, CardContent, Typography, CardActions } from "@mui/material";
+import {
+  Card,
+  Checkbox,
+  CardContent,
+  Typography,
+  CardActions,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
+import { useState } from "react";
 
 const StyledTodo = styled(Card)`
   border: 1px solid black;
@@ -23,6 +30,13 @@ const Todo = ({
   showCheckBoxes,
   selectedToBeDeleted,
 }) => {
+  const [checked, setChecked] = useState(false);
+
+  const handleCheckBoxChange = (e) => {
+    selectedToBeDeleted(e.target.checked, todo.id);
+    setChecked(e.target.checked);
+  };
+
   return (
     <StyledTodo
       sx={{
@@ -34,10 +48,7 @@ const Todo = ({
       className={todo.completed ? " done" : ""}
     >
       {showCheckBoxes && (
-        <input
-          type="checkbox"
-          onChange={(e) => selectedToBeDeleted(e.target.checked, todo.id)}
-        />
+        <Checkbox checked={checked} onChange={handleCheckBoxChange} />
       )}
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
