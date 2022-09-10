@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import {
+  Button,
   Card,
   Checkbox,
   CardContent,
@@ -21,6 +22,8 @@ const StyledTodo = styled(Card)`
     background-color: grey;
   }
 `;
+
+const buttonStyle = { color: "black" };
 
 const Todo = ({
   todo,
@@ -60,26 +63,36 @@ const Todo = ({
       </CardContent>
 
       <CardActions
-        sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
       >
-        <EditIcon
-          onClick={(e) => {
-            e.stopPropagation();
-            onEdit();
-          }}
-        />
-        <DeleteIcon
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-        />
-        <CheckIcon
-          onClick={(e) => {
-            e.stopPropagation();
-            onComplete();
-          }}
-        />
+        <Button sx={buttonStyle}>
+          <EditIcon
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit();
+            }}
+          />
+        </Button>
+        <Button sx={buttonStyle}>
+          <DeleteIcon
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+          />
+        </Button>
+        <Button sx={buttonStyle}>
+          <CheckIcon
+            onClick={(e) => {
+              e.stopPropagation();
+              onComplete();
+            }}
+          />
+        </Button>
       </CardActions>
     </StyledTodo>
   );
