@@ -4,12 +4,34 @@ import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faBan } from "@fortawesome/free-solid-svg-icons";
-import { Select, MenuItem, TextField } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  TextField,
+  ButtonGroup,
+  Button,
+} from "@mui/material";
 
 import TodoList from "../components/TodoList.jsx";
 import TodoForm from "../components/TodoForm.jsx";
 
 const StyledTodosPage = styled.div``;
+
+const buttonGroupStyle = {
+  "& .MuiButtonGroup-grouped": {
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  "& .MuiButtonGroup-grouped:not(:last-of-type)": {
+    borderColor: "black",
+    borderWidth: 1,
+  },
+};
+
+const buttonStyle = {
+  color: "black",
+  textTransform: "none",
+};
 
 const TodosPage = ({ todos, modifyTodos }) => {
   const [todoToEdit, setTodoToEdit] = useState({});
@@ -190,24 +212,42 @@ const TodosPage = ({ todos, modifyTodos }) => {
           />
         )}
         {showCheckBoxes && (
-          <div>
-            <div onClick={deleteAllTodosSelected}>Delete All Selected</div>
-            <div
+          <ButtonGroup
+            orientation="horizontal"
+            variant="text"
+            sx={buttonGroupStyle}
+          >
+            <Button sx={buttonStyle} onClick={deleteAllTodosSelected}>
+              Delete All Selected
+            </Button>
+            <Button
+              sx={buttonStyle}
               onClick={() => {
                 setShowCheckBoxes(false);
                 setTodosIdsGoingToBeDeleted([]);
               }}
             >
               Cancel
-            </div>
-          </div>
+            </Button>
+          </ButtonGroup>
         )}
       </div>
 
-      <div className="todos-list-display">
-        <div onClick={() => setTodosListDisplay("all")}>All</div>|
-        <div onClick={() => setTodosListDisplay("separated")}>Separated</div>
-      </div>
+      <ButtonGroup
+        orientation="horizontal"
+        variant="text"
+        sx={buttonGroupStyle}
+      >
+        <Button sx={buttonStyle} onClick={() => setTodosListDisplay("all")}>
+          All
+        </Button>
+        <Button
+          sx={buttonStyle}
+          onClick={() => setTodosListDisplay("separated")}
+        >
+          Separated
+        </Button>
+      </ButtonGroup>
 
       <Select
         label="Sort by"
