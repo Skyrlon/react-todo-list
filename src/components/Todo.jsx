@@ -7,6 +7,7 @@ import {
   CardContent,
   Typography,
   CardActions,
+  ButtonGroup,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -23,7 +24,7 @@ const StyledTodo = styled(Card)`
   }
 `;
 
-const buttonStyle = { color: "black" };
+const buttonStyle = { color: "black", minHeight: 0, minWidth: 0, padding: 0 };
 
 const Todo = ({
   todo,
@@ -69,30 +70,33 @@ const Todo = ({
           justifyContent: "center",
         }}
       >
-        <Button sx={buttonStyle}>
-          <EditIcon
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit();
-            }}
-          />
-        </Button>
-        <Button sx={buttonStyle}>
-          <DeleteIcon
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete();
-            }}
-          />
-        </Button>
-        <Button sx={buttonStyle}>
-          <CheckIcon
-            onClick={(e) => {
-              e.stopPropagation();
-              onComplete();
-            }}
-          />
-        </Button>
+        <ButtonGroup orientation="horizontal" variant="none">
+          <Button sx={buttonStyle}>
+            <EditIcon
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit();
+              }}
+            />
+          </Button>
+
+          <Button sx={buttonStyle}>
+            <CheckIcon
+              onClick={(e) => {
+                e.stopPropagation();
+                onComplete();
+              }}
+            />
+          </Button>
+          <Button sx={buttonStyle}>
+            <DeleteIcon
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+            />
+          </Button>
+        </ButtonGroup>
       </CardActions>
     </StyledTodo>
   );
