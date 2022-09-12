@@ -7,6 +7,7 @@ import Calendar from "../components/Calendar.jsx";
 import TodosNoDeadlineSidebar from "../components/TodosNoDeadlineSidebar.jsx";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber.jsx";
 import TodoForm from "../components/TodoForm.jsx";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const StyledCalendarPage = styled.div`
   display: grid;
@@ -19,7 +20,7 @@ const StyledCalendarPage = styled.div`
   & .view {
     grid-area: view;
     margin-left: 45%;
-    width: 10vw;
+    width: 6rem;
   }
 `;
 
@@ -208,15 +209,19 @@ const CalendarPage = ({ todos, modifyTodos }) => {
         />
       )}
 
-      <div className="view">
-        <label htmlFor="view">View by : </label>
-        <select name="view" value={calendarFormat} onChange={handleChangeView}>
-          <option value="year">Year</option>
-          <option value="month">Month</option>
-          <option value="week">Week</option>
-          <option value="day">Day</option>
-        </select>
-      </div>
+      <FormControl className="view">
+        <InputLabel>View by</InputLabel>
+        <Select
+          value={calendarFormat}
+          onChange={handleChangeView}
+          label="View by"
+        >
+          <MenuItem value="year">Year</MenuItem>
+          <MenuItem value="month">Month</MenuItem>
+          <MenuItem value="week">Week</MenuItem>
+          <MenuItem value="day">Day</MenuItem>
+        </Select>
+      </FormControl>
 
       <TodosNoDeadlineSidebar
         todos={todos}
