@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { Button } from "@mui/material";
 
 const StyledCalendarDate = styled.div`
   grid-area: input;
@@ -202,23 +201,23 @@ const CalendarDate = ({
   return (
     <StyledCalendarDate>
       {!dateGoingOutLimit("decrement") && (
-        <div className="arrow" onClick={handleDateBackward}>
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </div>
+        <IconButton className="arrow" onClick={handleDateBackward}>
+          <ArrowBackIosNewIcon />
+        </IconButton>
       )}
       {
-        <div onClick={onDateClick}>
+        <Button sx={{ color: "black" }} size="large" onClick={onDateClick}>
           {typeof calendarDay === "number" ? `${calendarDay} ` : ""}
           {typeof calendarMonth === "number"
             ? `${monthsNames[calendarMonth]} `
             : ""}
           {typeof calendarYear === "number" ? `${calendarYear}` : ""}
-        </div>
+        </Button>
       }
       {!dateGoingOutLimit("increment") && (
-        <div className="arrow" onClick={handleDateForward}>
-          <FontAwesomeIcon icon={faChevronRight} />
-        </div>
+        <IconButton className="arrow" onClick={handleDateForward}>
+          <ArrowForwardIosIcon />
+        </IconButton>
       )}
     </StyledCalendarDate>
   );
