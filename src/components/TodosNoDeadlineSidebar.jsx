@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import { List, ListItem, ListItemText } from "@mui/material";
 
 const StyledTodosNoDeadlineSidebar = styled.div`
@@ -12,6 +10,7 @@ const StyledTodosNoDeadlineSidebar = styled.div`
   width: 100%;
 
   & ul {
+    padding: 0;
     width: 80%;
   }
 
@@ -49,16 +48,11 @@ const StyledTodosNoDeadline = styled(ListItem)`
 `;
 
 const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
-  const [showTodos, setShowTodos] = useState(false);
-
-  const [isLocked, setIsLocked] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <StyledTodosNoDeadlineSidebar
-      onMouseEnter={() => setShowTodos(true)}
-      onMouseLeave={() => setShowTodos(false)}
-    >
-      {(showTodos || isLocked) && (
+    <StyledTodosNoDeadlineSidebar>
+      {isOpen && (
         <List>
           {todos.map(
             (todo) =>
@@ -79,19 +73,8 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
           )}
         </List>
       )}
-      <div className="title">
+      <div className="title" onClick={() => setIsOpen((v) => !v)}>
         <span>Todos with no deadline</span>
-        <div className="lock">
-          {isLocked && (
-            <FontAwesomeIcon icon={faLock} onClick={() => setIsLocked(false)} />
-          )}
-          {!isLocked && (
-            <FontAwesomeIcon
-              icon={faUnlock}
-              onClick={() => setIsLocked(true)}
-            />
-          )}
-        </div>
       </div>
     </StyledTodosNoDeadlineSidebar>
   );
