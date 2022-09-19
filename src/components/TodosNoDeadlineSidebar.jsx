@@ -9,19 +9,19 @@ const StyledTodosNoDeadlineSidebar = styled.div`
   flex-direction: row;
   width: 100%;
 
-  & ul {
-    padding: 0;
-    width: 80%;
-  }
-
   & .title {
-    position: relative;
+    position: absolute;
+    top: 0%;
+    left: ${(props) => (props.open ? "80%" : "0%")};
     background-color: lightblue;
     display: flex;
     width: 20%;
+    height: 100%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    transition: left 700ms;
+    border: 1px solid lightblue;
 
     & span {
       white-space: nowrap;
@@ -29,11 +29,12 @@ const StyledTodosNoDeadlineSidebar = styled.div`
       transform: rotate(90deg);
     }
   }
-  & .lock {
-    position: absolute;
-    top: 0%;
-    left: 20%;
-  }
+`;
+
+const StyledList = styled(List)`
+  width: 80%;
+  right: ${(props) => (props.open ? "20%" : "100%")};
+  transition: all 700ms;
 `;
 
 const StyledTodosNoDeadline = styled(ListItem)`
@@ -51,28 +52,27 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <StyledTodosNoDeadlineSidebar>
-      {isOpen && (
-        <List>
-          {todos.map(
-            (todo) =>
-              todo.deadline.date.length === 0 && (
-                <StyledTodosNoDeadline
-                  $priority={todo.priority}
-                  $completed={todo.completed}
-                  key={todo.id}
-                  draggable
-                  onDragStart={() => onDragStart(todo.id)}
-                >
-                  <ListItemText
-                    sx={{ textAlign: "center" }}
-                    primary={todo.title}
-                  />
-                </StyledTodosNoDeadline>
-              )
-          )}
-        </List>
-      )}
+    <StyledTodosNoDeadlineSidebar open={isOpen}>
+      <StyledList sx={{ position: "absolute", padding: 0 }} open={isOpen}>
+        {todos.map(
+          (todo) =>
+            todo.deadline.date.length === 0 && (
+              <StyledTodosNoDeadline
+                $priority={todo.priority}
+                $completed={todo.completed}
+                key={todo.id}
+                draggable
+                onDragStart={() => onDragStart(todo.id)}
+              >
+                <ListItemText
+                  sx={{ textAlign: "center" }}
+                  primary={todo.title}
+                />
+              </StyledTodosNoDeadline>
+            )
+        )}
+      </StyledList>
+
       <div className="title" onClick={() => setIsOpen((v) => !v)}>
         <span>Todos with no deadline</span>
       </div>
