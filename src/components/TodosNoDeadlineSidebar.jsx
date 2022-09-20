@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useState } from "react";
 import { List, ListItem, ListItemText } from "@mui/material";
 
@@ -12,7 +12,7 @@ const StyledTodosNoDeadlineSidebar = styled.div`
   & .title {
     position: absolute;
     top: 0%;
-    left: ${(props) => (props.open ? "80%" : "0%")};
+    left: ${(props) => (props.$mounted ? "80%" : "0%")};
     background-color: lightblue;
     display: flex;
     width: 20%;
@@ -31,10 +31,32 @@ const StyledTodosNoDeadlineSidebar = styled.div`
   }
 `;
 
+const slideIn = keyframes`
+0% {
+  transform: translateX(-100%);
+}
+
+100% {
+  transform: translateX(0%);
+}
+`;
+
+const slideOut = keyframes`
+0% {
+  transform: translateX(0%);
+}
+
+100% {
+  transform: translateX(-100%);
+}
+`;
+
 const StyledList = styled(List)`
   width: 80%;
-  right: ${(props) => (props.open ? "20%" : "100%")};
-  transition: all 700ms;
+  animation-name: ${(props) => (props.$mounted ? slideIn : slideOut)};
+  animation-duration: 700ms;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 `;
 
 const StyledTodosNoDeadline = styled(ListItem)`
@@ -51,29 +73,46 @@ const StyledTodosNoDeadline = styled(ListItem)`
 const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <StyledTodosNoDeadlineSidebar open={isOpen}>
-      <StyledList sx={{ position: "absolute", padding: 0 }} open={isOpen}>
-        {todos.map(
-          (todo) =>
-            todo.deadline.date.length === 0 && (
-              <StyledTodosNoDeadline
-                $priority={todo.priority}
-                $completed={todo.completed}
-                key={todo.id}
-                draggable
-                onDragStart={() => onDragStart(todo.id)}
-              >
-                <ListItemText
-                  sx={{ textAlign: "center" }}
-                  primary={todo.title}
-                />
-              </StyledTodosNoDeadline>
-            )
-        )}
-      </StyledList>
+  const [isMounted, setIsMounted] = useState(false);
 
-      <div className="title" onClick={() => setIsOpen((v) => !v)}>
+  return (
+    <StyledTodosNoDeadlineSidebar $mounted={isMounted}>
+      {isOpen && (
+        <StyledList
+          sx={{ padding: 0 }}
+          $mounted={isMounted}
+          onAnimationEnd={() => {
+            console.log(isMounted);
+            if (!isMounted) setIsOpen(false);
+          }}
+        >
+          {todos.map(
+            (todo) =>
+              todo.deadline.date.length === 0 && (
+                <StyledTodosNoDeadline
+                  $priority={todo.priority}
+                  $completed={todo.completed}
+                  key={todo.id}
+                  draggable
+                  onDragStart={() => onDragStart(todo.id)}
+                >
+                  <ListItemText
+                    sx={{ textAlign: "center" }}
+                    primary={todo.title}
+                  />
+                </StyledTodosNoDeadline>
+              )
+          )}
+        </StyledList>
+      )}
+
+      <div
+        className="title"
+        onClick={() => {
+          setIsMounted(!isMounted);
+          if (!isOpen) setIsOpen(true);
+        }}
+      >
         <span>Todos with no deadline</span>
       </div>
     </StyledTodosNoDeadlineSidebar>
