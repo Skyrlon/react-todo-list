@@ -1,6 +1,13 @@
 import styled, { keyframes } from "styled-components";
 import { useState } from "react";
-import { List, ListItem, ListItemText } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const StyledTodosNoDeadlineSidebar = styled.div`
   grid-area: sidebar;
@@ -8,27 +15,6 @@ const StyledTodosNoDeadlineSidebar = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-
-  & .title {
-    position: absolute;
-    top: 0%;
-    left: ${(props) => (props.$mounted ? "80%" : "0%")};
-    background-color: lightblue;
-    display: flex;
-    width: 20%;
-    height: 100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: left 700ms;
-    border: 1px solid lightblue;
-
-    & span {
-      white-space: nowrap;
-      display: inline-block;
-      transform: rotate(90deg);
-    }
-  }
 `;
 
 const slideIn = keyframes`
@@ -54,7 +40,7 @@ const slideOut = keyframes`
 const StyledList = styled(List)`
   width: 80%;
   animation-name: ${(props) => (props.$mounted ? slideIn : slideOut)};
-  animation-duration: 700ms;
+  animation-duration: 500ms;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 `;
@@ -77,12 +63,48 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
 
   return (
     <StyledTodosNoDeadlineSidebar $mounted={isMounted}>
+      {!isOpen && (
+        <Button
+          sx={{
+            position: "absolute",
+            top: "50%",
+            right: "30%",
+            fontSize: "0.6rem",
+            width: "6rem",
+          }}
+          variant="contained"
+          onClick={() => {
+            setIsMounted(!isMounted);
+            if (!isOpen) setIsOpen(true);
+          }}
+        >
+          Todos without deadline
+        </Button>
+      )}
+
+      {isOpen && (
+        <IconButton
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "100%",
+            backgroundColor: "red",
+          }}
+          color="default"
+          onClick={() => {
+            setIsMounted(!isMounted);
+            if (!isOpen) setIsOpen(true);
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      )}
+
       {isOpen && (
         <StyledList
           sx={{ padding: 0 }}
           $mounted={isMounted}
           onAnimationEnd={() => {
-            console.log(isMounted);
             if (!isMounted) setIsOpen(false);
           }}
         >
@@ -105,16 +127,6 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
           )}
         </StyledList>
       )}
-
-      <div
-        className="title"
-        onClick={() => {
-          setIsMounted(!isMounted);
-          if (!isOpen) setIsOpen(true);
-        }}
-      >
-        <span>Todos with no deadline</span>
-      </div>
     </StyledTodosNoDeadlineSidebar>
   );
 };
