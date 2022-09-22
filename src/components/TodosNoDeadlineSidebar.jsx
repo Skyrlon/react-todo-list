@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { useState } from "react";
 import {
   Button,
@@ -37,6 +37,16 @@ const slideOut = keyframes`
 }
 `;
 
+const popUp = keyframes`
+0% {
+  transform: scale(0%);
+}
+
+100% {
+  transform: scale(100%);
+}
+`;
+
 const StyledList = styled(List)`
   width: 80%;
   animation-name: ${(props) => (props.$mounted ? slideIn : slideOut)};
@@ -56,6 +66,31 @@ const StyledTodosNoDeadline = styled(ListItem)`
   }};
 `;
 
+const buttonAnimation = css`
+  ${popUp} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+`;
+
+const StyledButton = styled(Button)`
+  &.MuiButton-root {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    font-size: 0.6rem;
+    width: 6rem;
+    animation: ${buttonAnimation};
+  }
+`;
+
+const StyledIconButton = styled(IconButton)`
+  &.MuiIconButton-root {
+    position: absolute;
+    top: 50%;
+    left: 90%;
+    background-color: red;
+    animation: ${buttonAnimation};
+  }
+`;
+
 const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,15 +98,8 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
 
   return (
     <StyledTodosNoDeadlineSidebar $mounted={isMounted}>
-      {!isOpen && (
-        <Button
-          sx={{
-            position: "absolute",
-            top: "50%",
-            right: "30%",
-            fontSize: "0.6rem",
-            width: "6rem",
-          }}
+      {!isMounted && (
+        <StyledButton
           variant="contained"
           onClick={() => {
             setIsMounted(!isMounted);
@@ -79,17 +107,11 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
           }}
         >
           Todos without deadline
-        </Button>
+        </StyledButton>
       )}
 
-      {isOpen && (
-        <IconButton
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "100%",
-            backgroundColor: "red",
-          }}
+      {isMounted && (
+        <StyledIconButton
           color="default"
           onClick={() => {
             setIsMounted(!isMounted);
@@ -97,7 +119,7 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
           }}
         >
           <CloseIcon />
-        </IconButton>
+        </StyledIconButton>
       )}
 
       {isOpen && (
