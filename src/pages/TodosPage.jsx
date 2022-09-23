@@ -2,14 +2,15 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle, faBan } from "@fortawesome/free-solid-svg-icons";
+import NotInterestedIcon from "@mui/icons-material/NotInterested";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import {
   Select,
   MenuItem,
   TextField,
   ButtonGroup,
   Button,
+  IconButton,
 } from "@mui/material";
 
 import TodoList from "../components/TodoList.jsx";
@@ -200,16 +201,15 @@ const TodosPage = ({ todos, modifyTodos }) => {
 
   return (
     <StyledTodosPage>
-      <div className="add-button" onClick={() => setShowForm(true)}>
-        <FontAwesomeIcon icon={faPlusCircle} />
-      </div>
+      <IconButton onClick={() => setShowForm(true)}>
+        <AddCircleIcon sx={{ color: "black" }} />
+      </IconButton>
 
       <div>
         {!showCheckBoxes && (
-          <FontAwesomeIcon
-            icon={faBan}
-            onClick={() => setShowCheckBoxes(true)}
-          />
+          <IconButton onClick={() => setShowCheckBoxes(true)}>
+            <NotInterestedIcon sx={{ color: "black" }} />
+          </IconButton>
         )}
         {showCheckBoxes && (
           <ButtonGroup
