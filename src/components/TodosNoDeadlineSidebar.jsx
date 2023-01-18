@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useState } from "react";
 import {
   Button,
@@ -66,10 +66,6 @@ const StyledTodosNoDeadline = styled(ListItem)`
   }};
 `;
 
-const buttonAnimation = css`
-  ${popUp} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
-`;
-
 const StyledButton = styled(Button)`
   &.MuiButton-root {
     position: absolute;
@@ -77,7 +73,9 @@ const StyledButton = styled(Button)`
     left: 10%;
     font-size: 0.6rem;
     width: 6rem;
-    animation: ${buttonAnimation};
+    animation-name: ${popUp};
+    animation-duration: 500ms;
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 `;
 
@@ -87,7 +85,9 @@ const StyledIconButton = styled(IconButton)`
     top: 50%;
     left: 90%;
     background-color: red;
-    animation: ${buttonAnimation};
+    animation-name: ${popUp};
+    animation-duration: 500ms;
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 `;
 
