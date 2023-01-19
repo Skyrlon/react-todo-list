@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { useState } from "react";
 import {
   Button,
@@ -17,42 +17,11 @@ const StyledTodosNoDeadlineSidebar = styled.div`
   width: 100%;
 `;
 
-const slideIn = keyframes`
-0% {
-  transform: translateX(-100%);
-}
-
-100% {
-  transform: translateX(0%);
-}
-`;
-
-const slideOut = keyframes`
-0% {
-  transform: translateX(0%);
-}
-
-100% {
-  transform: translateX(-100%);
-}
-`;
-
-const popUp = keyframes`
-0% {
-  transform: scale(0%);
-}
-
-100% {
-  transform: scale(100%);
-}
-`;
-
 const StyledList = styled(List)`
+  position: absolute;
   width: 80%;
-  animation-name: ${(props) => (props.$mounted ? slideIn : slideOut)};
-  animation-duration: 500ms;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
+  transition: all 500ms;
+  left: ${(props) => (props.$open ? "0%" : "-100%")};
 `;
 
 const StyledTodosNoDeadline = styled(ListItem)`
@@ -73,9 +42,11 @@ const StyledButton = styled(Button)`
     left: 10%;
     font-size: 0.6rem;
     width: 6rem;
-    animation-name: ${popUp};
-    animation-duration: 500ms;
-    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition-property: all;
+    transform: ${(props) => (props.$mounted ? "scale(0)" : "scale(1)")};
+    transition-delay: 500ms;
+    transition-duration: 500ms;
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 `;
 
@@ -85,9 +56,11 @@ const StyledIconButton = styled(IconButton)`
     top: 50%;
     left: 90%;
     background-color: red;
-    animation-name: ${popUp};
-    animation-duration: 500ms;
-    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition-property: all;
+    transform: ${(props) => (props.$mounted ? "scale(0)" : "scale(1)")};
+    transition-delay: 500ms;
+    transition-duration: 500ms;
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 `;
 
@@ -97,38 +70,32 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   return (
-    <StyledTodosNoDeadlineSidebar $mounted={isMounted}>
-      {!isMounted && (
+    <StyledTodosNoDeadlineSidebar>
+      {!isOpen && (
         <StyledButton
           variant="contained"
-          onClick={() => {
-            setIsMounted(!isMounted);
-            if (!isOpen) setIsOpen(true);
-          }}
+          $mounted={isMounted}
+          onClick={() => setIsOpen(true)}
         >
           Todos without deadline
         </StyledButton>
       )}
 
-      {isMounted && (
+      {isOpen && (
         <StyledIconButton
           color="default"
-          onClick={() => {
-            setIsMounted(!isMounted);
-            if (!isOpen) setIsOpen(true);
-          }}
+          $mounted={isMounted}
+          onClick={() => setIsOpen(false)}
         >
           <CloseIcon />
         </StyledIconButton>
       )}
 
-      {isOpen && (
+      {
         <StyledList
           sx={{ padding: 0 }}
-          $mounted={isMounted}
-          onAnimationEnd={() => {
-            if (!isMounted) setIsOpen(false);
-          }}
+          $open={isOpen}
+          onAnimationEnd={() => setIsMounted(isOpen)}
         >
           {todos.map(
             (todo) =>
@@ -148,7 +115,7 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
               )
           )}
         </StyledList>
-      )}
+      }
     </StyledTodosNoDeadlineSidebar>
   );
 };
