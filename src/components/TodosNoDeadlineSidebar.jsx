@@ -42,9 +42,9 @@ const StyledButton = styled(Button)`
     left: 10%;
     font-size: 0.6rem;
     width: 6rem;
+    transform: ${(props) => (props.$open ? "scale(0)" : "scale(1)")};
     transition-property: all;
-    transform: ${(props) => (props.$mounted ? "scale(0)" : "scale(1)")};
-    transition-delay: 500ms;
+    transition-delay: ${(props) => (props.$open ? "0ms" : "500ms")};
     transition-duration: 500ms;
     transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
@@ -57,7 +57,7 @@ const StyledIconButton = styled(IconButton)`
     left: 90%;
     background-color: red;
     transition-property: all;
-    transform: ${(props) => (props.$mounted ? "scale(0)" : "scale(1)")};
+    transform: ${(props) => (!props.$open ? "scale(0)" : "scale(1)")};
     transition-delay: 500ms;
     transition-duration: 500ms;
     transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -67,36 +67,26 @@ const StyledIconButton = styled(IconButton)`
 const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [isMounted, setIsMounted] = useState(false);
-
   return (
     <StyledTodosNoDeadlineSidebar>
-      {!isOpen && (
-        <StyledButton
-          variant="contained"
-          $mounted={isMounted}
-          onClick={() => setIsOpen(true)}
-        >
-          Todos without deadline
-        </StyledButton>
-      )}
+      <StyledButton
+        variant="contained"
+        $open={isOpen}
+        onClick={() => setIsOpen(true)}
+      >
+        Todos without deadline
+      </StyledButton>
 
-      {isOpen && (
-        <StyledIconButton
-          color="default"
-          $mounted={isMounted}
-          onClick={() => setIsOpen(false)}
-        >
-          <CloseIcon />
-        </StyledIconButton>
-      )}
+      <StyledIconButton
+        color="default"
+        $open={isOpen}
+        onClick={() => setIsOpen(false)}
+      >
+        <CloseIcon />
+      </StyledIconButton>
 
       {
-        <StyledList
-          sx={{ padding: 0 }}
-          $open={isOpen}
-          onAnimationEnd={() => setIsMounted(isOpen)}
-        >
+        <StyledList sx={{ padding: 0 }} $open={isOpen}>
           {todos.map(
             (todo) =>
               todo.deadline.date.length === 0 && (
