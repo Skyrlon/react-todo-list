@@ -11,20 +11,26 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const StyledTodosNoDeadlineSidebar = styled.div`
   grid-area: sidebar;
-  position: relative;
+  position: fixed;
   display: flex;
   flex-direction: row;
-  width: 100%;
+  top: 20%;
+  width: 10%;
+  height: 60%;
 `;
 
 const StyledList = styled(List)`
   position: absolute;
-  width: 80%;
+  width: 100%;
   transition: all 500ms;
+  padding: 0;
+  height: 100%;
   left: ${(props) => (props.$open ? "0%" : "-100%")};
+  overflow-y: auto;
 `;
 
 const StyledTodosNoDeadline = styled(ListItem)`
+  height: 10%;
   background-color: ${(props) => {
     if (props.$completed) return "grey";
     else {
@@ -54,7 +60,7 @@ const StyledIconButton = styled(IconButton)`
   &.MuiIconButton-root {
     position: absolute;
     top: 50%;
-    left: 90%;
+    left: 105%;
     background-color: red;
     transition-property: all;
     transform: ${(props) => (!props.$open ? "scale(0)" : "scale(1)")};
@@ -85,27 +91,26 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
         <CloseIcon />
       </StyledIconButton>
 
-      {
-        <StyledList sx={{ padding: 0 }} $open={isOpen}>
-          {todos.map(
-            (todo) =>
-              todo.deadline.date.length === 0 && (
-                <StyledTodosNoDeadline
-                  $priority={todo.priority}
-                  $completed={todo.completed}
-                  key={todo.id}
-                  draggable
-                  onDragStart={() => onDragStart(todo.id)}
-                >
-                  <ListItemText
-                    sx={{ textAlign: "center" }}
-                    primary={todo.title}
-                  />
-                </StyledTodosNoDeadline>
-              )
-          )}
-        </StyledList>
-      }
+      <StyledList $open={isOpen}>
+        {todos.map(
+          (todo) =>
+            todo.deadline.date.length === 0 && (
+              <StyledTodosNoDeadline
+                $priority={todo.priority}
+                $completed={todo.completed}
+                key={todo.id}
+                draggable
+                onDragStart={() => onDragStart(todo.id)}
+                sx={{ padding: 0, margin: 0 }}
+              >
+                <ListItemText
+                  sx={{ textAlign: "center" }}
+                  primary={todo.title}
+                />
+              </StyledTodosNoDeadline>
+            )
+        )}
+      </StyledList>
     </StyledTodosNoDeadlineSidebar>
   );
 };
