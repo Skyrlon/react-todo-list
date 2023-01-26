@@ -16,7 +16,9 @@ import {
 import TodoList from "../components/TodoList.jsx";
 import TodoForm from "../components/TodoForm.jsx";
 
-const StyledTodosPage = styled.div``;
+const StyledTodosPage = styled.div`
+  margin-top: 59px;
+`;
 
 const buttonGroupStyle = {
   "& .MuiButtonGroup-grouped": {

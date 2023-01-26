@@ -8,6 +8,8 @@
 
 .App-header {
   background-color: #282c34;
+  width: 100%;
+  position: fixed;
   display: flex;
   flex-direction: column;
   font-size: 2em;

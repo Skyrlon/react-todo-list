@@ -11,6 +11,7 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const StyledCalendarPage = styled.div`
   display: grid;
+  margin-top: 59px;
   width: 100%;
   grid-template:
     "sidebar input input" 5vh

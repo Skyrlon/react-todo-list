@@ -12,11 +12,12 @@ import CloseIcon from "@mui/icons-material/Close";
 const StyledTodosNoDeadlineSidebar = styled.div`
   grid-area: sidebar;
   position: fixed;
-  display: flex;
-  flex-direction: row;
-  top: 20%;
+  top: ${(props) =>
+    props.$numberOfItems > 10
+      ? "calc(0% + 59px)"
+      : `calc(${(100 - props.$numberOfItems * 10) / 2}% + 59px)`};
   width: 10%;
-  height: 60%;
+  height: calc(100% - 59px);
 `;
 
 const StyledList = styled(List)`
@@ -31,6 +32,7 @@ const StyledList = styled(List)`
 
 const StyledTodosNoDeadline = styled(ListItem)`
   height: 10%;
+  flex-shrink: 0;
   background-color: ${(props) => {
     if (props.$completed) return "grey";
     else {
@@ -74,7 +76,11 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <StyledTodosNoDeadlineSidebar>
+    <StyledTodosNoDeadlineSidebar
+      $numberOfItems={
+        todos.filter((todo) => todo.deadline.date.length === 0).length
+      }
+    >
       <StyledButton
         variant="contained"
         $open={isOpen}
@@ -91,7 +97,7 @@ const TodosNoDeadlineSidebar = ({ todos, onDragStart }) => {
         <CloseIcon />
       </StyledIconButton>
 
-      <StyledList $open={isOpen}>
+      <StyledList $open={isOpen} sx={{ padding: 0, margin: 0 }}>
         {todos.map(
           (todo) =>
             todo.deadline.date.length === 0 && (
