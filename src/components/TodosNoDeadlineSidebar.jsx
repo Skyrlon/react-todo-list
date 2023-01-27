@@ -45,12 +45,13 @@ const StyledTodosNoDeadline = styled(ListItem)`
 
 const StyledButton = styled(Button)`
   &.MuiButton-root {
-    position: absolute;
-    top: 50%;
-    left: 10%;
+    position: fixed;
+    top: calc(50% + 59px);
+    left: 2%;
     font-size: 0.6rem;
     width: 6rem;
-    transform: ${(props) => (props.$open ? "scale(0)" : "scale(1)")};
+    transform: ${(props) => (props.$open ? "scale(0)" : "scale(1)")}
+      translateY(-50%);
     transition-property: all;
     transition-delay: ${(props) => (props.$open ? "0ms" : "500ms")};
     transition-duration: 500ms;
@@ -60,12 +61,13 @@ const StyledButton = styled(Button)`
 
 const StyledIconButton = styled(IconButton)`
   &.MuiIconButton-root {
-    position: absolute;
-    top: 50%;
-    left: 105%;
+    position: fixed;
+    top: calc(50% + 59px);
+    left: 11%;
     background-color: red;
     transition-property: all;
-    transform: ${(props) => (!props.$open ? "scale(0)" : "scale(1)")};
+    transform: ${(props) => (!props.$open ? "scale(0)" : "scale(1)")}
+      translateY(-50%);
     transition-delay: 500ms;
     transition-duration: 500ms;
     transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
