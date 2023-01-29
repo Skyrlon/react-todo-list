@@ -44,10 +44,13 @@ const App = () => {
   });
 
   return (
-    <div className="App">
-      <header className="App-header">React To Do List</header>
-      <Router>
-        <Nav />
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          React To Do List
+          <Nav />
+        </header>
+
         <Switch>
           <Route path="/calendar">
             <CalendarPage todos={todos} modifyTodos={(e) => setTodos(e)} />
@@ -56,8 +59,8 @@ const App = () => {
             <TodosPage todos={todos} modifyTodos={(e) => setTodos(e)} />
           </Route>
         </Switch>
-      </Router>
-    </div>
+      </div>
+    </Router>
   );
 };
 
