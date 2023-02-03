@@ -15,6 +15,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
 
 const StyledTodo = styled(Card)`
+  position: relative;
   border: 1px solid black;
   width: 100%;
   height: 100%;
@@ -52,7 +53,11 @@ const Todo = ({
       className={todo.completed ? " done" : ""}
     >
       {showCheckBoxes && (
-        <Checkbox checked={checked} onChange={handleCheckBoxChange} />
+        <Checkbox
+          sx={{ position: "absolute", left: "5%", top: "5%" }}
+          checked={checked}
+          onChange={handleCheckBoxChange}
+        />
       )}
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
