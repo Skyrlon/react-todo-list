@@ -206,7 +206,11 @@ const CalendarDate = ({
         </IconButton>
       )}
       {
-        <Button sx={{ color: "black" }} size="large" onClick={onDateClick}>
+        <Button
+          sx={{ color: "black", textTransform: "capitalize" }}
+          size="large"
+          onClick={onDateClick}
+        >
           {typeof calendarDay === "number" ? `${calendarDay} ` : ""}
           {typeof calendarMonth === "number"
             ? `${monthsNames[calendarMonth]} `
