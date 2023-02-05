@@ -6,12 +6,13 @@ import Day from "./Day";
 import WeeklyCalendar from "./WeeklyCalendar";
 
 const StyledCalendar = styled.div`
-  grid-area: calendar;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  width: 95%;
+  margin-top: 2rem;
+  margin-left: 10%;
+  width: 90%;
   height: 100%;
 `;
 

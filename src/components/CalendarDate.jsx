@@ -7,11 +7,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Button } from "@mui/material";
 
 const StyledCalendarDate = styled.div`
-  grid-area: input;
-  margin-left: 45%;
-  width: 30vw;
-  display: flex;
-  flex-direction: row;
   & .arrow {
     display: inline;
     margin-left: 1em;

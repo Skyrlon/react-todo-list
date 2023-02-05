@@ -4,12 +4,6 @@ import PropTypes from "prop-types";
 import { TextField, Button, Select, ClickAwayListener } from "@mui/material";
 
 const StyledCalendarInput = styled.form`
-  grid-area: input;
-  margin-left: 45%;
-  width: 30vw;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
   & .arrow {
     display: inline;
     margin-left: 1em;

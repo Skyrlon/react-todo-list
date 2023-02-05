@@ -10,19 +10,10 @@ import TodoForm from "../components/TodoForm.jsx";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const StyledCalendarPage = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   margin-top: 59px;
   width: 100%;
-  grid-template:
-    "sidebar input input" 5vh
-    "sidebar view view" 5vh
-    "sidebar calendar calendar" 40vh
-    "sidebar calendar calendar" 40vh / 10vw auto;
-  & .view {
-    grid-area: view;
-    margin-left: 45%;
-    width: 6rem;
-  }
 `;
 
 const CalendarPage = ({ todos, modifyTodos }) => {
@@ -175,6 +166,11 @@ const CalendarPage = ({ todos, modifyTodos }) => {
 
   return (
     <StyledCalendarPage>
+      <TodosNoDeadlineSidebar
+        todos={todos}
+        onDragStart={(todoId) => setTodoIdDragged(todoId)}
+      />
+
       {showTodoForm && (
         <TodoForm
           onEdit={handleEditTodo}
@@ -210,7 +206,14 @@ const CalendarPage = ({ todos, modifyTodos }) => {
         />
       )}
 
-      <FormControl className="view">
+      <FormControl
+        className="view"
+        sx={{
+          width: "10rem",
+          left: "50%",
+          transform: "translatex(-50%)",
+        }}
+      >
         <InputLabel>View by</InputLabel>
         <Select
           value={calendarFormat}
@@ -223,11 +226,6 @@ const CalendarPage = ({ todos, modifyTodos }) => {
           <MenuItem value="day">Day</MenuItem>
         </Select>
       </FormControl>
-
-      <TodosNoDeadlineSidebar
-        todos={todos}
-        onDragStart={(todoId) => setTodoIdDragged(todoId)}
-      />
 
       <Calendar
         todos={todos}
