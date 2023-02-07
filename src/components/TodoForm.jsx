@@ -1,7 +1,15 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { ClickAwayListener } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  ClickAwayListener,
+  FormControlLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -17,6 +25,8 @@ const StyledTodoForm = styled.form`
   justify-content: space-around;
   align-items: center;
   width: 20%;
+  box-sizing: border-box;
+  padding: 1rem;
   & > * {
     width: 80%;
     margin-top: 2%;
@@ -74,9 +84,7 @@ const TodoForm = ({ onAdd, onEdit, isEditingTodo, todoToEdit, closeForm }) => {
 
   const [completed, setCompleted] = useState(todoToEdit.completed);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-
+  const onSubmit = () => {
     if (!title) {
       alert("put atleast a title");
       return;
@@ -124,87 +132,92 @@ const TodoForm = ({ onAdd, onEdit, isEditingTodo, todoToEdit, closeForm }) => {
 
   return (
     <ClickAwayListener onClickAway={closeForm}>
-      <StyledTodoForm className="add-form" onSubmit={onSubmit}>
+      <StyledTodoForm className="add-form">
         <CloseIcon className="close-icon" onClick={closeForm} />
-        <label htmlFor="title">Title</label>
-        <input
-          type="text"
-          name="title"
-          placeholder="Your title go here"
+        <TextField
+          label="Title"
           onChange={(e) => setTitle(e.target.value)}
           value={title}
         />
 
-        <label htmlFor="details">Details</label>
-        <textarea
-          name="details"
-          placeholder="Add some details if you need"
+        <TextField
+          label="Details"
+          multiline={true}
+          maxRows={3}
           onChange={(e) => setDetails(e.target.value)}
           value={details}
         />
 
-        <select
-          name="priority"
+        <Select
+          MenuProps={{ disablePortal: true }}
+          type="select"
+          label="Priority"
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
         >
-          <option value="">--How important is this task ?--</option>
-          <option value="hight">Hight</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
-        </select>
+          <MenuItem value="">--How important is this task ?--</MenuItem>
+          <MenuItem value="hight">Hight</MenuItem>
+          <MenuItem value="medium">Medium</MenuItem>
+          <MenuItem value="low">Low</MenuItem>
+        </Select>
 
         <div className="deadline">
-          <input
+          <TextField
             type="date"
-            name="deadline-date"
-            min="1000-01-01"
-            max="9999-12-31"
             value={deadlineDate}
             onChange={(e) => setDeadlineDate(e.target.value)}
           />
 
-          <select
+          <Select
+            MenuProps={{ disablePortal: true }}
             value={deadlineTimeHours}
             onChange={(e) => setDeadlineTimeHours(e.target.value)}
           >
-            <option value=""></option>
+            <MenuItem value=""></MenuItem>
             {[...Array(24).keys()].map((hour) => (
-              <option key={hour} value={handleOneDigitNumber(hour)}>
+              <MenuItem key={hour} value={handleOneDigitNumber(hour)}>
                 {handleOneDigitNumber(hour)}
-              </option>
+              </MenuItem>
             ))}
-          </select>
-          <select
+          </Select>
+          <Select
+            MenuProps={{ disablePortal: true }}
             value={deadlineTimeMinutes}
             onChange={(e) => setDeadlineTimeMinutes(e.target.value)}
           >
-            <option value=""></option>
+            <MenuItem value=""></MenuItem>
             {["00", "15", "30", "45"].map((minute) => (
-              <option key={minute} value={minute}>
+              <MenuItem key={minute} value={minute}>
                 {minute}
-              </option>
+              </MenuItem>
             ))}
-          </select>
+          </Select>
         </div>
 
         {isEditingTodo && (
           <>
-            <label htmlFor="completed">Completed</label>
-            <input
-              type="checkbox"
-              name="completed"
-              checked={completed}
-              onChange={() => setCompleted(!completed)}
+            <FormControlLabel
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+              label="Completed"
+              labelPlacement="start"
+              control={
+                <Checkbox
+                  checked={completed}
+                  onChange={() => setCompleted(!completed)}
+                />
+              }
             />
           </>
         )}
         <div className="buttons">
-          <input
-            type="submit"
-            value={isEditingTodo ? "Edit Todo" : "Add to the list"}
-          />
-          <button onClick={closeForm}>Cancel</button>
+          <Button onClick={onSubmit}>
+            {isEditingTodo ? "Edit Todo" : "Add to the list"}
+          </Button>
+          <Button onClick={closeForm}>Cancel</Button>
         </div>
       </StyledTodoForm>
     </ClickAwayListener>
