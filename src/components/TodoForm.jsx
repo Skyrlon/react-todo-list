@@ -7,7 +7,6 @@ import {
   ClickAwayListener,
   FormControlLabel,
   MenuItem,
-  Select,
   TextField,
 } from "@mui/material";
 import handleOneDigitNumber from "../utils/handleOneDigitNumber";
@@ -148,18 +147,19 @@ const TodoForm = ({ onAdd, onEdit, isEditingTodo, todoToEdit, closeForm }) => {
           value={details}
         />
 
-        <Select
-          MenuProps={{ disablePortal: true }}
-          type="select"
+        <TextField
+          select
+          SelectProps={{
+            MenuProps: { disablePortal: true },
+          }}
           label="Priority"
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
         >
-          <MenuItem value="">--How important is this task ?--</MenuItem>
           <MenuItem value="hight">Hight</MenuItem>
           <MenuItem value="medium">Medium</MenuItem>
           <MenuItem value="low">Low</MenuItem>
-        </Select>
+        </TextField>
 
         <div className="deadline">
           <TextField
@@ -168,8 +168,11 @@ const TodoForm = ({ onAdd, onEdit, isEditingTodo, todoToEdit, closeForm }) => {
             onChange={(e) => setDeadlineDate(e.target.value)}
           />
 
-          <Select
-            MenuProps={{ disablePortal: true }}
+          <TextField
+            select
+            SelectProps={{
+              MenuProps: { disablePortal: true },
+            }}
             value={deadlineTimeHours}
             onChange={(e) => setDeadlineTimeHours(e.target.value)}
           >
@@ -179,9 +182,12 @@ const TodoForm = ({ onAdd, onEdit, isEditingTodo, todoToEdit, closeForm }) => {
                 {handleOneDigitNumber(hour)}
               </MenuItem>
             ))}
-          </Select>
-          <Select
-            MenuProps={{ disablePortal: true }}
+          </TextField>
+          <TextField
+            select
+            SelectProps={{
+              MenuProps: { disablePortal: true },
+            }}
             value={deadlineTimeMinutes}
             onChange={(e) => setDeadlineTimeMinutes(e.target.value)}
           >
@@ -191,7 +197,7 @@ const TodoForm = ({ onAdd, onEdit, isEditingTodo, todoToEdit, closeForm }) => {
                 {minute}
               </MenuItem>
             ))}
-          </Select>
+          </TextField>
         </div>
 
         {isEditingTodo && (
