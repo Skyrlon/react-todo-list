@@ -18,6 +18,7 @@ const StyledTodosNoDeadlineSidebar = styled.div`
       : `calc(${(100 - props.$numberOfItems * 10) / 2}% + 59px)`};
   width: 10%;
   height: calc(100% - 59px);
+  z-index: 100;
 `;
 
 const StyledList = styled(List)`
