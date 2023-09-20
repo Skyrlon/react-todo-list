@@ -21,7 +21,6 @@ const StyledMonth = styled.div`
     & > div {
       flex-basis: 13%;
       aspect-ratio: 1 / 1;
-      border: 1px solid black;
       box-sizing: border-box;
     }
   }
@@ -43,7 +42,6 @@ const StyledMonth = styled.div`
     justify-content: space-between;
     width: 40px;
     aspect-ratio: 1 / 1;
-    border: 1px solid black;
     box-sizing: border-box;
     margin-top: calc((100% - (16% * 6)) / 7);
 
