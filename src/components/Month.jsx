@@ -53,6 +53,9 @@ const StyledMonth = styled.div`
       background-color: green;
     }
     &-number {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       width: 100%;
       height: 80%;
       &.over {
