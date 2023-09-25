@@ -20,7 +20,6 @@ const StyledMonth = styled.div`
     width: 100%;
     & > div {
       flex-basis: 13%;
-      aspect-ratio: 1 / 1;
       box-sizing: border-box;
     }
   }
