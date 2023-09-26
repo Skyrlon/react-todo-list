@@ -16,7 +16,7 @@ const StyledTodoInCalendar = styled.div`
 
   & .todo-tooltip {
     position: absolute;
-    bottom: 0%;
+    top: 100%;
     left: 100%;
     width: 100%;
   }
