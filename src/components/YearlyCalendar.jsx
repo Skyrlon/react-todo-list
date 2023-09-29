@@ -17,7 +17,6 @@ const StyledYearlyCalendar = styled.div`
     margin-left: 1%;
     margin-right: 1%;
     box-sizing: border-box;
-    border: 1px solid;
     justify-content: flex-start;
 
     @media (max-width: 799px) {
