@@ -33,7 +33,7 @@ const StyledYearlyCalendar = styled.div`
     }
 
     @media (min-width: 1400px) {
-      flex: 0 0 20%;
+      flex: 0 0 calc(100% / 5);
     }
   }
 `;
