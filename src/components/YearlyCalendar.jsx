@@ -12,7 +12,6 @@ const StyledYearlyCalendar = styled.div`
   & > .month {
     display: flex;
     flex-direction: column;
-    height: 45%;
     margin-top: 1%;
     margin-left: 1%;
     margin-right: 1%;
@@ -33,7 +32,7 @@ const StyledYearlyCalendar = styled.div`
     }
 
     @media (min-width: 1400px) {
-      flex: 0 0 calc(100% / 5);
+      flex: 0 0 calc(100% / 7);
     }
   }
 `;
