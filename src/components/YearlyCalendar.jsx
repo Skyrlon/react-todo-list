@@ -19,16 +19,16 @@ const StyledYearlyCalendar = styled.div`
     justify-content: flex-start;
 
     @media (max-width: 799px) {
-      flex: 0 0 90%;
+      flex: 0 0 calc(100% / 3);
       margin-left: 5%;
     }
 
     @media (min-width: 800px) and (max-width: 999px) {
-      flex: 0 0 40%;
+      flex: 0 0 calc(100% / 4);
     }
 
     @media (min-width: 1000px) and (max-width: 1399px) {
-      flex: 0 0 30%;
+      flex: 0 0 calc(100% / 5);
     }
 
     @media (min-width: 1400px) {
