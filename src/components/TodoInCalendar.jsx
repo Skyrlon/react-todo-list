@@ -10,6 +10,7 @@ const StyledTodoInCalendar = styled.div`
     (props.priority === "hight" && "red") ||
     (props.priority === "medium" && "yellow") ||
     (props.priority === "low" && "green")};
+  transform: translate(-50%, 0%);
   &.done {
     background-color: grey;
   }
@@ -17,7 +18,7 @@ const StyledTodoInCalendar = styled.div`
   & .todo-tooltip {
     position: absolute;
     top: 100%;
-    left: 100%;
+    left: 0%;
     width: 100%;
   }
 `;
