@@ -56,22 +56,22 @@ const Calendar = ({
       )}
 
       {format === "month" && (
-        <Month
-          year={calendarYear}
-          month={calendarMonth}
-          onMonthClick={onMonthClick}
-          dateSelected={dateSelected}
-          onDayClick={onDayInMonthClick}
-          onDayDoubleClick={onDayInMonthDoubleClick}
-          showTooltip={showTooltip}
-          todos={todos}
-          onDrop={onDrop}
-          onDragStart={onDragStart}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          toggleCompleteTodo={toggleCompleteTodo}
-          closeTooltip={closeTooltip}
-        />
+          <Month
+            year={calendarYear}
+            month={calendarMonth}
+            onMonthClick={onMonthClick}
+            dateSelected={dateSelected}
+            onDayClick={onDayInMonthClick}
+            onDayDoubleClick={onDayInMonthDoubleClick}
+            showTooltip={showTooltip}
+            todos={todos}
+            onDrop={onDrop}
+            onDragStart={onDragStart}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            toggleCompleteTodo={toggleCompleteTodo}
+            closeTooltip={closeTooltip}
+          />
       )}
       {format === "day" && (
         <Day
