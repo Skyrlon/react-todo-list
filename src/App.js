@@ -13,6 +13,7 @@ const App = () => {
     const completion = [true, false];
     const priorities = ["hight", "medium", "low"];
     const minutesArray = ["00", "15", "30", "45"];
+    const today = new Date(Date.now());
 
     function randomNumber(min, max) {
       let number = Math.floor(Math.random() * (max - min) + min);
@@ -29,7 +30,10 @@ const App = () => {
         completed: completion[parseInt(randomNumber(0, 2))],
         deadline: {
           date: gotDeadline
-            ? `2022-${randomNumber(3, 4)}-${randomNumber(1, 28)}`
+            ? `${today.getFullYear()}-${randomNumber(
+                today.getMonth() + 1,
+                13
+              )}-${randomNumber(1, 28)}`
             : "",
           time:
             gotDeadline && gotDeadlineTime
