@@ -18,6 +18,9 @@ import TodoForm from "../components/TodoForm.jsx";
 
 const StyledTodosPage = styled.div`
   margin-top: 59px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const buttonGroupStyle = {
@@ -203,71 +206,69 @@ const TodosPage = ({ todos, modifyTodos }) => {
 
   return (
     <StyledTodosPage>
-      <IconButton onClick={() => setShowForm(true)}>
-        <AddCircleIcon sx={{ color: "black" }} />
-      </IconButton>
-
-      <div>
-        {!showCheckBoxes && (
-          <IconButton onClick={() => setShowCheckBoxes(true)}>
-            <NotInterestedIcon sx={{ color: "black" }} />
-          </IconButton>
-        )}
-        {showCheckBoxes && (
-          <ButtonGroup
-            orientation="horizontal"
-            variant="text"
-            sx={buttonGroupStyle}
-          >
-            <Button sx={buttonStyle} onClick={deleteAllTodosSelected}>
-              Delete All Selected
-            </Button>
-            <Button
-              sx={buttonStyle}
-              onClick={() => {
-                setShowCheckBoxes(false);
-                setTodosIdsGoingToBeDeleted([]);
-              }}
+      <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
+        <IconButton onClick={() => setShowForm(true)}>
+          <AddCircleIcon sx={{ color: "black" }} />
+        </IconButton>
+        <div>
+          {!showCheckBoxes && (
+            <IconButton onClick={() => setShowCheckBoxes(true)}>
+              <NotInterestedIcon sx={{ color: "black" }} />
+            </IconButton>
+          )}
+          {showCheckBoxes && (
+            <ButtonGroup
+              orientation="horizontal"
+              variant="text"
+              sx={buttonGroupStyle}
             >
-              Cancel
-            </Button>
-          </ButtonGroup>
-        )}
-      </div>
-
-      <ButtonGroup
-        orientation="horizontal"
-        variant="text"
-        sx={buttonGroupStyle}
-      >
-        <Button sx={buttonStyle} onClick={() => setTodosListDisplay("all")}>
-          All
-        </Button>
-        <Button
-          sx={buttonStyle}
-          onClick={() => setTodosListDisplay("separated")}
+              <Button sx={buttonStyle} onClick={deleteAllTodosSelected}>
+                Delete All Selected
+              </Button>
+              <Button
+                sx={buttonStyle}
+                onClick={() => {
+                  setShowCheckBoxes(false);
+                  setTodosIdsGoingToBeDeleted([]);
+                }}
+              >
+                Cancel
+              </Button>
+            </ButtonGroup>
+          )}
+        </div>
+        <ButtonGroup
+          orientation="horizontal"
+          variant="text"
+          sx={buttonGroupStyle}
         >
-          Separated
-        </Button>
-      </ButtonGroup>
-
-      <Select
-        label="Sort by"
-        value={sortBy}
-        onChange={(e) => {
-          setSortBy(e.target.value);
-          sortingTodos(e.target.value, sortedTodos);
-        }}
-      >
-        <MenuItem value="last-added">Last added</MenuItem>
-        <MenuItem value="first-added">First added</MenuItem>
-        <MenuItem value="hightest-priority">Highest priority</MenuItem>
-        <MenuItem value="lowest-priority">Lowest priority</MenuItem>
-        <MenuItem value="nearest-deadline">Nearest deadline</MenuItem>
-        <MenuItem value="lastest-deadline">Lastest deadline</MenuItem>
-      </Select>
-
-      <TextField type="text" label="Filter" onChange={handleFilterChange} />
+          <Button sx={buttonStyle} onClick={() => setTodosListDisplay("all")}>
+            All
+          </Button>
+          <Button
+            sx={buttonStyle}
+            onClick={() => setTodosListDisplay("separated")}
+          >
+            Separated
+          </Button>
+        </ButtonGroup>
+        <Select
+          label="Sort by"
+          value={sortBy}
+          onChange={(e) => {
+            setSortBy(e.target.value);
+            sortingTodos(e.target.value, sortedTodos);
+          }}
+        >
+          <MenuItem value="last-added">Last added</MenuItem>
+          <MenuItem value="first-added">First added</MenuItem>
+          <MenuItem value="hightest-priority">Highest priority</MenuItem>
+          <MenuItem value="lowest-priority">Lowest priority</MenuItem>
+          <MenuItem value="nearest-deadline">Nearest deadline</MenuItem>
+          <MenuItem value="lastest-deadline">Lastest deadline</MenuItem>
+        </Select>
+        <TextField type="text" label="Filter" onChange={handleFilterChange} />
+      </div>
 
       {showForm && (
         <TodoForm
