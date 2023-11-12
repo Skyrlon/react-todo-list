@@ -11,11 +11,32 @@ import Todo from "./Todo.jsx";
 const StyledTodoList = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   & .todos {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    @media (max-width: 599px) {
+      flex: 0 0 90%;
+      margin-left: 5%;
+    }
+
+    @media (min-width: 600px) and (max-width: 799px) {
+      gap: 0% calc((100% - (25% * 2)) / 3);
+    }
+
+    @media (min-width: 800px) and (max-width: 999px) {
+      gap: 0% calc((100% - (28% * 3)) / 4);
+    }
+
+    @media (min-width: 1000px) and (max-width: 1399px) {
+      gap: 0% calc((100% - (18% * 4)) / 5);
+    }
+
+    @media (min-width: 1400px) {
+      gap: 0% calc((100% - (15.5% * 5)) / 6);
+    }
   }
 
   & .todo-container {
@@ -29,42 +50,18 @@ const StyledTodoList = styled.div`
 
     @media (min-width: 600px) and (max-width: 799px) {
       flex: 0 0 40%;
-      &:not(:nth-child(2n + 1)) {
-        margin-left: calc((100% - (40% * 2)) / 3);
-      }
-      &:nth-child(2n + 1) {
-        margin-left: calc((100% - (40% * 2)) / 3);
-      }
     }
 
     @media (min-width: 800px) and (max-width: 999px) {
       flex: 0 0 30%;
-      &:not(:nth-child(3n + 1)) {
-        margin-left: calc((100% - (30% * 3)) / 4);
-      }
-      &:nth-child(3n + 1) {
-        margin-left: calc((100% - (30% * 3)) / 4);
-      }
     }
 
     @media (min-width: 1000px) and (max-width: 1399px) {
       flex: 0 0 20%;
-      &:not(:nth-child(4n + 1)) {
-        margin-left: calc((100% - (20% * 4)) / 5);
-      }
-      &:nth-child(4n + 1) {
-        margin-left: calc((100% - (20% * 4)) / 5);
-      }
     }
 
     @media (min-width: 1400px) {
       flex: 0 0 17%;
-      &:not(:nth-child(5n + 1)) {
-        margin-left: calc((100% - (17% * 5)) / 6);
-      }
-      &:nth-child(5n + 1) {
-        margin-left: calc((100% - (17% * 5)) / 6);
-      }
     }
   }
 `;

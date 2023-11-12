@@ -8,44 +8,7 @@ import Nav from "./components/Nav";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
-  const [todos, setTodos] = useState(function () {
-    let array = [];
-    const completion = [true, false];
-    const priorities = ["hight", "medium", "low"];
-    const minutesArray = ["00", "15", "30", "45"];
-    const today = new Date(Date.now());
-
-    function randomNumber(min, max) {
-      let number = Math.floor(Math.random() * (max - min) + min);
-      return number < 10 ? `0${number}` : number;
-    }
-    for (let i = 0; i < 30; i++) {
-      const gotDeadline = randomNumber(0, 2) === "00";
-      const gotDeadlineTime = randomNumber(0, 2) === "00";
-      array.push({
-        id: i,
-        title: `Task ${i + 1}`,
-        details: `Details ${i + 1}`,
-        priority: priorities[Math.floor(Math.random() * 3)],
-        completed: completion[parseInt(randomNumber(0, 2))],
-        deadline: {
-          date: gotDeadline
-            ? `${today.getFullYear()}-${randomNumber(
-                today.getMonth() + 1,
-                13
-              )}-${randomNumber(1, 28)}`
-            : "",
-          time:
-            gotDeadline && gotDeadlineTime
-              ? `${randomNumber(0, 24)}:${
-                  minutesArray[parseInt(randomNumber(0, 4))]
-                }`
-              : "",
-        },
-      });
-    }
-    return array;
-  });
+  const [todos, setTodos] = useState([]);
 
   return (
     <Router>
