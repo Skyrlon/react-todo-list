@@ -24,6 +24,12 @@ const StyledTodosPage = styled.div`
 `;
 
 const buttonGroupStyle = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "0 0.5rem",
+
   "& .MuiButtonGroup-grouped": {
     paddingTop: 0,
     paddingBottom: 0,
@@ -206,37 +212,51 @@ const TodosPage = ({ todos, modifyTodos }) => {
 
   return (
     <StyledTodosPage>
-      <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
-        <IconButton onClick={() => setShowForm(true)}>
-          <AddCircleIcon sx={{ color: "black" }} />
-        </IconButton>
-        <div>
-          {!showCheckBoxes && (
-            <IconButton onClick={() => setShowCheckBoxes(true)}>
-              <NotInterestedIcon sx={{ color: "black" }} />
-            </IconButton>
-          )}
-          {showCheckBoxes && (
-            <ButtonGroup
-              orientation="horizontal"
-              variant="text"
-              sx={buttonGroupStyle}
-            >
-              <Button sx={buttonStyle} onClick={deleteAllTodosSelected}>
-                Delete All Selected
-              </Button>
-              <Button
-                sx={buttonStyle}
-                onClick={() => {
-                  setShowCheckBoxes(false);
-                  setTodosIdsGoingToBeDeleted([]);
-                }}
+      <div
+        style={{
+          marginTop: "0.5rem",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "90%",
+        }}
+      >
+        <ButtonGroup
+          orientation="horizontal"
+          variant="text"
+          sx={buttonGroupStyle}
+        >
+          <IconButton onClick={() => setShowForm(true)}>
+            <AddCircleIcon sx={{ color: "black" }} />
+          </IconButton>
+          <div>
+            {!showCheckBoxes && (
+              <IconButton onClick={() => setShowCheckBoxes(true)}>
+                <NotInterestedIcon sx={{ color: "black" }} />
+              </IconButton>
+            )}
+            {showCheckBoxes && (
+              <ButtonGroup
+                orientation="horizontal"
+                variant="text"
+                sx={buttonGroupStyle}
               >
-                Cancel
-              </Button>
-            </ButtonGroup>
-          )}
-        </div>
+                <Button sx={buttonStyle} onClick={deleteAllTodosSelected}>
+                  Delete All Selected
+                </Button>
+                <Button
+                  sx={buttonStyle}
+                  onClick={() => {
+                    setShowCheckBoxes(false);
+                    setTodosIdsGoingToBeDeleted([]);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </ButtonGroup>
+            )}
+          </div>
+        </ButtonGroup>
         <ButtonGroup
           orientation="horizontal"
           variant="text"
@@ -252,22 +272,38 @@ const TodosPage = ({ todos, modifyTodos }) => {
             Separated
           </Button>
         </ButtonGroup>
-        <Select
-          label="Sort by"
-          value={sortBy}
-          onChange={(e) => {
-            setSortBy(e.target.value);
-            sortingTodos(e.target.value, sortedTodos);
+        <ButtonGroup
+          orientation="horizontal"
+          variant="text"
+          sx={{
+            ...buttonGroupStyle,
+            flexDirection: "column",
+            alignItems: "flex-start",
           }}
         >
-          <MenuItem value="last-added">Last added</MenuItem>
-          <MenuItem value="first-added">First added</MenuItem>
-          <MenuItem value="hightest-priority">Highest priority</MenuItem>
-          <MenuItem value="lowest-priority">Lowest priority</MenuItem>
-          <MenuItem value="nearest-deadline">Nearest deadline</MenuItem>
-          <MenuItem value="lastest-deadline">Lastest deadline</MenuItem>
-        </Select>
-        <TextField type="text" label="Filter" onChange={handleFilterChange} />
+          <Select
+            sx={{ width: "10rem" }}
+            label="Sort by"
+            value={sortBy}
+            onChange={(e) => {
+              setSortBy(e.target.value);
+              sortingTodos(e.target.value, sortedTodos);
+            }}
+          >
+            <MenuItem value="last-added">Last added</MenuItem>
+            <MenuItem value="first-added">First added</MenuItem>
+            <MenuItem value="hightest-priority">Highest priority</MenuItem>
+            <MenuItem value="lowest-priority">Lowest priority</MenuItem>
+            <MenuItem value="nearest-deadline">Nearest deadline</MenuItem>
+            <MenuItem value="lastest-deadline">Lastest deadline</MenuItem>
+          </Select>
+          <TextField
+            sx={{ width: "10rem" }}
+            type="text"
+            label="Filter"
+            onChange={handleFilterChange}
+          />
+        </ButtonGroup>
       </div>
 
       {showForm && (
